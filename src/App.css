@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.Game-board-wrapper {
+  background-color: #282c34;
+  color: white;
+  min-height: 100vh;
+  min-width: 100vw;
+}
