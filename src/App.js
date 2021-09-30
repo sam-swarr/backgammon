@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import {COLORS, MOVEMENT_DIRECTION, STARTING_BOARD_STATE} from './Constants';
 import GameBoard from './GameBoard';
 
 export default class App extends React.Component {
@@ -13,7 +14,11 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <GameBoard />
+        <GameBoard
+          gameBoardState={STARTING_BOARD_STATE}
+          playerColor={COLORS.WHITE}
+          playerMovementDirection={MOVEMENT_DIRECTION.COUNTERCLOCKWISE}
+        />
       </div>
       // <div className="App">
       //   <header className="App-header">

@@ -1,0 +1,14 @@
+Modeling the board:
+- 24 points
+- each point has number of checkers and what color they are
+
+Settings:
+- allow setting direction you move the checkers (counterclockwise or clockwise)
+- allow setting your color of checker (both players could have same settings; shouldn't matter)
+
+Moving checkers:
+- support one click movement
+  - dice are ordered and clicking on a checker moves it the first die amount (unless move is illegal)
+
+- support two click movement
+  - clicking on checker highlights possible moves; click again on highlighted point to actually move
