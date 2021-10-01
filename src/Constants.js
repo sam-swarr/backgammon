@@ -1,6 +1,6 @@
 export const PLAYERS = {
-  ME: 'ME',
-  YOU: 'YOU',
+  ONE: 'ONE',
+  TWO: 'TWO',
   EMPTY: 'EMPTY',
 };
 
@@ -15,31 +15,31 @@ export const MOVEMENT_DIRECTION = {
 };
 
 export const STARTING_BOARD_STATE = [
-  {player: PLAYERS.YOU, count: 2},
+  {player: PLAYERS.TWO, count: 2},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.ME, count: 5},
+  {player: PLAYERS.ONE, count: 5},
 
   {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.ME, count: 3},
+  {player: PLAYERS.ONE, count: 3},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.YOU, count: 5},
+  {player: PLAYERS.TWO, count: 5},
 
-  {player: PLAYERS.ME, count: 5},
+  {player: PLAYERS.ONE, count: 5},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.YOU, count: 3},
+  {player: PLAYERS.TWO, count: 3},
   {player: PLAYERS.EMPTY, count: 0},
 
-  {player: PLAYERS.YOU, count: 5},
+  {player: PLAYERS.TWO, count: 5},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
   {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.ME, count: 2},
+  {player: PLAYERS.ONE, count: 2},
 ];  
