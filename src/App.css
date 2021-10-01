@@ -51,9 +51,20 @@
   background-color:rgb(45, 105, 155);
   display: flex;
   flex-direction: column;
-  height: 84vh;
   justify-content: space-between;
   width: 40%;
+}
+
+@media screen and (orientation: landscape) {
+  .Game-board-half {
+    height: 84vh;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Game-board-half {
+    height: 50vh;
+  }
 }
 
 .Game-board-quadrant {
@@ -69,21 +80,54 @@
 
 .Game-board-bar {
   background-color:rgb(51, 40, 17);
-  height: 84vh;
   width: 4%;
+}
+
+@media screen and (orientation: landscape) {
+  .Game-board-bar {
+    height: 84vh;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Game-board-bar {
+    height: 50vh;
+  }
 }
 
 .Game-board-home {
   background-color:rgb(32, 78, 5);
-  height: 84vh;
   width: 5%;
+}
+
+@media screen and (orientation: landscape) {
+  .Game-board-home {
+    height: 84vh;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Game-board-home {
+    height: 50vh;
+  }
 }
 
 .Point-wrapper {
   display: flex;
-  height: 41vh;
   position: relative;
   width: 15%;
+}
+
+@media screen and (orientation: landscape) {
+  .Point-wrapper {
+    height: 41vh;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Point-wrapper {
+    height: 20vh;
+  }
 }
 
 .Point-triangle {
@@ -132,8 +176,20 @@
 
 .Checker {
   border-radius: 50%;
-  padding-top: 60%;
-  width: 60%;
+}
+
+@media screen and (orientation: landscape) {
+  .Checker {
+    padding-top: 60%;
+    width: 60%;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Checker {
+    padding-top: 80%;
+    width: 80%;
+  }
 }
 
 .Checker.white {
