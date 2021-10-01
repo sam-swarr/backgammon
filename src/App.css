@@ -38,8 +38,29 @@
 }
 
 .Game-board-wrapper {
+  align-items: center;
   background-color: #282c34;
   color: white;
-  min-height: 100vh;
-  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  min-height: 95vh;
+  min-width: 95vw;
+}
+
+.Game-board-half {
+  background-color:plum;
+  height: 84vh;
+  width: 40%;
+}
+
+.Game-board-bar {
+  background-color:rgb(197, 144, 30);
+  height: 84vh;
+  width: 5%;
+}
+
+.Game-board-home {
+  background-color:rgb(30, 197, 44);
+  height: 84vh;
+  width: 5%;
 }

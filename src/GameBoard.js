@@ -17,7 +17,18 @@ export default class GameBoard extends React.Component {
   render() {
     return (
       <div className="Game-board-wrapper">
-        Backgammon
+        <div className="Game-board-half">
+
+        </div>
+        <div className="Game-board-bar">
+
+        </div>
+        <div className="Game-board-half">
+
+        </div>
+        <div className="Game-board-home">
+
+        </div>
       </div>
     );
   }
