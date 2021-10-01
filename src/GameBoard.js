@@ -82,11 +82,65 @@ export default class GameBoard extends React.Component {
         );
       }
     } else {
+      for (let i = 23; i >= 18; i--) {
+        topLeftPoints.push(
+          <BoardPoint
+            key={i}
+            checkerInfo={this.props.gameBoardState[i]}
+            location={"TOP"}
+            playerOneColor={this.props.playerOneColor}
+            playerTwoColor={this.props.playerTwoColor}
+            pointNumber={i} />
+        );
+      }
+      for (let i = 0; i <= 5; i++) {
+        bottomLeftPoints.push(
+          <BoardPoint
+            key={i}
+            checkerInfo={this.props.gameBoardState[i]}
+            location={"BOTTOM"}
+            playerOneColor={this.props.playerOneColor}
+            playerTwoColor={this.props.playerTwoColor}
+            pointNumber={i} />
+        );
+      }
+      for (let i = 17; i >= 12; i--) {
+        topRightPoints.push(
+          <BoardPoint
+            key={i}
+            checkerInfo={this.props.gameBoardState[i]}
+            location={"TOP"}
+            playerOneColor={this.props.playerOneColor}
+            playerTwoColor={this.props.playerTwoColor}
+            pointNumber={i} />
+        );
+      }
+      for (let i = 6; i <= 11; i++) {
+        bottomRightPoints.push(
+          <BoardPoint
+            key={i}
+            checkerInfo={this.props.gameBoardState[i]}
+            location={"BOTTOM"}
+            playerOneColor={this.props.playerOneColor}
+            playerTwoColor={this.props.playerTwoColor}
+            pointNumber={i} />
+        );
+      }
+    }
 
+    let leftHome = null;
+    if (this.props.playerMovementDirection === MOVEMENT_DIRECTION.CLOCKWISE) {
+      leftHome = <div className="Game-board-home" />;
+    }
+
+    let rightHome = null;
+    if (this.props.playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
+      rightHome = <div className="Game-board-home" />;
     }
 
     return (
       <div className="Game-board-wrapper">
+        {leftHome}
         <div className="Game-board-half">
           <div className="Game-board-quadrant top">
             {topLeftPoints}
@@ -106,9 +160,7 @@ export default class GameBoard extends React.Component {
             {bottomRightPoints}
           </div>
         </div>
-        <div className="Game-board-home">
-
-        </div>
+        {rightHome}
       </div>
     );
   }
