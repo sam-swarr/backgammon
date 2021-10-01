@@ -18,12 +18,32 @@ export default class GameBoard extends React.Component {
 
   render() {
     const topLeftPoints = [];
+    const bottomLeftPoints = [];
+    const topRightPoints = [];
+    const bottomRightPoints = [];
     if (this.props.playerMovementDirection == MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
       for (let i = 12; i <= 17; i++) {
         topLeftPoints.push(
           <BoardPoint pointNumber={i} />
         );
       }
+      for (let i = 11; i >= 6; i--) {
+        bottomLeftPoints.push(
+          <BoardPoint pointNumber={i} />
+        );
+      }
+      for (let i = 18; i <= 23; i++) {
+        topRightPoints.push(
+          <BoardPoint pointNumber={i} />
+        );
+      }
+      for (let i = 5; i >= 0; i--) {
+        bottomRightPoints.push(
+          <BoardPoint pointNumber={i} />
+        );
+      }
+    } else {
+
     }
 
     return (
@@ -33,12 +53,7 @@ export default class GameBoard extends React.Component {
             {topLeftPoints}
           </div>
           <div className="Game-board-quadrant bottom">
-            <BoardPoint pointNumber={11} />
-            <BoardPoint pointNumber={10} />
-            <BoardPoint pointNumber={9} />
-            <BoardPoint pointNumber={8} />
-            <BoardPoint pointNumber={7} />
-            <BoardPoint pointNumber={6} />
+            {bottomLeftPoints}
           </div>
         </div>
         <div className="Game-board-bar">
@@ -46,20 +61,10 @@ export default class GameBoard extends React.Component {
         </div>
         <div className="Game-board-half">
           <div className="Game-board-quadrant top">
-            <BoardPoint pointNumber={18} />
-            <BoardPoint pointNumber={19} />
-            <BoardPoint pointNumber={20} />
-            <BoardPoint pointNumber={21} />
-            <BoardPoint pointNumber={22} />
-            <BoardPoint pointNumber={23} />
+            {topRightPoints}
           </div>
           <div className="Game-board-quadrant bottom">
-            <BoardPoint pointNumber={5} />
-            <BoardPoint pointNumber={4} />
-            <BoardPoint pointNumber={3} />
-            <BoardPoint pointNumber={2} />
-            <BoardPoint pointNumber={1} />
-            <BoardPoint pointNumber={0} />
+            {bottomRightPoints}
           </div>
         </div>
         <div className="Game-board-home">

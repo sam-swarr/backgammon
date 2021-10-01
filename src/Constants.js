@@ -1,7 +1,7 @@
 export const PLAYERS = {
   ONE: 'ONE',
   TWO: 'TWO',
-  EMPTY: 'EMPTY',
+  NOBODY: 'NOBODY',
 };
 
 export const COLORS = {
@@ -16,30 +16,30 @@ export const MOVEMENT_DIRECTION = {
 
 export const STARTING_BOARD_STATE = [
   {player: PLAYERS.TWO, count: 2},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
   {player: PLAYERS.ONE, count: 5},
 
-  {player: PLAYERS.EMPTY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
   {player: PLAYERS.ONE, count: 3},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
   {player: PLAYERS.TWO, count: 5},
 
   {player: PLAYERS.ONE, count: 5},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
   {player: PLAYERS.TWO, count: 3},
-  {player: PLAYERS.EMPTY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
 
   {player: PLAYERS.TWO, count: 5},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
-  {player: PLAYERS.EMPTY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
+  {player: PLAYERS.NOBODY, count: 0},
   {player: PLAYERS.ONE, count: 2},
 ];  
