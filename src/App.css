@@ -115,7 +115,7 @@
 .Point-wrapper {
   display: flex;
   position: relative;
-  width: 15%;
+  width: 17%;
 }
 
 @media screen and (orientation: landscape) {
@@ -132,8 +132,9 @@
 
 .Point-triangle {
   height: 100%;
+  margin-left: 10%;
   position: absolute;
-  width: 100%;
+  width: 80%;
   z-index: 1;
 }
 
@@ -156,6 +157,7 @@
 .Checkers-wrapper {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
   z-index: 2;
@@ -180,8 +182,8 @@
 
 @media screen and (orientation: landscape) {
   .Checker {
-    padding-top: 60%;
-    width: 60%;
+    padding-top: 50%;
+    width: 50%;
   }
 }
 
