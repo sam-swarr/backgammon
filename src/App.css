@@ -81,7 +81,66 @@
 }
 
 .Point-wrapper {
-  background-color:rgb(197, 30, 161);
+  display: flex;
+  height: 41vh;
+  position: relative;
+  width: 15%;
+}
+
+.Point-triangle {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.Point-triangle.even {
+  background-color: rgb(122, 96, 22);
+}
+
+.Point-triangle.odd {
+  background-color: rgb(156, 141, 100);
+}
+
+.Point-triangle.bottom {
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+}
+
+.Point-triangle.top {
+  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+}
+
+.Checkers-wrapper {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+
+.Checkers-wrapper.top {
+  flex-direction: column;
+}
+
+.Checkers-wrapper.bottom {
+  flex-direction: column-reverse;
+}
+
+.Point {
   height: 41vh;
   width: 15%;
+}
+
+.Checker {
+  border-radius: 50%;
+  padding-top: 60%;
+  width: 60%;
+}
+
+.Checker.white {
+  background-color: rgb(226, 213, 223);
+}
+
+.Checker.black {
+  background-color: rgb(56, 48, 27);
 }

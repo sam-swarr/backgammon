@@ -16,7 +16,8 @@ export default class App extends React.Component {
       <div>
         <GameBoard
           gameBoardState={STARTING_BOARD_STATE}
-          playerColor={COLORS.WHITE}
+          playerOneColor={COLORS.WHITE}
+          playerTwoColor={COLORS.BLACK}
           playerMovementDirection={MOVEMENT_DIRECTION.COUNTERCLOCKWISE}
         />
       </div>
