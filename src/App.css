@@ -49,8 +49,23 @@
 
 .Game-board-half {
   background-color:plum;
+  display: flex;
+  flex-direction: column;
   height: 84vh;
+  justify-content: space-between;
   width: 40%;
+}
+
+.Game-board-quadrant {
+  background-color:rgb(45, 105, 155);
+  display: flex;
+  height: 42vh;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.Game-board-quadrant.bottom {
+  align-items: flex-end;
 }
 
 .Game-board-bar {
@@ -63,4 +78,10 @@
   background-color:rgb(30, 197, 44);
   height: 84vh;
   width: 5%;
+}
+
+.Point-wrapper {
+  background-color:rgb(197, 30, 161);
+  height: 41vh;
+  width: 15%;
 }
