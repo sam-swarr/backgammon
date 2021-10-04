@@ -12,3 +12,10 @@ Moving checkers:
 
 - support two click movement
   - clicking on checker highlights possible moves; click again on highlighted point to actually move
+
+Support both local and networked mulitplayer:
+  - pure, local Redux store for local mulitplayer
+  - Redux store backed by Firebase for online multiplayer
+    - redux-thunk allows you to do async calls prior to dispatching to store
+      - UI component calls action function -> action function asynchronously
+        pushes update to server -> once async function returns, we dispatch to local store
