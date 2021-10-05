@@ -1,5 +1,4 @@
-import type {GameBoardState} from './Types';
-import {Player} from './Types';
+import {GameBoardState, Player} from './Types';
 
 export const STARTING_BOARD_STATE: GameBoardState = {
   pointsState:
