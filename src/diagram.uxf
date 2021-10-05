@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>380</x><y>90</y><w>190</w><h>30</h></coordinates><panel_attributes>App</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>210</y><w>290</w><h>210</h></coordinates><panel_attributes>GameBoard
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>330</x><y>0</y><w>190</w><h>30</h></coordinates><panel_attributes>App</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>60</y><w>320</w><h>480</h></coordinates><panel_attributes>GameBoard
 --
 gameBoardState: {
   pointsState: Array&lt;PointState&gt;,
@@ -6,29 +6,99 @@ gameBoardState: {
   homeState: HomeState,
 }
 
+currentPlayer: &lt;one of PLAYER&gt;
+
+dieRolls: Array&lt;DieRoll&gt;
+
+# moves to show after clicking once
+highlightedMoves: Array&lt;Move&gt;
+  
+# moves to apply to gameBoardState
+# but aren't locked in yet
+provisionalMoves: Array&lt;Move&gt;
+
+  Move: {
+    from: &lt;int or BAR&gt;,
+    to: &lt;int or HOME&gt;,
+  }
+
 playerMovementDirection: &lt;one of CW / CCW&gt;
 
 playerOneColor: &lt;one of COLOR&gt;
 
-playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>220</x><y>500</y><w>190</w><h>150</h></coordinates><panel_attributes>BoardPoint
+playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>590</y><w>190</w><h>200</h></coordinates><panel_attributes>BoardPoint
 --
 PointState: {
   player: &lt;one of PLAYERS&gt;,
   count: int,
 }
 
+pointNumber: int,
+
 playerOneColor: &lt;one of COLOR&gt;
 
-playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>220</x><y>720</y><w>190</w><h>60</h></coordinates><panel_attributes>Checker
+playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>860</y><w>190</w><h>60</h></coordinates><panel_attributes>Checker
 --
-color: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>410</y><w>110</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;90;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>640</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>110</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>530</y><w>190</w><h>90</h></coordinates><panel_attributes>Bar
+color: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>530</y><w>100</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>780</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>20</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>610</y><w>190</w><h>90</h></coordinates><panel_attributes>Bar
 --
 BarState: {
   PLAYERS.ONE: int,
   PLAYERS.TWO: int,
-}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>640</x><y>530</y><w>190</w><h>90</h></coordinates><panel_attributes>Home
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>630</x><y>610</y><w>190</w><h>90</h></coordinates><panel_attributes>Home
 --
 HomeState: {
   PLAYERS.ONE: int,
   PLAYERS.TWO: int,
-}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>410</y><w>70</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>50;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>410</y><w>210</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>190;120;10;10</additional_attributes></element></diagram>
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>530</y><w>90</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>70;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>500</x><y>530</y><w>250</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>230;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>600</y><w>240</w><h>110</h></coordinates><panel_attributes>Dice
+--
+DieRolls: [
+  { value: int, used: bool},
+  { value: int, used: bool},
+  ...
+]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>250</y><w>400</w><h>370</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>380;350;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>720</x><y>60</y><w>390</w><h>510</h></coordinates><panel_attributes># function for determining if a individual die roll is valid
+# independent of rules regarding using max # of rolls / max value roll
+
+getMoveIfValid(
+  gameBoardState: GameBoardState,
+  fromPoint: BAR or int,
+  dieRoll: DieRoll,
+  currentPlayer: &lt;one of PLAYER&gt;,
+): ?Move {
+  - if currentPlayer is not player who occupies fromPoint, return null
+  - if currentPlayer has a checker on the bar and fromPoint is not BAR, return null
+  - if pointNumber + dieRoll.value is a point with 2+ opposing checkers, return null
+  - if the die roll would bear the checker off:
+    - if not all checkers are in homeboard: return null
+    - if dieRoll.value is greater than distance from HOME
+      - if any other checkers are further from HOME, return null
+  - return Move
+}
+
+# Iterates through all possible combinations of moves
+# and returns the possible move sets.
+# Will be used to ensure player is using max # of dice
+# and/or max die value in case of tie.
+
+getAllPossibleMoveSets(
+  gameBoardState: GameBoardState,
+  dieRolls: Array&lt;DieRoll&gt;,
+  currentPlayer: &lt;one of PLAYER&gt;,
+): Array&lt;Array&lt;Move&gt;&gt; {
+
+}
+
+
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>650</x><y>740</y><w>390</w><h>250</h></coordinates><panel_attributes># function for determining if a individual die roll is valid
+# independent of rules regarding using max # of rolls / max value roll
+
+isMoveValid(
+  pointState: PointState,
+  pointNumber: int,
+  dieRoll: DieRoll,
+  currentPlayer: &lt;one of PLAYER&gt;,
+) {
+  - if currentPlayer is not pointState.player, return false
+  - if pointNumber + dieRoll.value is a point with 2+ opposing checkers, return false
+}
+
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element></diagram>
