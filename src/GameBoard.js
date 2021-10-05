@@ -6,7 +6,7 @@ import BoardPoint from './BoardPoint';
 
 export default class GameBoard extends React.Component {
   static propTypes = {
-    gameBoardState: PropTypes.array.isRequired,
+    gameBoardState: PropTypes.object.isRequired,
     playerOneColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
     playerTwoColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
     playerMovementDirection: PropTypes.oneOf(Object.values(MOVEMENT_DIRECTION)).isRequired,
@@ -15,17 +15,18 @@ export default class GameBoard extends React.Component {
   constructor(props) {
     super(props);
 
-    for (let i = 0; i < this.props.gameBoardState.length; i++) {
-      const currentPoint = this.props.gameBoardState[i];
+    const pointsState = this.props.gameBoardState.pointsState;
+    for (let i = 0; i < pointsState; i++) {
+      const currentPoint = pointsState[i];
       if (currentPoint.player === PLAYERS.NOBODY) {
         if (currentPoint.count !== 0) {
           console.warn("Invalid board state. Non-zero number of checkers on NOBODY point.");
-          console.warn(this.props.gameBoardState);
+          console.warn(pointsState);
         }
       } else {
         if (currentPoint.count <= 0) {
           console.warn("Invalid board state. Non-positive number of checkers on PLAYER point.");
-          console.warn(this.props.gameBoardState);
+          console.warn(pointsState);
         }
       }
     }
@@ -36,12 +37,14 @@ export default class GameBoard extends React.Component {
     const bottomLeftPoints = [];
     const topRightPoints = [];
     const bottomRightPoints = [];
+
+    const pointsState = this.props.gameBoardState.pointsState;
     if (this.props.playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
       for (let i = 12; i <= 17; i++) {
         topLeftPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"TOP"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -52,7 +55,7 @@ export default class GameBoard extends React.Component {
         bottomLeftPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"BOTTOM"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -63,7 +66,7 @@ export default class GameBoard extends React.Component {
         topRightPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"TOP"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -74,7 +77,7 @@ export default class GameBoard extends React.Component {
         bottomRightPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"BOTTOM"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -86,7 +89,7 @@ export default class GameBoard extends React.Component {
         topLeftPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"TOP"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -97,7 +100,7 @@ export default class GameBoard extends React.Component {
         bottomLeftPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"BOTTOM"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -108,7 +111,7 @@ export default class GameBoard extends React.Component {
         topRightPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"TOP"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
@@ -119,7 +122,7 @@ export default class GameBoard extends React.Component {
         bottomRightPoints.push(
           <BoardPoint
             key={i}
-            checkerInfo={this.props.gameBoardState[i]}
+            checkerInfo={pointsState[i]}
             location={"BOTTOM"}
             playerOneColor={this.props.playerOneColor}
             playerTwoColor={this.props.playerTwoColor}
