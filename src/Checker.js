@@ -3,19 +3,17 @@ import PropTypes from "prop-types";
 
 import {COLORS, PLAYERS} from './Constants';
 
-export default class Checker extends React.Component {
-  static propTypes = {
-    color: PropTypes.oneOf(Object.values(COLORS)),
-  };
+function Checker({ color }) {
 
-  constructor(props) {
-    super(props);
-  }
+  const colorClass = color === COLORS.WHITE ? "white" : "black";
 
-  render() {
-    const colorClass = this.props.color === COLORS.WHITE ? "white" : "black";
-    return (
+  return (
       <div className={"Checker " + colorClass}  />
-    );
-  }
+  );
 }
+
+Checker.propTypes = {
+  color: PropTypes.oneOf(Object.values(COLORS)),
+};
+
+export default Checker
