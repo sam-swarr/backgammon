@@ -35,6 +35,15 @@ export function getIndexAfterMoving(
   }
 }
 
+export function canPlayerOccupyPoint(
+  gameBoardState: GameBoardState,
+  toPoint: number,
+  currentPlayer: Player,
+): boolean {
+  const pointState = getPointStateAtIndex(gameBoardState, toPoint);
+  return currentPlayer === Player.One ? (pointState[Player.Two] < 2) : (pointState[Player.One] < 2);
+}
+
 export function getMoveIfValid(
   gameBoardState: GameBoardState,
   fromPoint: number | "BAR",

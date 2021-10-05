@@ -1,4 +1,9 @@
-import { getIndexAfterMoving, getMoveIfValid, getPointStateAtIndex } from '../moves'; 
+import {
+  canPlayerOccupyPoint,
+  getIndexAfterMoving,
+  getMoveIfValid,
+  getPointStateAtIndex,
+} from '../moves';
 import { STARTING_BOARD_STATE } from '../../Constants'
 import { Player } from '../../Types'
 
@@ -84,6 +89,44 @@ test('getIndexAfterMoving works', () => {
     1, // dieValue
     Player.Two, // currentPlayer
   )).toEqual("HOME");
+});
+
+test('canPlayerOccupyPoint works', () => {
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    23, // toPoint
+    Player.One, // currentPlayer
+  )).toEqual(true);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    23, // toPoint
+    Player.Two, // currentPlayer
+  )).toEqual(false);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    22, // toPoint
+    Player.One, // currentPlayer
+  )).toEqual(true);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    22, // toPoint
+    Player.Two, // currentPlayer
+  )).toEqual(true);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    0, // toPoint
+    Player.One, // currentPlayer
+  )).toEqual(false);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    0, // toPoint
+    Player.Two, // currentPlayer
+  )).toEqual(true);
 });
 
 test('getMoveIfValid returns null if currentPlayer does not occupy fromPoint', () => {
