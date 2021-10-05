@@ -1,17 +1,21 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { useSelector } from 'react-redux'
+import React, { FunctionComponent } from "react";
 
-
-import {COLORS, MOVEMENT_DIRECTION} from './Constants';
+import { useAppSelector } from './store/hooks'
+import {Color, MovementDirection} from './Types';
 import BoardPoint from './BoardPoint';
 
-function GameBoard({
+type GameBoardProps = {
+  playerOneColor: Color,
+  playerTwoColor: Color,
+  playerMovementDirection: MovementDirection,
+};
+
+const GameBoard: FunctionComponent<GameBoardProps> = ({
   playerOneColor,
   playerTwoColor,
   playerMovementDirection,
-}) {
-  const gameBoardState = useSelector((state) => state.gameBoard);
+}: GameBoardProps) => {
+  const gameBoardState = useAppSelector((state) => state.gameBoard);
 
   const topLeftPoints = [];
   const bottomLeftPoints = [];
@@ -19,7 +23,7 @@ function GameBoard({
   const bottomRightPoints = [];
 
   const pointsState = gameBoardState.pointsState;
-  if (playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
+  if (playerMovementDirection === MovementDirection.CounterClockwise) {
     for (let i = 12; i <= 17; i++) {
       topLeftPoints.push(
         <BoardPoint
@@ -112,12 +116,12 @@ function GameBoard({
   }
 
   let leftHome = null;
-  if (playerMovementDirection === MOVEMENT_DIRECTION.CLOCKWISE) {
+  if (playerMovementDirection === MovementDirection.Clockwise) {
     leftHome = <div className="Game-board-home" />;
   }
 
   let rightHome = null;
-  if (playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
+  if (playerMovementDirection === MovementDirection.CounterClockwise) {
     rightHome = <div className="Game-board-home" />;
   }
 
@@ -147,11 +151,5 @@ function GameBoard({
     </div>
   );
 }
-
-GameBoard.propTypes = {
-  playerOneColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
-  playerTwoColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
-  playerMovementDirection: PropTypes.oneOf(Object.values(MOVEMENT_DIRECTION)).isRequired,
-};
 
 export default GameBoard;
