@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {COLORS, PLAYERS} from './Constants';
+import {COLORS} from './Constants';
 
 function Checker({ color }) {
 
@@ -16,4 +16,4 @@ Checker.propTypes = {
   color: PropTypes.oneOf(Object.values(COLORS)),
 };
 
-export default Checker
+export default Checker;

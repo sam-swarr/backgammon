@@ -1,170 +1,157 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+import { useSelector } from 'react-redux'
 
-import {COLORS, MOVEMENT_DIRECTION, PLAYERS} from './Constants';
+
+import {COLORS, MOVEMENT_DIRECTION} from './Constants';
 import BoardPoint from './BoardPoint';
 
-export default class GameBoard extends React.Component {
-  static propTypes = {
-    gameBoardState: PropTypes.object.isRequired,
-    playerOneColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
-    playerTwoColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
-    playerMovementDirection: PropTypes.oneOf(Object.values(MOVEMENT_DIRECTION)).isRequired,
-  };
+function GameBoard({
+  playerOneColor,
+  playerTwoColor,
+  playerMovementDirection,
+}) {
+  const gameBoardState = useSelector((state) => state.gameBoard);
 
-  constructor(props) {
-    super(props);
+  const topLeftPoints = [];
+  const bottomLeftPoints = [];
+  const topRightPoints = [];
+  const bottomRightPoints = [];
 
-    const pointsState = this.props.gameBoardState.pointsState;
-    for (let i = 0; i < pointsState; i++) {
-      const currentPoint = pointsState[i];
-      if (currentPoint.player === PLAYERS.NOBODY) {
-        if (currentPoint.count !== 0) {
-          console.warn("Invalid board state. Non-zero number of checkers on NOBODY point.");
-          console.warn(pointsState);
-        }
-      } else {
-        if (currentPoint.count <= 0) {
-          console.warn("Invalid board state. Non-positive number of checkers on PLAYER point.");
-          console.warn(pointsState);
-        }
-      }
+  const pointsState = gameBoardState.pointsState;
+  if (playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
+    for (let i = 12; i <= 17; i++) {
+      topLeftPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"TOP"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+    for (let i = 11; i >= 6; i--) {
+      bottomLeftPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"BOTTOM"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+    for (let i = 18; i <= 23; i++) {
+      topRightPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"TOP"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+    for (let i = 5; i >= 0; i--) {
+      bottomRightPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"BOTTOM"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+  } else {
+    for (let i = 23; i >= 18; i--) {
+      topLeftPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"TOP"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+    for (let i = 0; i <= 5; i++) {
+      bottomLeftPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"BOTTOM"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+    for (let i = 17; i >= 12; i--) {
+      topRightPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"TOP"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
+    }
+    for (let i = 6; i <= 11; i++) {
+      bottomRightPoints.push(
+        <BoardPoint
+          key={i}
+          checkerInfo={pointsState[i]}
+          location={"BOTTOM"}
+          playerOneColor={playerOneColor}
+          playerTwoColor={playerTwoColor}
+          pointNumber={i} />
+      );
     }
   }
 
-  render() {
-    const topLeftPoints = [];
-    const bottomLeftPoints = [];
-    const topRightPoints = [];
-    const bottomRightPoints = [];
+  let leftHome = null;
+  if (playerMovementDirection === MOVEMENT_DIRECTION.CLOCKWISE) {
+    leftHome = <div className="Game-board-home" />;
+  }
 
-    const pointsState = this.props.gameBoardState.pointsState;
-    if (this.props.playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
-      for (let i = 12; i <= 17; i++) {
-        topLeftPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"TOP"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-      for (let i = 11; i >= 6; i--) {
-        bottomLeftPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"BOTTOM"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-      for (let i = 18; i <= 23; i++) {
-        topRightPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"TOP"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-      for (let i = 5; i >= 0; i--) {
-        bottomRightPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"BOTTOM"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-    } else {
-      for (let i = 23; i >= 18; i--) {
-        topLeftPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"TOP"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-      for (let i = 0; i <= 5; i++) {
-        bottomLeftPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"BOTTOM"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-      for (let i = 17; i >= 12; i--) {
-        topRightPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"TOP"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-      for (let i = 6; i <= 11; i++) {
-        bottomRightPoints.push(
-          <BoardPoint
-            key={i}
-            checkerInfo={pointsState[i]}
-            location={"BOTTOM"}
-            playerOneColor={this.props.playerOneColor}
-            playerTwoColor={this.props.playerTwoColor}
-            pointNumber={i} />
-        );
-      }
-    }
+  let rightHome = null;
+  if (playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
+    rightHome = <div className="Game-board-home" />;
+  }
 
-    let leftHome = null;
-    if (this.props.playerMovementDirection === MOVEMENT_DIRECTION.CLOCKWISE) {
-      leftHome = <div className="Game-board-home" />;
-    }
-
-    let rightHome = null;
-    if (this.props.playerMovementDirection === MOVEMENT_DIRECTION.COUNTERCLOCKWISE) {
-      rightHome = <div className="Game-board-home" />;
-    }
-
-    return (
-      <div className="Game-board-wrapper">
-        {leftHome}
-        <div className="Game-board-half">
-          <div className="Game-board-quadrant top">
-            {topLeftPoints}
-          </div>
-          <div className="Game-board-quadrant bottom">
-            {bottomLeftPoints}
-          </div>
+  return (
+    <div className="Game-board-wrapper">
+      {leftHome}
+      <div className="Game-board-half">
+        <div className="Game-board-quadrant top">
+          {topLeftPoints}
         </div>
-        <div className="Game-board-bar">
-
+        <div className="Game-board-quadrant bottom">
+          {bottomLeftPoints}
         </div>
-        <div className="Game-board-half">
-          <div className="Game-board-quadrant top">
-            {topRightPoints}
-          </div>
-          <div className="Game-board-quadrant bottom">
-            {bottomRightPoints}
-          </div>
-        </div>
-        {rightHome}
       </div>
-    );
-  }
+      <div className="Game-board-bar">
+
+      </div>
+      <div className="Game-board-half">
+        <div className="Game-board-quadrant top">
+          {topRightPoints}
+        </div>
+        <div className="Game-board-quadrant bottom">
+          {bottomRightPoints}
+        </div>
+      </div>
+      {rightHome}
+    </div>
+  );
 }
+
+GameBoard.propTypes = {
+  playerOneColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
+  playerTwoColor: PropTypes.oneOf(Object.values(COLORS)).isRequired,
+  playerMovementDirection: PropTypes.oneOf(Object.values(MOVEMENT_DIRECTION)).isRequired,
+};
+
+export default GameBoard;

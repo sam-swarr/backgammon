@@ -16,10 +16,6 @@ export default class BoardPoint extends React.Component {
     pointNumber: PropTypes.number.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const checkers = [];
     for (let i = 0; i < this.props.checkerInfo.count; i++) {
