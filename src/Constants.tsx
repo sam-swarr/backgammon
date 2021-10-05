@@ -4,33 +4,132 @@ import {Player} from './Types';
 export const STARTING_BOARD_STATE: GameBoardState = {
   pointsState:
     [
-      {player: Player.Two, count: 2},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.One, count: 5},
+      // 0
+      {
+        [Player.One]: 0,
+        [Player.Two]: 2,
+      },
+      // 1
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 2
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 3
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 4
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 5
+      {
+        [Player.One]: 5,
+        [Player.Two]: 0,
+      },
 
-      {player: Player.Nobody, count: 0},
-      {player: Player.One, count: 3},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Two, count: 5},
 
-      {player: Player.One, count: 5},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Two, count: 3},
-      {player: Player.Nobody, count: 0},
+      // 6
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 7
+      {
+        [Player.One]: 3,
+        [Player.Two]: 0,
+      },
+      // 8
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 9
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 10
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 11
+      {
+        [Player.One]: 0,
+        [Player.Two]: 5,
+      },
 
-      {player: Player.Two, count: 5},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.Nobody, count: 0},
-      {player: Player.One, count: 2},
+
+      // 12
+      {
+        [Player.One]: 5,
+        [Player.Two]: 0,
+      },
+      // 13
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 14
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 15
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 16
+      {
+        [Player.One]: 0,
+        [Player.Two]: 3,
+      },
+      // 17
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+
+
+      // 18
+      {
+        [Player.One]: 0,
+        [Player.Two]: 5,
+      },
+      // 19
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 20
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 21
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 22
+      {
+        [Player.One]: 0,
+        [Player.Two]: 0,
+      },
+      // 23
+      {
+        [Player.One]: 2,
+        [Player.Two]: 0,
+      },
     ],
   barState: {
     [Player.One]: 0,

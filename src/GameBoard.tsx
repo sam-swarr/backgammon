@@ -28,7 +28,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       topLeftPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -39,7 +39,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       bottomLeftPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -50,7 +50,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       topRightPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -61,7 +61,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       bottomRightPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -73,7 +73,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       topLeftPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -84,7 +84,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       bottomLeftPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -95,7 +95,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       topRightPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -106,7 +106,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       bottomRightPoints.push(
         <BoardPoint
           key={i}
-          checkerInfo={pointsState[i]}
+          pointState={pointsState[i]}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}

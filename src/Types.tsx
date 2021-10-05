@@ -1,7 +1,6 @@
 export enum Player {
   One = "ONE",
   Two = "TWO",
-  Nobody = "NOBODY",
 };
 
 export enum Color {
@@ -16,22 +15,16 @@ export enum MovementDirection {
 
 export type GameBoardState = {
   pointsState: Array<PointState>,
-  barState: BarState,
-  homeState: HomeState,
-}
+  barState: PointState,
+  homeState: PointState,
+};
 
 export type PointState = {
-  player: Player,
-  count: number;
-}
-
-export type BarState = {
   [Player.One]: number,
   [Player.Two]: number,
-}
+};
 
-export type HomeState = {
-  [Player.One]: number,
-  [Player.Two]: number,
-}
-
+export type Move = {
+  from: number | "BAR",
+  to: number | "HOME",
+};

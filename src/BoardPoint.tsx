@@ -4,7 +4,7 @@ import Checker from './Checker';
 import {Color, Player, PointState} from './Types';
 
 type BoardPointProps = {
-  checkerInfo: PointState,
+  pointState: PointState,
   location: "TOP" | "BOTTOM",
   playerOneColor: Color,
   playerTwoColor: Color,
@@ -12,15 +12,23 @@ type BoardPointProps = {
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
-  checkerInfo,
+  pointState,
   location,
   playerOneColor,
   playerTwoColor,
   pointNumber,
 }: BoardPointProps) => {
+  if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
+    console.error("Invalid PointState on point " + pointNumber);
+    console.error(pointState);
+  }
+
+  const occupyingPlayer = pointState[Player.One] > pointState[Player.Two] ? Player.One : Player.Two;
+  const checkerCount = pointState[Player.One] > pointState[Player.Two] ? pointState[Player.One] : pointState[Player.Two];
+
   const checkers = [];
-  for (let i = 0; i < checkerInfo.count; i++) {
-    const color = checkerInfo.player === Player.One ?
+  for (let i = 0; i < checkerCount; i++) {
+    const color = occupyingPlayer === Player.One ?
       playerOneColor : playerTwoColor;
 
     checkers.push(

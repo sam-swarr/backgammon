@@ -2,8 +2,8 @@
 --
 gameBoardState: {
   pointsState: Array&lt;PointState&gt;,
-  barState: BarState,
-  homeState: HomeState,
+  barState: PointState,
+  homeState: PointState,
 }
 
 currentPlayer: &lt;one of PLAYER&gt;
