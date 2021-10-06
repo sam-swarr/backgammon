@@ -9,6 +9,7 @@ type BoardPointProps = {
   playerOneColor: Color,
   playerTwoColor: Color,
   pointNumber: number,
+  clickHandler: (fromPoint: number | "BAR") => void,
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -17,6 +18,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   playerOneColor,
   playerTwoColor,
   pointNumber,
+  clickHandler,
 }: BoardPointProps) => {
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
@@ -40,7 +42,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   const evenOrOdd = pointNumber % 2 === 0 ? "even" : "odd";
 
   return (
-    <div className={"Point-wrapper " + topOrBottom}>
+    <div className={"Point-wrapper " + topOrBottom} onClick={() => {clickHandler(pointNumber)}}>
       <div className={"Checkers-wrapper " + topOrBottom}>
         {checkers}
       </div>

@@ -1,7 +1,9 @@
 import React, { FunctionComponent } from "react";
 
-import { useAppSelector } from './store/hooks'
-import {Color, MovementDirection, Player} from './Types';
+import { setHighlightedMoves } from "./store/highlightedMovesSlice";
+import { useAppDispatch, useAppSelector } from './store/hooks'
+import { getMoveIfValid } from "./store/moves";
+import {Color, Move, MovementDirection, Player} from './Types';
 import BoardPoint from './BoardPoint';
 
 type GameBoardProps = {
@@ -20,11 +22,35 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   playerMovementDirection,
 }: GameBoardProps) => {
   const gameBoardState = useAppSelector((state) => state.gameBoard);
+  const dispatch = useAppDispatch();
 
   const topLeftPoints = [];
   const bottomLeftPoints = [];
   const topRightPoints = [];
   const bottomRightPoints = [];
+
+  const boardPointClickHandler = (fromPoint: number | "BAR") => {
+    const possibleMoves: Move[] = [];
+    const seenDieValues = new Set();
+    for (let i = 0; i < dice.length; i++) {
+      if (!seenDieValues.has(dice[i])) {
+        const possibleMove = getMoveIfValid(
+          gameBoardState,
+          fromPoint,
+          dice[i],
+          currentPlayer,
+        );
+        if (possibleMove !== null) {
+          possibleMoves.push(possibleMove);
+        }
+      }
+      seenDieValues.add(dice[i]);
+    }
+    dispatch(setHighlightedMoves({
+      lastPointClicked: fromPoint,
+      moves: possibleMoves,
+    }));
+  };
 
   const pointsState = gameBoardState.pointsState;
   if (playerMovementDirection === MovementDirection.CounterClockwise) {
@@ -33,6 +59,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -44,6 +71,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -55,6 +83,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -66,6 +95,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -78,6 +108,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -89,6 +120,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -100,6 +132,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -111,6 +144,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <BoardPoint
           key={i}
           pointState={pointsState[i]}
+          clickHandler={boardPointClickHandler}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}

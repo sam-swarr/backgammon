@@ -2,22 +2,33 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { Move } from '../Types';
 
-const initialState: Move[] = [];
+type HighlightedMovesState = {
+  lastPointClicked: number | "BAR",
+  moves: Move[],
+};
+
+const initialState: HighlightedMovesState = {
+  lastPointClicked: -1,
+  moves: [],
+};
 
 export const highlightedMovesSlice = createSlice({
   name: 'highlightedMovesState',
   initialState: initialState,
   reducers: {
-    addHighlightedMove: (state, action: { type: string, payload: Move} ) => {
-      state.push(action.payload);
+    setHighlightedMoves: (state, action: { type: string, payload: HighlightedMovesState } ) => {
+      if (action.payload.lastPointClicked === state.lastPointClicked) {
+        return initialState;
+      }
+      return action.payload;
     },
-    clearHighlightedMoves: (state) => {
-      state = [];
+    clearHighlightedMoves: (_state) => {
+      return initialState;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addHighlightedMove, clearHighlightedMoves } = highlightedMovesSlice.actions
+export const { setHighlightedMoves, clearHighlightedMoves } = highlightedMovesSlice.actions
 
 export default highlightedMovesSlice.reducer
