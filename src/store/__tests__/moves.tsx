@@ -293,3 +293,402 @@ test('getMoveIfValid returns null if player is not moving from BAR when they hav
     Player.Two,
   )).toBeNull();
 });
+
+test('getMoveIfValid returns null if opponent has a point on destination', () => {
+  expect(getMoveIfValid(
+    STARTING_BOARD_STATE,
+    5, // fromPoint
+    5, // dieValue
+    Player.One,
+  )).toBeNull();
+
+  expect(getMoveIfValid(
+    STARTING_BOARD_STATE,
+    0, // fromPoint
+    5, // dieValue
+    Player.Two,
+  )).toBeNull();
+
+  expect(getMoveIfValid(
+    STARTING_BOARD_STATE,
+    12, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toBeNull();
+
+  expect(getMoveIfValid(
+    STARTING_BOARD_STATE,
+    11, // fromPoint
+    1, // dieValue
+    Player.Two,
+  )).toBeNull();
+});
+
+test('getMoveIfValid returns null if player tries to bear off before having everything in home board', () => {
+  let TEST_BOARD = {
+    ...EMPTY_BOARD_STATE,
+  };
+  TEST_BOARD.pointsState[0] = {[Player.One]: 2, [Player.Two]: 0};
+  TEST_BOARD.pointsState[20] = {[Player.One]: 1, [Player.Two]: 0};
+
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    0, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toBeNull();
+
+  TEST_BOARD.pointsState[20] = {[Player.One]: 0, [Player.Two]: 0};
+  TEST_BOARD.barState = {[Player.One]: 1, [Player.Two]: 0};
+
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    0, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toBeNull();
+
+
+  TEST_BOARD = {
+    ...EMPTY_BOARD_STATE,
+  };
+  TEST_BOARD.pointsState[22] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[10] = {[Player.One]: 0, [Player.Two]: 2};
+
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    22, // fromPoint
+    2, // dieValue
+    Player.Two,
+  )).toBeNull();
+
+  TEST_BOARD.pointsState[10] = {[Player.One]: 0, [Player.Two]: 0};
+  TEST_BOARD.barState = {[Player.One]: 0, [Player.Two]: 2};
+
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    22, // fromPoint
+    2, // dieValue
+    Player.Two,
+  )).toBeNull();
+});
+
+test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
+  let TEST_BOARD = {
+    ...EMPTY_BOARD_STATE,
+  };
+  TEST_BOARD.pointsState[0] = {[Player.One]: 2, [Player.Two]: 0};
+  TEST_BOARD.pointsState[3] = {[Player.One]: 1, [Player.Two]: 0};
+  TEST_BOARD.pointsState[4] = {[Player.One]: 1, [Player.Two]: 0};
+
+  // This is an invalid move since there are checkers futher away that can be moved.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    0, // fromPoint
+    2, // dieValue
+    Player.One,
+  )).toBeNull();
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    3, // fromPoint
+    2, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 3,
+    to: 1,
+  });
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    4, // fromPoint
+    2, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 4,
+    to: 2,
+  });
+
+  // This is a valid move since die roll is exact.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    3, // fromPoint
+    4, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 3,
+    to: "HOME",
+  });
+
+  // This is an invalid move since there is a checker on the 5 point that
+  // needs to be moved first.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    3, // fromPoint
+    5, // dieValue
+    Player.One,
+  )).toBeNull();
+  // Moving the checker on the 5 point is valid.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    4, // fromPoint
+    5, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 4,
+    to: 'HOME',
+  });
+
+  // This is a valid move since die roll is exact.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    0, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 0,
+    to: "HOME",
+  });
+  // This is also a valid move since player is not obligated to bear off.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    3, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 3,
+    to: 2,
+  });
+  // This is also a valid move since player is not obligated to bear off.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    4, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 4,
+    to: 3,
+  });
+});
+
+test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
+  let TEST_BOARD = {
+    ...EMPTY_BOARD_STATE,
+  };
+  TEST_BOARD.pointsState[23] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[20] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[19] = {[Player.One]: 0, [Player.Two]: 1};
+
+  // This is an invalid move since there are checkers futher away that can be moved.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    23, // fromPoint
+    2, // dieValue
+    Player.Two,
+  )).toBeNull();
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    20, // fromPoint
+    2, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 20,
+    to: 22,
+  });
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    19, // fromPoint
+    2, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 19,
+    to: 21,
+  });
+
+  // This is a valid move since die roll is exact.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    20, // fromPoint
+    4, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 20,
+    to: "HOME",
+  });
+
+  // This is an invalid move since there is a checker on the 5 point that
+  // needs to be moved first.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    20, // fromPoint
+    5, // dieValue
+    Player.Two,
+  )).toBeNull();
+  // Moving the checker on the 5 point is valid.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    19, // fromPoint
+    5, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 19,
+    to: 'HOME',
+  });
+
+  // This is a valid move since die roll is exact.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    23, // fromPoint
+    1, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 23,
+    to: "HOME",
+  });
+  // This is also a valid move since player is not obligated to bear off.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    20, // fromPoint
+    1, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 20,
+    to: 21,
+  });
+  // This is also a valid move since player is not obligated to bear off.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    19, // fromPoint
+    1, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 19,
+    to: 20,
+  });
+});
+
+test('getMoveIfValid returns valid Move for Player.One if destination point is occupiable', () => {
+  let TEST_BOARD = {
+    ...EMPTY_BOARD_STATE,
+  };
+  TEST_BOARD.pointsState[12] = {[Player.One]: 0, [Player.Two]: 0};
+  TEST_BOARD.pointsState[13] = {[Player.One]: 1, [Player.Two]: 0};
+  TEST_BOARD.pointsState[14] = {[Player.One]: 2, [Player.Two]: 0};
+  TEST_BOARD.pointsState[15] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[16] = {[Player.One]: 0, [Player.Two]: 3};
+  TEST_BOARD.pointsState[17] = {[Player.One]: 2, [Player.Two]: 0};
+
+  // Opponent has a point at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    17, // fromPoint
+    1, // dieValue
+    Player.One,
+  )).toBeNull();
+
+  // Opponent has a blot at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    17, // fromPoint
+    2, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 17,
+    to: 15,
+  });
+
+  // Player already has 2 checkers at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    17, // fromPoint
+    3, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 17,
+    to: 14,
+  });
+
+  // Player already has a checker at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    17, // fromPoint
+    4, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 17,
+    to: 13,
+  });
+
+  // Destination is empty.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    17, // fromPoint
+    5, // dieValue
+    Player.One,
+  )).toEqual({
+    from: 17,
+    to: 12,
+  });
+});
+
+test('getMoveIfValid returns valid Move for Player.Two if destination point is occupiable', () => {
+  let TEST_BOARD = {
+    ...EMPTY_BOARD_STATE,
+  };
+  TEST_BOARD.pointsState[12] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[13] = {[Player.One]: 3, [Player.Two]: 0};
+  TEST_BOARD.pointsState[14] = {[Player.One]: 1, [Player.Two]: 0};
+  TEST_BOARD.pointsState[15] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[16] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[17] = {[Player.One]: 0, [Player.Two]: 0};
+
+  // Opponent has a point at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    12, // fromPoint
+    1, // dieValue
+    Player.Two,
+  )).toBeNull();
+
+  // Opponent has a blot at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    12, // fromPoint
+    2, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 12,
+    to: 14,
+  });
+
+  // Player already has 2 checkers at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    12, // fromPoint
+    3, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 12,
+    to: 15,
+  });
+
+  // Player already has a checker at destination.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    12, // fromPoint
+    4, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 12,
+    to: 16,
+  });
+
+  // Destination is empty.
+  expect(getMoveIfValid(
+    TEST_BOARD,
+    12, // fromPoint
+    5, // dieValue
+    Player.Two,
+  )).toEqual({
+    from: 12,
+    to: 17,
+  });
+});
