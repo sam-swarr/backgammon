@@ -1,7 +1,3 @@
-Modeling the board:
-- 24 points
-- each point has number of checkers and what color they are
-
 Settings:
 - allow setting direction you move the checkers (counterclockwise or clockwise)
 - allow setting your color of checker (both players could have same settings; shouldn't matter)

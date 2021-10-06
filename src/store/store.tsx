@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import currentPlayerReducer from './currentPlayerSlice'
+import diceReducer from './diceSlice'
 import gameBoardReducer from './gameBoardSlice'
 
 export const store = configureStore({
   reducer: {
     gameBoard: gameBoardReducer,
+    dice: diceReducer,
+    currentPlayer: currentPlayerReducer,
   },
 })
 

@@ -1,10 +1,12 @@
 import React, { FunctionComponent } from "react";
 
 import { useAppSelector } from './store/hooks'
-import {Color, MovementDirection} from './Types';
+import {Color, MovementDirection, Player} from './Types';
 import BoardPoint from './BoardPoint';
 
 type GameBoardProps = {
+  currentPlayer: Player,
+  dice: number[],
   playerOneColor: Color,
   playerTwoColor: Color,
   playerMovementDirection: MovementDirection,
