@@ -13,6 +13,8 @@ type GameBoardProps = {
 };
 
 const GameBoard: FunctionComponent<GameBoardProps> = ({
+  currentPlayer,
+  dice,
   playerOneColor,
   playerTwoColor,
   playerMovementDirection,
