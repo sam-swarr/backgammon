@@ -130,6 +130,32 @@
   }
 }
 
+.Point-wrapper-highlight {
+  height: 100%;
+  margin-left: 10%;
+  position: absolute;
+  width: 80%;
+  z-index: 1;
+}
+
+.Point-wrapper-highlight.from {
+  background-color: #e4cb6454;
+}
+
+.Point-wrapper-highlight.to {
+  background-color: #2ac4b154;
+}
+
+.Point-wrapper-highlight.bottom {
+  border-top-left-radius: 5vh;
+  border-top-right-radius: 5vh;
+}
+
+.Point-wrapper-highlight.top {
+  border-bottom-left-radius: 5vh;
+  border-bottom-right-radius: 5vh;
+}
+
 .Point-triangle {
   height: 100%;
   margin-left: 10%;

@@ -21,7 +21,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   playerTwoColor,
   playerMovementDirection,
 }: GameBoardProps) => {
-  const gameBoardState = useAppSelector((state) => state.gameBoard);
+  const [
+    gameBoardState,
+    highlightedMoves,
+  ]= useAppSelector((state) => [
+    state.gameBoard,
+    state.highlightedMoves.moves,
+  ]);
   const dispatch = useAppDispatch();
 
   const topLeftPoints = [];
@@ -60,6 +66,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -72,6 +79,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -84,6 +92,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -96,6 +105,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -109,6 +119,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -121,6 +132,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -133,6 +145,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -145,6 +158,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
+          highlightedMoves={highlightedMoves}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}

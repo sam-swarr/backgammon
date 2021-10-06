@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from "react";
+import cx from "classnames";
 
 import Checker from './Checker';
-import {Color, Player, PointState} from './Types';
+import {Color, Move, Player, PointState} from './Types';
 
 type BoardPointProps = {
   pointState: PointState,
@@ -10,6 +11,7 @@ type BoardPointProps = {
   playerTwoColor: Color,
   pointNumber: number,
   clickHandler: (fromPoint: number | "BAR") => void,
+  highlightedMoves: Move[],
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -19,6 +21,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   playerTwoColor,
   pointNumber,
   clickHandler,
+  highlightedMoves,
 }: BoardPointProps) => {
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
@@ -38,15 +41,33 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
     );
   }
 
-  const topOrBottom = location === "TOP" ? "top" : "bottom";
-  const evenOrOdd = pointNumber % 2 === 0 ? "even" : "odd";
+  const topOrBottomClass = {
+    "top": location === "TOP",
+    "bottom": location === "BOTTOM",
+  };
+
+  let highlight = null;
+  const isHighlightedFromPoint = highlightedMoves.some((highlightedMove: Move) => highlightedMove.from === pointNumber);
+  const isHighlightedToPoint = highlightedMoves.some((highlightedMove: Move) => highlightedMove.to === pointNumber);
+  if (isHighlightedFromPoint || isHighlightedToPoint) {
+    highlight = <div className={cx("Point-wrapper-highlight", {
+      ...topOrBottomClass,
+      "from": isHighlightedFromPoint,
+      "to": isHighlightedToPoint,
+    })}/>;
+  }
 
   return (
-    <div className={"Point-wrapper " + topOrBottom} onClick={() => {clickHandler(pointNumber)}}>
-      <div className={"Checkers-wrapper " + topOrBottom}>
+    <div className={cx("Point-wrapper", topOrBottomClass)} onClick={() => {clickHandler(pointNumber)}}>
+      <div className={cx("Checkers-wrapper", topOrBottomClass)}>
         {checkers}
       </div>
-      <div className={"Point-triangle " + topOrBottom + " " + evenOrOdd}/>
+      {highlight}
+      <div className={cx("Point-triangle", {
+        ...topOrBottomClass,
+        "even": pointNumber % 2 === 0,
+        "odd": pointNumber % 2 !== 0,
+        })}/>
     </div>
   );
 }
