@@ -37,9 +37,12 @@ export function getIndexAfterMoving(
 
 export function canPlayerOccupyPoint(
   gameBoardState: GameBoardState,
-  toPoint: number,
+  toPoint: number | "HOME",
   currentPlayer: Player,
 ): boolean {
+  if (toPoint === "HOME") {
+    return true;
+  }
   const pointState = getPointStateAtIndex(gameBoardState, toPoint);
   return currentPlayer === Player.One ? (pointState[Player.Two] < 2) : (pointState[Player.One] < 2);
 }
@@ -65,6 +68,18 @@ export function hasAllCheckersInHomeBoard(
     }
   }
   return true;
+}
+
+export function getDistanceFromHome(
+  fromPoint: number | "BAR",
+  currentPlayer: Player,
+): number {
+  if (fromPoint === "BAR") {
+    return 25;
+  }
+  return currentPlayer === Player.One ?
+    fromPoint + 1 :
+    24 - fromPoint;
 }
 
 export function getMoveIfValid(
@@ -94,19 +109,43 @@ export function getMoveIfValid(
     currentPlayer,
   );
 
+  // If the move would bear the checker off the board.
   if (toPointIndex === "HOME") {
-    // TODO
-  } else {
-    if (canPlayerOccupyPoint(
-      gameBoardState,
-      toPointIndex,
-      currentPlayer,
-    )) {
-      return {
-        from: fromPoint,
-        to: toPointIndex,
-      };
+    // Move is invalid if not all checkers are in home board.
+    if (!hasAllCheckersInHomeBoard(gameBoardState, currentPlayer)) {
+      return null;
     }
+
+    // If the die roll is greater than the distance to home.
+    if (dieValue > getDistanceFromHome(fromPoint, currentPlayer)) {
+      // The move is invalid if the player occupies any home board points that are further away.
+      if (currentPlayer === Player.One) {
+        for (let i = dieValue - 1; i <= 5; i++) {
+          if (getPointStateAtIndex(gameBoardState, i)[Player.One] > 0) {
+            return null;
+          }
+        }
+      } else {
+        for (let i = 24 - dieValue; i >= 18; i--) {
+          if (getPointStateAtIndex(gameBoardState, i)[Player.Two] > 0) {
+            return null;
+          }
+        }
+      }
+    }
+  }
+
+  // Otherwise, as long as destination point is not occupied by 2+ opposing checkers,
+  // the move is valid.
+  if (canPlayerOccupyPoint(
+    gameBoardState,
+    toPointIndex,
+    currentPlayer,
+  )) {
+    return {
+      from: fromPoint,
+      to: toPointIndex,
+    };
   }
 
   return null;

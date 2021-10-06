@@ -1,5 +1,6 @@
 import {
   canPlayerOccupyPoint,
+  getDistanceFromHome,
   getIndexAfterMoving,
   getMoveIfValid,
   getPointStateAtIndex,
@@ -95,6 +96,18 @@ test('getIndexAfterMoving works', () => {
 test('canPlayerOccupyPoint works', () => {
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
+    "HOME", // toPoint
+    Player.One, // currentPlayer
+  )).toEqual(true);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
+    "HOME", // toPoint
+    Player.Two, // currentPlayer
+  )).toEqual(true);
+
+  expect(canPlayerOccupyPoint(
+    STARTING_BOARD_STATE, // boardState
     23, // toPoint
     Player.One, // currentPlayer
   )).toEqual(true);
@@ -168,6 +181,63 @@ test('hasAllCheckersInHomeBoard works', () => {
     TEST_BOARD, // boardState
     Player.Two, // currentPlayer
   )).toEqual(false);
+
+  TEST_BOARD.pointsState[20] = {[Player.One]: 0, [Player.Two]: 0};
+  TEST_BOARD.pointsState[3] = {[Player.One]: 0, [Player.Two]: 0};
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.One, // currentPlayer
+  )).toEqual(true);
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.Two, // currentPlayer
+  )).toEqual(true);
+
+  TEST_BOARD.barState = {[Player.One]: 2, [Player.Two]: 1};
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.One, // currentPlayer
+  )).toEqual(false);
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.Two, // currentPlayer
+  )).toEqual(false);
+});
+
+test('getDistanceFromHome works', () => {
+  expect(getDistanceFromHome(
+    "BAR", // fromPoint
+    Player.One, // currentPlayer
+  )).toEqual(25);
+
+  expect(getDistanceFromHome(
+    "BAR", // fromPoint
+    Player.Two, // currentPlayer
+  )).toEqual(25);
+
+  expect(getDistanceFromHome(
+    11, // fromPoint
+    Player.One, // currentPlayer
+  )).toEqual(12);
+
+  expect(getDistanceFromHome(
+    11, // fromPoint
+    Player.Two, // currentPlayer
+  )).toEqual(13);
+
+  expect(getDistanceFromHome(
+    2, // fromPoint
+    Player.One, // currentPlayer
+  )).toEqual(3);
+
+  expect(getDistanceFromHome(
+    2, // fromPoint
+    Player.Two, // currentPlayer
+  )).toEqual(22);
 });
 
 test('getMoveIfValid returns null if currentPlayer does not occupy fromPoint', () => {
