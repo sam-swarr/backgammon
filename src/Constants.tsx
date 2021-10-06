@@ -139,3 +139,37 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     [Player.Two]: 0,
   },
 };
+
+export const EMPTY_BOARD_STATE: GameBoardState = {
+  pointsState: [
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+    {[Player.One]: 0, [Player.Two]: 0},
+  ],
+  barState: {[Player.One]: 0, [Player.Two]: 0},
+  homeState: {[Player.One]: 0, [Player.Two]: 0},
+};

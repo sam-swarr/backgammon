@@ -3,8 +3,9 @@ import {
   getIndexAfterMoving,
   getMoveIfValid,
   getPointStateAtIndex,
+  hasAllCheckersInHomeBoard,
 } from '../moves';
-import { STARTING_BOARD_STATE } from '../../Constants'
+import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from '../../Constants'
 import { Player } from '../../Types'
 
 test('getPointStateAtIndex works', () => {
@@ -127,6 +128,46 @@ test('canPlayerOccupyPoint works', () => {
     0, // toPoint
     Player.Two, // currentPlayer
   )).toEqual(true);
+});
+
+test('hasAllCheckersInHomeBoard works', () => {
+  const TEST_BOARD = {
+    ...EMPTY_BOARD_STATE
+  };
+  TEST_BOARD.pointsState[1] = {[Player.One]: 2, [Player.Two]: 0};
+  TEST_BOARD.pointsState[5] = {[Player.One]: 4, [Player.Two]: 0};
+
+  TEST_BOARD.pointsState[23] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[22] = {[Player.One]: 0, [Player.Two]: 3};
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.One, // currentPlayer
+  )).toEqual(true);
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.Two, // currentPlayer
+  )).toEqual(true);
+
+  TEST_BOARD.pointsState[20] = {[Player.One]: 1, [Player.Two]: 0};
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.One, // currentPlayer
+  )).toEqual(false);
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.Two, // currentPlayer
+  )).toEqual(true);
+
+  TEST_BOARD.pointsState[3] = {[Player.One]: 0, [Player.Two]: 1};
+
+  expect(hasAllCheckersInHomeBoard(
+    TEST_BOARD, // boardState
+    Player.Two, // currentPlayer
+  )).toEqual(false);
 });
 
 test('getMoveIfValid returns null if currentPlayer does not occupy fromPoint', () => {

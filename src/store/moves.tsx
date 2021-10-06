@@ -44,6 +44,29 @@ export function canPlayerOccupyPoint(
   return currentPlayer === Player.One ? (pointState[Player.Two] < 2) : (pointState[Player.One] < 2);
 }
 
+export function hasAllCheckersInHomeBoard(
+  gameBoardState: GameBoardState,
+  currentPlayer: Player,
+): boolean {
+  if (getPointStateAtIndex(gameBoardState, "BAR")[currentPlayer] > 0) {
+    return false;
+  }
+  if (currentPlayer === Player.One) {
+    for (let i = 6; i <= 23; i++) {
+      if (getPointStateAtIndex(gameBoardState, i)[currentPlayer] > 0) {
+        return false;
+      }
+    }
+  } else {
+    for (let i = 0; i <= 17; i++) {
+      if (getPointStateAtIndex(gameBoardState, i)[currentPlayer] > 0) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 export function getMoveIfValid(
   gameBoardState: GameBoardState,
   fromPoint: number | "BAR",
@@ -65,9 +88,26 @@ export function getMoveIfValid(
     return null;
   }
 
-  // TODO: continue logic here
-  return {
-    from: 0,
-    to: 1,
-  };
+  const toPointIndex = getIndexAfterMoving(
+    fromPoint,
+    dieValue,
+    currentPlayer,
+  );
+
+  if (toPointIndex === "HOME") {
+    // TODO
+  } else {
+    if (canPlayerOccupyPoint(
+      gameBoardState,
+      toPointIndex,
+      currentPlayer,
+    )) {
+      return {
+        from: fromPoint,
+        to: toPointIndex,
+      };
+    }
+  }
+
+  return null;
 };
