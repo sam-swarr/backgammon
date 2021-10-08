@@ -1,3 +1,5 @@
+import { applyMoveToGameBoardState } from './gameBoardSlice';
+import { MOVE_FROM_INDICES } from '../Constants';
 import { GameBoardState, Move, Player, PointState } from '../Types';
 
 export function getPointStateAtIndex(
@@ -151,52 +153,97 @@ export function getMoveIfValid(
   return null;
 };
 
-// export function getAllPossibleMoveSets(
-//   gameBoardState: GameBoardState,
-//   dieRolls: number[],
-//   currentPlayer,
-// ): Array<Array<Move>> {
-//   const moveSets = [];
+export function getAllPossibleMoveSets(
+  gameBoardState: GameBoardState,
+  dieRolls: number[],
+  currentPlayer: Player,
+): Array<Array<Move>> {
+  let result = [];
+  result = result.concat(
+    getAllPossibleMoveSetsImpl(
+      gameBoardState,
+      dieRolls,
+      0,
+      currentPlayer,
+      [],
+    )
+  );
 
-//   // const dieRollsReversed = dieRolls.reverse();
+  // If there are exactly 2 die rolls, this means the dice
+  // values are different. We should reverse the dice order
+  // and calculate all move sets again.
+  if (dieRolls.length === 2) {
+    const reversedDieRolls = [...dieRolls].reverse();
+    result = result.concat(
+      getAllPossibleMoveSetsImpl(
+        gameBoardState,
+        reversedDieRolls,
+        0,
+        currentPlayer,
+        [],
+      )
+    );
+  }
 
-//   for (let i = 0; )
+  return result;
+}
 
+export function getAllPossibleMoveSetsImpl(
+  gameBoardState: GameBoardState,
+  dieRolls: number[],
+  dieIndex: number,
+  currentPlayer: Player,
+  moveSet: Array<Move>
+): Array<Array<Move>> {
+  const allPossibleMoves = getAllPossibleMovesForGivenDieRoll(
+    gameBoardState,
+    dieRolls[dieIndex],
+    currentPlayer,
+  );
 
+  // Base Case: This was the last die to use.
+  if (dieIndex === dieRolls.length - 1) {
+    return allPossibleMoves.map(move => [...moveSet, move]);
+  }
 
-//   for (let i = 0; i =< 23; i++) {
-//     const move = getMoveIfValid(
-//       gameBoardState,
-//       i,
+  let result: Array<Array<Move>> = [];
+  allPossibleMoves.forEach(move => {
+    const newGameBoardState = applyMoveToGameBoardState(
+      gameBoardState,
+      move,
+      currentPlayer,
+    );
+    result = result.concat(
+      getAllPossibleMoveSetsImpl(
+        newGameBoardState,
+        dieRolls,
+        dieIndex + 1,
+        currentPlayer,
+        [...moveSet, move],
+      )
+    );
+  });
 
-//     )
-//   }
+  return result;
+}
 
-//   // if dieRolls.length === 2
-//   // reverse dice and call again
-// }
+function getAllPossibleMovesForGivenDieRoll(
+  gameBoardState: GameBoardState,
+  dieRoll: number,
+  currentPlayer: Player,
+): Array<Move> {
+  const moves = [];
+  MOVE_FROM_INDICES.forEach(from => {
+    const possibleMove = getMoveIfValid(
+      gameBoardState,
+      from,
+      dieRoll,
+      currentPlayer,
+    );
+    if (possibleMove !== null) {
+      moves.push(possibleMove);
+    }
+  });
 
-// function _getPossibleMoveSet(
-//   gameBoardState: GameBoardState,
-//   dieRolls: number[],
-//   currentPlayer: Player,
-//   moveSet: Array<Move>,
-// ): Array<Array<Move>> {
-
-
-
-//   const barMove = getMoveIfValid(
-//     gameBoardState,
-//     "BAR",
-//     dieRolls[0],
-//     currentPlayer,
-//   );
-//   if (barMove !== null) {
-//     moveSet.push(barMove);
-//     _getPossibleMoveSet(
-
-//     )
-//   }
-
-//   return [];
-// }
+  return moves;
+}
