@@ -36,9 +36,7 @@ const areBoardStatesEquivalent = function(
 }
 
 test('deepCloneGameBoardState works', () => {
-  const BOARD_A = {
-    ...EMPTY_BOARD_STATE
-  };
+  const BOARD_A = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   BOARD_A.barState[Player.One] = 1;
   BOARD_A.homeState[Player.Two] = 2;
   BOARD_A.pointsState[10][Player.One] = 1;
@@ -90,20 +88,99 @@ test('deepCloneGameBoardState works', () => {
 });
 
 test('applyMoveToGameBoardState handles entering from the bar', () => {
-  const TEST_BOARD = {
-    ...EMPTY_BOARD_STATE
-  };
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.barState[Player.One] = 2;
 
-  const EXPECTED = {
-    ...EMPTY_BOARD_STATE
-  };
-  // EXPECTED.barState[Player.One] = 1;
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.barState[Player.One] = 1;
   EXPECTED.pointsState[22][Player.One] = 1;
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
     {from: "BAR", to: 22},
+    Player.One,
+  );
+
+  expect(areBoardStatesEquivalent(
+    RESULT,
+    EXPECTED,
+  )).toEqual(true);
+});
+
+test('applyMoveToGameBoardState handles bearing off', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[5][Player.One] = 2;
+
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.pointsState[5][Player.One] = 1;
+  EXPECTED.homeState[Player.One] = 1;
+
+  const RESULT = applyMoveToGameBoardState(
+    TEST_BOARD,
+    {from: 5, to: "HOME"},
+    Player.One,
+  );
+
+  expect(areBoardStatesEquivalent(
+    RESULT,
+    EXPECTED,
+  )).toEqual(true);
+});
+
+test('applyMoveToGameBoardState handles moving', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[5][Player.One] = 2;
+
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.pointsState[5][Player.One] = 1;
+  EXPECTED.pointsState[4][Player.One] = 1;
+
+  const RESULT = applyMoveToGameBoardState(
+    TEST_BOARD,
+    {from: 5, to: 4},
+    Player.One,
+  );
+
+  expect(areBoardStatesEquivalent(
+    RESULT,
+    EXPECTED,
+  )).toEqual(true);
+});
+
+test('applyMoveToGameBoardState handles hitting a blot', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[22][Player.Two] = 2;
+  TEST_BOARD.pointsState[23][Player.One] = 1;
+
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.pointsState[22][Player.Two] = 1;
+  EXPECTED.pointsState[23][Player.Two] = 1;
+  EXPECTED.barState[Player.One] = 1;
+
+  const RESULT = applyMoveToGameBoardState(
+    TEST_BOARD,
+    {from: 22, to: 23},
+    Player.Two,
+  );
+
+  expect(areBoardStatesEquivalent(
+    RESULT,
+    EXPECTED,
+  )).toEqual(true);
+});
+
+test('applyMoveToGameBoardState handles hitting a blot 2', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[12][Player.One] = 1;
+  TEST_BOARD.pointsState[10][Player.Two] = 1;
+
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.pointsState[10][Player.One] = 1;
+  EXPECTED.barState[Player.Two] = 1;
+
+  const RESULT = applyMoveToGameBoardState(
+    TEST_BOARD,
+    {from: 12, to: 10},
     Player.One,
   );
 

@@ -44,9 +44,7 @@ export function applyMoveToGameBoardState(
   currentPlayer: Player,
 ): GameBoardState {
   const opponent = currentPlayer === Player.One ? Player.Two : Player.One;
-  const result = {
-    ...gameBoardState,
-  };
+  const result = deepCloneGameBoardState(gameBoardState);
   if (move.from === "BAR") {
     result.barState[currentPlayer] -= 1;
   } else {

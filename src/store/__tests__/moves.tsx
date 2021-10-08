@@ -1,3 +1,4 @@
+import { deepCloneGameBoardState } from '../gameBoardSlice';
 import {
   canPlayerOccupyPoint,
   getDistanceFromHome,
@@ -144,9 +145,8 @@ test('canPlayerOccupyPoint works', () => {
 });
 
 test('hasAllCheckersInHomeBoard works', () => {
-  const TEST_BOARD = {
-    ...EMPTY_BOARD_STATE
-  };
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+
   TEST_BOARD.pointsState[1] = {[Player.One]: 2, [Player.Two]: 0};
   TEST_BOARD.pointsState[5] = {[Player.One]: 4, [Player.Two]: 0};
 
@@ -271,12 +271,10 @@ test('getMoveIfValid returns null if currentPlayer does not occupy fromPoint', (
 });
 
 test('getMoveIfValid returns null if player is not moving from BAR when they have a checker there', () => {
-  const BOTH_PLAYERS_ON_BAR = {
-    ...STARTING_BOARD_STATE,
-    barState: {
-      [Player.One]: 1,
-      [Player.Two]: 1,
-    }
+  const BOTH_PLAYERS_ON_BAR = deepCloneGameBoardState(STARTING_BOARD_STATE);
+  BOTH_PLAYERS_ON_BAR.barState = {
+    [Player.One]: 1,
+    [Player.Two]: 1,
   };
 
   expect(getMoveIfValid(
@@ -325,9 +323,7 @@ test('getMoveIfValid returns null if opponent has a point on destination', () =>
 });
 
 test('getMoveIfValid returns null if player tries to bear off before having everything in home board', () => {
-  let TEST_BOARD = {
-    ...EMPTY_BOARD_STATE,
-  };
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.pointsState[0] = {[Player.One]: 2, [Player.Two]: 0};
   TEST_BOARD.pointsState[20] = {[Player.One]: 1, [Player.Two]: 0};
 
@@ -349,9 +345,7 @@ test('getMoveIfValid returns null if player tries to bear off before having ever
   )).toBeNull();
 
 
-  TEST_BOARD = {
-    ...EMPTY_BOARD_STATE,
-  };
+  TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.pointsState[22] = {[Player.One]: 0, [Player.Two]: 1};
   TEST_BOARD.pointsState[10] = {[Player.One]: 0, [Player.Two]: 2};
 
@@ -374,9 +368,7 @@ test('getMoveIfValid returns null if player tries to bear off before having ever
 });
 
 test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
-  let TEST_BOARD = {
-    ...EMPTY_BOARD_STATE,
-  };
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.pointsState[0] = {[Player.One]: 2, [Player.Two]: 0};
   TEST_BOARD.pointsState[3] = {[Player.One]: 1, [Player.Two]: 0};
   TEST_BOARD.pointsState[4] = {[Player.One]: 1, [Player.Two]: 0};
@@ -470,9 +462,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
 });
 
 test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
-  let TEST_BOARD = {
-    ...EMPTY_BOARD_STATE,
-  };
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.pointsState[23] = {[Player.One]: 0, [Player.Two]: 2};
   TEST_BOARD.pointsState[20] = {[Player.One]: 0, [Player.Two]: 1};
   TEST_BOARD.pointsState[19] = {[Player.One]: 0, [Player.Two]: 1};
@@ -566,9 +556,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
 });
 
 test('getMoveIfValid returns valid Move for Player.One if destination point is occupiable', () => {
-  let TEST_BOARD = {
-    ...EMPTY_BOARD_STATE,
-  };
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.pointsState[12] = {[Player.One]: 0, [Player.Two]: 0};
   TEST_BOARD.pointsState[13] = {[Player.One]: 1, [Player.Two]: 0};
   TEST_BOARD.pointsState[14] = {[Player.One]: 2, [Player.Two]: 0};
@@ -630,9 +618,7 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
 });
 
 test('getMoveIfValid returns valid Move for Player.Two if destination point is occupiable', () => {
-  let TEST_BOARD = {
-    ...EMPTY_BOARD_STATE,
-  };
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
   TEST_BOARD.pointsState[12] = {[Player.One]: 0, [Player.Two]: 2};
   TEST_BOARD.pointsState[13] = {[Player.One]: 3, [Player.Two]: 0};
   TEST_BOARD.pointsState[14] = {[Player.One]: 1, [Player.Two]: 0};
