@@ -150,3 +150,53 @@ export function getMoveIfValid(
 
   return null;
 };
+
+// export function getAllPossibleMoveSets(
+//   gameBoardState: GameBoardState,
+//   dieRolls: number[],
+//   currentPlayer,
+// ): Array<Array<Move>> {
+//   const moveSets = [];
+
+//   // const dieRollsReversed = dieRolls.reverse();
+
+//   for (let i = 0; )
+
+
+
+//   for (let i = 0; i =< 23; i++) {
+//     const move = getMoveIfValid(
+//       gameBoardState,
+//       i,
+
+//     )
+//   }
+
+//   // if dieRolls.length === 2
+//   // reverse dice and call again
+// }
+
+// function _getPossibleMoveSet(
+//   gameBoardState: GameBoardState,
+//   dieRolls: number[],
+//   currentPlayer: Player,
+//   moveSet: Array<Move>,
+// ): Array<Array<Move>> {
+
+
+
+//   const barMove = getMoveIfValid(
+//     gameBoardState,
+//     "BAR",
+//     dieRolls[0],
+//     currentPlayer,
+//   );
+//   if (barMove !== null) {
+//     moveSet.push(barMove);
+//     _getPossibleMoveSet(
+
+//     )
+//   }
+
+//   return [];
+// }
