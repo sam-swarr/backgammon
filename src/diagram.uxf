@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>210</x><y>130</y><w>190</w><h>30</h></coordinates><panel_attributes>App</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>150</x><y>210</y><w>320</w><h>480</h></coordinates><panel_attributes>GameBoard
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>520</x><y>171</y><w>190</w><h>30</h></coordinates><panel_attributes>App</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>460</x><y>251</y><w>320</w><h>480</h></coordinates><panel_attributes>GameBoard
 --
 gameBoardState: {
   pointsState: Array&lt;PointState&gt;,
@@ -26,7 +26,7 @@ playerMovementDirection: &lt;one of CW / CCW&gt;
 
 playerOneColor: &lt;one of COLOR&gt;
 
-playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>740</y><w>190</w><h>200</h></coordinates><panel_attributes>BoardPoint
+playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>781</y><w>190</w><h>200</h></coordinates><panel_attributes>BoardPoint
 --
 PointState: {
   player: &lt;one of PLAYERS&gt;,
@@ -37,25 +37,25 @@ pointNumber: int,
 
 playerOneColor: &lt;one of COLOR&gt;
 
-playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>1010</y><w>190</w><h>60</h></coordinates><panel_attributes>Checker
+playerTwoColor: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>1051</y><w>190</w><h>60</h></coordinates><panel_attributes>Checker
 --
-color: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>680</y><w>100</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>930</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>150</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>290</x><y>760</y><w>190</w><h>90</h></coordinates><panel_attributes>Bar
+color: &lt;one of COLOR&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>721</y><w>100</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>971</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>191</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>801</y><w>190</w><h>90</h></coordinates><panel_attributes>Bar
 --
 BarState: {
   PLAYERS.ONE: int,
   PLAYERS.TWO: int,
-}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>760</y><w>190</w><h>90</h></coordinates><panel_attributes>Home
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>820</x><y>801</y><w>190</w><h>90</h></coordinates><panel_attributes>Home
 --
 HomeState: {
   PLAYERS.ONE: int,
   PLAYERS.TWO: int,
-}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>680</y><w>90</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>70;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>680</y><w>250</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>230;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>740</x><y>750</y><w>240</w><h>110</h></coordinates><panel_attributes>Dice
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>721</y><w>90</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>70;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>690</x><y>721</y><w>250</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>230;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1050</x><y>791</y><w>240</w><h>110</h></coordinates><panel_attributes>Dice
 --
 DieRolls: [
   { value: int, used: bool},
   { value: int, used: bool},
   ...
-]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>400</y><w>400</w><h>370</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>380;350;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>290</x><y>880</y><w>390</w><h>510</h></coordinates><panel_attributes># function for determining if a individual die roll is valid
+]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>441</y><w>400</w><h>370</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>380;350;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>600</x><y>921</y><w>390</w><h>510</h></coordinates><panel_attributes># function for determining if a individual die roll is valid
 # independent of rules regarding using max # of rolls / max value roll
 
 getMoveIfValid(
@@ -88,7 +88,7 @@ getAllPossibleMoveSets(
 }
 
 
-style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>710</x><y>870</y><w>390</w><h>510</h></coordinates><panel_attributes># function for applying a Move to the game state
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>1010</x><y>921</y><w>390</w><h>510</h></coordinates><panel_attributes># function for applying a Move to the game state
 # to produce the next game state
 applyMove(
   gameBoardState: GameBoardState,
@@ -113,7 +113,7 @@ undoMove(
 
 }
 
-style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>210</x><y>50</y><w>190</w><h>30</h></coordinates><panel_attributes>Provider</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>70</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>570</x><y>140</y><w>280</w><h>290</h></coordinates><panel_attributes>Store
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>91</y><w>190</w><h>30</h></coordinates><panel_attributes>Provider</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>111</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>880</x><y>181</y><w>280</w><h>290</h></coordinates><panel_attributes>Store
 --
 Server State
 
@@ -128,4 +128,25 @@ highlightedMoves: Array&lt;Move&gt;
 provisionalMoves: Array&lt;Move&gt;
 playerOneColor: Color
 playerTwoColor: Color
-playerMovementDirection: MovementDirection</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+playerMovementDirection: MovementDirection</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>50</x><y>70</y><w>260</w><h>80</h></coordinates><panel_attributes>Start Game
+- roll until no tie
+- send die rolls to client so it can animate
+(including if there was a tie)
+
+- set currentPlayer</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>200</y><w>220</w><h>130</h></coordinates><panel_attributes>Roll Dice
+- later on: add option to double
+- edge case where player has
+no possible moves
+- either have them roll 
+and then submit no moves
+- or just skip?</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>360</y><w>270</w><h>160</h></coordinates><panel_attributes>Player Makes Moves
+- highlightedMoves and
+provisionalMoves by clicking
+- dice fade as provisionalMoves are made
+- show submit moves button
+only if provisionalMoves are legal
+with regards to using max # and max
+value of dice</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>560</y><w>210</w><h>70</h></coordinates><panel_attributes>Player Submits Move
+- update game state
+- check for a win
+- switch current player</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>120</x><y>140</y><w>60</w><h>240</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;220;40;10</additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>510</y><w>90</w><h>70</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>70;50;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>320</y><w>90</w><h>290</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>70;10;50;210;10;270</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>320</y><w>80</w><h>60</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;40;60;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>150</x><y>680</y><w>120</w><h>30</h></coordinates><panel_attributes>Game Over</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>620</y><w>40</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>20;60;10;10</additional_attributes></element></diagram>
