@@ -792,4 +792,75 @@ test('getAllPossibleMoveSets works', () => {
   ]);
 });
 
-// TODO: test doubles (4 rolls in array)
+test('getAllPossibleMoveSets works with doubles', () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[18] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[19] = {[Player.One]: 0, [Player.Two]: 1};
+
+  expect(getAllPossibleMoveSets(
+    TEST_BOARD,
+    [1, 1, 1, 1],
+    Player.Two,
+  )).toEqual([
+    [
+      {from: 18, to: 19},
+      {from: 19, to: 20},
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+    ],
+    [
+      {from: 18, to: 19},
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+      {from: 19, to: 20},
+    ],
+    [
+      {from: 18, to: 19},
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+      {from: 21, to: 22},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 18, to: 19},
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 18, to: 19},
+      {from: 20, to: 21},
+      {from: 19, to: 20},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 18, to: 19},
+      {from: 20, to: 21},
+      {from: 21, to: 22},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+      {from: 18, to: 19},
+      {from: 19, to: 20},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+      {from: 18, to: 19},
+      {from: 21, to: 22},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+      {from: 21, to: 22},
+      {from: 18, to: 19},
+    ],
+    [
+      {from: 19, to: 20},
+      {from: 20, to: 21},
+      {from: 21, to: 22},
+      {from: 22, to: 23},
+    ],
+  ]);
+});
