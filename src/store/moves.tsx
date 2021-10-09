@@ -227,7 +227,7 @@ export function getAllPossibleMoveSetsImpl(
   return result;
 }
 
-function getAllPossibleMovesForGivenDieRoll(
+export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,
   currentPlayer: Player,
