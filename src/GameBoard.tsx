@@ -35,27 +35,35 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const topRightPoints = [];
   const bottomRightPoints = [];
 
-  const boardPointClickHandler = (fromPoint: number | "BAR") => {
-    const possibleMoves: Move[] = [];
-    const seenDieValues = new Set();
-    for (let i = 0; i < dice.length; i++) {
-      if (!seenDieValues.has(dice[i])) {
-        const possibleMove = getMoveIfValid(
-          gameBoardState,
-          fromPoint,
-          dice[i],
-          currentPlayer,
-        );
-        if (possibleMove !== null) {
-          possibleMoves.push(possibleMove);
+  const boardPointClickHandler = (pointClicked: number | "BAR") => {
+    // Check if player clicked on a highlighted destination.
+    if (highlightedMoves.some(move => move.to === pointClicked)) {
+      console.log("MOVE");
+      // dispatch appendProvisionalMove
+      // dispatch clearHighlightedMoves
+      // apply provisionalMoves to gameboard state further up
+    } else {
+      const possibleMoves: Move[] = [];
+      const seenDieValues = new Set();
+      for (let i = 0; i < dice.length; i++) {
+        if (!seenDieValues.has(dice[i])) {
+          const possibleMove = getMoveIfValid(
+            gameBoardState,
+            pointClicked,
+            dice[i],
+            currentPlayer,
+          );
+          if (possibleMove !== null) {
+            possibleMoves.push(possibleMove);
+          }
         }
+        seenDieValues.add(dice[i]);
       }
-      seenDieValues.add(dice[i]);
+      dispatch(setHighlightedMoves({
+        lastPointClicked: pointClicked,
+        moves: possibleMoves,
+      }));
     }
-    dispatch(setHighlightedMoves({
-      lastPointClicked: fromPoint,
-      moves: possibleMoves,
-    }));
   };
 
   const pointsState = gameBoardState.pointsState;

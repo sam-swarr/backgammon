@@ -157,8 +157,8 @@ export function getAllPossibleMoveSets(
   gameBoardState: GameBoardState,
   dieRolls: number[],
   currentPlayer: Player,
-): Array<Array<Move>> {
-  let result = [];
+): Move[][] {
+  let result: Move[][] = [];
   result = result.concat(
     getAllPossibleMoveSetsImpl(
       gameBoardState,
@@ -194,7 +194,7 @@ export function getAllPossibleMoveSetsImpl(
   dieIndex: number,
   currentPlayer: Player,
   moveSet: Array<Move>
-): Array<Array<Move>> {
+): Move[][] {
   const allPossibleMoves = getAllPossibleMovesForGivenDieRoll(
     gameBoardState,
     dieRolls[dieIndex],
@@ -206,7 +206,7 @@ export function getAllPossibleMoveSetsImpl(
     return allPossibleMoves.map(move => [...moveSet, move]);
   }
 
-  let result: Array<Array<Move>> = [];
+  let result: Move[][] = [];
   allPossibleMoves.forEach(move => {
     const newGameBoardState = applyMoveToGameBoardState(
       gameBoardState,
@@ -231,8 +231,8 @@ export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,
   currentPlayer: Player,
-): Array<Move> {
-  const moves = [];
+): Move[] {
+  const moves: Move[] = [];
   MOVE_FROM_INDICES.forEach(from => {
     const possibleMove = getMoveIfValid(
       gameBoardState,

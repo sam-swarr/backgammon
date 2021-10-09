@@ -3,12 +3,21 @@ import { createSlice } from '@reduxjs/toolkit'
 import {STARTING_BOARD_STATE} from '../Constants';
 import { GameBoardState, Move, Player } from '../Types';
 
+type ApplyMoveState = {
+  move: Move,
+  currentPlayer: Player,
+};
+
 export const gameBoardSlice = createSlice({
   name: 'gameBoardState',
   initialState: STARTING_BOARD_STATE,
   reducers: {
-    applyMove: (state, move) => {
-      // TODO
+    applyMove: (state, action: { type: string, payload: ApplyMoveState }) => {
+      return applyMoveToGameBoardState(
+        state,
+        action.payload.move,
+        action.payload.currentPlayer,
+      );
     },
     undoMove: (state, move) => {
       // TODO
