@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from 'react';
 
+import { applyMoveToGameBoardState } from './store/gameBoardSlice';
 import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { getMoveIfValid } from './store/moves';
 import { appendProvisionalMove } from './store/provisionalMovesSlice';
 import {Color, Move, MovementDirection, Player} from './Types';
 import BoardPoint from './BoardPoint';
-import { applyMoveToGameBoardState } from './store/gameBoardSlice';
+import Dice from './Dice';
 
 type GameBoardProps = {
   currentPlayer: Player,
@@ -211,6 +212,9 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
 
       </div>
       <div className="Game-board-half">
+        <Dice
+          currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
+          diceValues={dice} />
         <div className="Game-board-quadrant top">
           {topRightPoints}
         </div>
