@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
-import { GameBoardState, Move, Player } from '../Types';
+import { Move } from '../Types';
 
 const initialState: Move[] = [];
 

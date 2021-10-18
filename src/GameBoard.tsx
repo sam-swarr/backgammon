@@ -1,10 +1,12 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
-import { setHighlightedMoves } from "./store/highlightedMovesSlice";
-import { useAppDispatch, useAppSelector } from './store/hooks'
-import { getMoveIfValid } from "./store/moves";
+import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { getMoveIfValid } from './store/moves';
+import { appendProvisionalMove } from './store/provisionalMovesSlice';
 import {Color, Move, MovementDirection, Player} from './Types';
 import BoardPoint from './BoardPoint';
+import { applyMoveToGameBoardState } from './store/gameBoardSlice';
 
 type GameBoardProps = {
   currentPlayer: Player,
@@ -22,13 +24,23 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   playerMovementDirection,
 }: GameBoardProps) => {
   const [
-    gameBoardState,
+    originalGameBoardState,
     highlightedMoves,
+    provisionalMoves,
   ]= useAppSelector((state) => [
     state.gameBoard,
     state.highlightedMoves.moves,
+    state.provisionalMoves,
   ]);
   const dispatch = useAppDispatch();
+
+  const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
+    return applyMoveToGameBoardState(
+      prevBoardState,
+      currMove,
+      currentPlayer,
+    );
+  }, originalGameBoardState);
 
   const topLeftPoints = [];
   const bottomLeftPoints = [];
@@ -37,11 +49,10 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
 
   const boardPointClickHandler = (pointClicked: number | "BAR") => {
     // Check if player clicked on a highlighted destination.
-    if (highlightedMoves.some(move => move.to === pointClicked)) {
-      console.log("MOVE");
-      // dispatch appendProvisionalMove
-      // dispatch clearHighlightedMoves
-      // apply provisionalMoves to gameboard state further up
+    const moveToApply = highlightedMoves.find(move => move.to === pointClicked);
+    if (moveToApply != null) {
+      dispatch(appendProvisionalMove(moveToApply));
+      dispatch(clearHighlightedMoves());
     } else {
       const possibleMoves: Move[] = [];
       const seenDieValues = new Set();
