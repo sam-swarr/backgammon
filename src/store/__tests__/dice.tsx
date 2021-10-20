@@ -99,7 +99,7 @@ test('getAvailableDice works for doubles', () => {
 
 test('getAvailableDice works for non-doubles', () => {
   const dice = [2, 4];
-  
+
   expect(getAvailableDice(
     dice,
     [],
