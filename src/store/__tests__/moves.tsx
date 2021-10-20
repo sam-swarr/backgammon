@@ -388,8 +388,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     2, // dieValue
     Player.One,
   )).toEqual({
-    from: 3,
-    to: 1,
+    dieUsed: 2,
+    move: {
+      from: 3,
+      to: 1,
+    },
   });
   expect(getMoveIfValid(
     TEST_BOARD,
@@ -397,8 +400,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     2, // dieValue
     Player.One,
   )).toEqual({
-    from: 4,
-    to: 2,
+    dieUsed: 2,
+    move: {
+      from: 4,
+      to: 2,
+    },
   });
 
   // This is a valid move since die roll is exact.
@@ -408,8 +414,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     4, // dieValue
     Player.One,
   )).toEqual({
-    from: 3,
-    to: "HOME",
+    dieUsed: 4,
+    move: {
+      from: 3,
+      to: "HOME",
+    },
   });
 
   // This is an invalid move since there is a checker on the 5 point that
@@ -427,8 +436,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     5, // dieValue
     Player.One,
   )).toEqual({
-    from: 4,
-    to: 'HOME',
+    dieUsed: 5,
+    move: {
+      from: 4,
+      to: 'HOME',
+    }
   });
 
   // This is a valid move since die roll is exact.
@@ -438,8 +450,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     1, // dieValue
     Player.One,
   )).toEqual({
-    from: 0,
-    to: "HOME",
+    dieUsed: 1,
+    move: {
+      from: 0,
+      to: "HOME",
+    },
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -448,8 +463,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     1, // dieValue
     Player.One,
   )).toEqual({
-    from: 3,
-    to: 2,
+    dieUsed: 1,
+    move: {
+      from: 3,
+      to: 2,
+    },
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -458,8 +476,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     1, // dieValue
     Player.One,
   )).toEqual({
-    from: 4,
-    to: 3,
+    dieUsed: 1,
+    move: {
+      from: 4,
+      to: 3,
+    },
   });
 });
 
@@ -482,8 +503,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     2, // dieValue
     Player.Two,
   )).toEqual({
-    from: 20,
-    to: 22,
+    dieUsed: 2,
+    move: {
+      from: 20,
+      to: 22,
+    },
   });
   expect(getMoveIfValid(
     TEST_BOARD,
@@ -491,8 +515,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     2, // dieValue
     Player.Two,
   )).toEqual({
-    from: 19,
-    to: 21,
+    dieUsed: 2,
+    move: {
+      from: 19,
+      to: 21,
+    },
   });
 
   // This is a valid move since die roll is exact.
@@ -502,8 +529,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     4, // dieValue
     Player.Two,
   )).toEqual({
-    from: 20,
-    to: "HOME",
+    dieUsed: 4,
+    move: {
+      from: 20,
+      to: "HOME",
+    },
   });
 
   // This is an invalid move since there is a checker on the 5 point that
@@ -521,8 +551,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     5, // dieValue
     Player.Two,
   )).toEqual({
-    from: 19,
-    to: 'HOME',
+    dieUsed: 5,
+    move: {
+      from: 19,
+      to: 'HOME',
+    },
   });
 
   // This is a valid move since die roll is exact.
@@ -532,8 +565,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     1, // dieValue
     Player.Two,
   )).toEqual({
-    from: 23,
-    to: "HOME",
+    dieUsed: 1,
+    move: {
+      from: 23,
+      to: "HOME",
+    },
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -542,8 +578,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     1, // dieValue
     Player.Two,
   )).toEqual({
-    from: 20,
-    to: 21,
+    dieUsed: 1,
+    move: {
+      from: 20,
+      to: 21,
+    },
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -552,8 +591,11 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
     1, // dieValue
     Player.Two,
   )).toEqual({
-    from: 19,
-    to: 20,
+    dieUsed: 1,
+    move: {
+      from: 19,
+      to: 20,
+    },
   });
 });
 
@@ -581,8 +623,11 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
     2, // dieValue
     Player.One,
   )).toEqual({
-    from: 17,
-    to: 15,
+    dieUsed: 2,
+    move: {
+      from: 17,
+      to: 15,
+    },
   });
 
   // Player already has 2 checkers at destination.
@@ -592,8 +637,11 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
     3, // dieValue
     Player.One,
   )).toEqual({
-    from: 17,
-    to: 14,
+    dieUsed: 3,
+    move: {
+      from: 17,
+      to: 14,
+    },
   });
 
   // Player already has a checker at destination.
@@ -603,8 +651,11 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
     4, // dieValue
     Player.One,
   )).toEqual({
-    from: 17,
-    to: 13,
+    dieUsed: 4,
+    move: {
+      from: 17,
+      to: 13,
+    },
   });
 
   // Destination is empty.
@@ -614,8 +665,11 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
     5, // dieValue
     Player.One,
   )).toEqual({
-    from: 17,
-    to: 12,
+    dieUsed: 5,
+    move: {
+      from: 17,
+      to: 12,
+    },
   });
 });
 
@@ -643,8 +697,11 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
     2, // dieValue
     Player.Two,
   )).toEqual({
-    from: 12,
-    to: 14,
+    dieUsed: 2,
+    move: {
+      from: 12,
+      to: 14,
+    },
   });
 
   // Player already has 2 checkers at destination.
@@ -654,8 +711,11 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
     3, // dieValue
     Player.Two,
   )).toEqual({
-    from: 12,
-    to: 15,
+    dieUsed: 3,
+    move: {
+      from: 12,
+      to: 15,
+    },
   });
 
   // Player already has a checker at destination.
@@ -665,8 +725,11 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
     4, // dieValue
     Player.Two,
   )).toEqual({
-    from: 12,
-    to: 16,
+    dieUsed: 4,
+    move: {
+      from: 12,
+      to: 16,
+    },
   });
 
   // Destination is empty.
@@ -676,8 +739,11 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
     5, // dieValue
     Player.Two,
   )).toEqual({
-    from: 12,
-    to: 17,
+    dieUsed: 5,
+    move: {
+      from: 12,
+      to: 17,
+    },
   });
 });
 

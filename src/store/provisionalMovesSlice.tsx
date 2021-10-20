@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Move } from '../Types';
+import { ValidMove } from '../Types';
 
-const initialState: Move[] = [];
+const initialState: ValidMove[] = [];
 
 export const provisionalMovesSlice = createSlice({
   name: 'provisionalMovesState',
   initialState: initialState,
   reducers: {
-    appendProvisionalMove: (state, action: { type: string, payload: Move }) => {
+    appendProvisionalMove: (state, action: { type: string, payload: ValidMove }) => {
       return [...state, action.payload];
     },
     clearProvisionalMoves: (_state) => {

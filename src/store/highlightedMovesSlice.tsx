@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { Move } from '../Types';
+import { ValidMove } from '../Types';
 
 type HighlightedMovesState = {
   lastPointClicked: number | "BAR",
-  moves: Move[],
+  moves: ValidMove[],
 };
 
 const initialState: HighlightedMovesState = {

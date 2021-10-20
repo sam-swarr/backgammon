@@ -28,3 +28,8 @@ export type Move = {
   from: number | "BAR",
   to: number | "HOME",
 };
+
+export type ValidMove = {
+  move: Move,
+  dieUsed: number,
+};

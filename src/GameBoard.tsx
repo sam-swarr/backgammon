@@ -5,13 +5,12 @@ import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedM
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { getMoveIfValid } from './store/moves';
 import { appendProvisionalMove } from './store/provisionalMovesSlice';
-import {Color, Move, MovementDirection, Player} from './Types';
+import {Color, MovementDirection, Player, ValidMove} from './Types';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
 
 type GameBoardProps = {
   currentPlayer: Player,
-  dice: number[],
   playerOneColor: Color,
   playerTwoColor: Color,
   playerMovementDirection: MovementDirection,
@@ -19,16 +18,17 @@ type GameBoardProps = {
 
 const GameBoard: FunctionComponent<GameBoardProps> = ({
   currentPlayer,
-  dice,
   playerOneColor,
   playerTwoColor,
   playerMovementDirection,
 }: GameBoardProps) => {
   const [
+    dice,
     originalGameBoardState,
     highlightedMoves,
     provisionalMoves,
   ]= useAppSelector((state) => [
+    state.dice,
     state.gameBoard,
     state.highlightedMoves.moves,
     state.provisionalMoves,
@@ -38,7 +38,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
     return applyMoveToGameBoardState(
       prevBoardState,
-      currMove,
+      currMove.move,
       currentPlayer,
     );
   }, originalGameBoardState);
@@ -50,12 +50,12 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
 
   const boardPointClickHandler = (pointClicked: number | "BAR") => {
     // Check if player clicked on a highlighted destination.
-    const moveToApply = highlightedMoves.find(move => move.to === pointClicked);
+    const moveToApply = highlightedMoves.find(m => m.move.to === pointClicked);
     if (moveToApply != null) {
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
     } else {
-      const possibleMoves: Move[] = [];
+      const possibleMoves: ValidMove[] = [];
       const seenDieValues = new Set();
       for (let i = 0; i < dice.length; i++) {
         if (!seenDieValues.has(dice[i])) {

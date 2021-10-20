@@ -9,13 +9,11 @@ type AppProps = {};
 
 const App: FunctionComponent<AppProps> = () => {
   const currentPlayer = useAppSelector((state) => state.currentPlayer);
-  const dice = useAppSelector((state) => state.dice);
 
   return (
     <div>
       <GameBoard
         currentPlayer={currentPlayer}
-        dice={dice}
         playerOneColor={Color.White}
         playerTwoColor={Color.Black}
         playerMovementDirection={MovementDirection.CounterClockwise}

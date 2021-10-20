@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import cx from "classnames";
 
 import Checker from './Checker';
-import {Color, Move, Player, PointState} from './Types';
+import {Color, ValidMove, Player, PointState} from './Types';
 
 type BoardPointProps = {
   pointState: PointState,
@@ -11,7 +11,7 @@ type BoardPointProps = {
   playerTwoColor: Color,
   pointNumber: number,
   clickHandler: (fromPoint: number | "BAR") => void,
-  highlightedMoves: Move[],
+  highlightedMoves: ValidMove[],
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -47,8 +47,8 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   };
 
   let highlight = null;
-  const isHighlightedFromPoint = highlightedMoves.some((highlightedMove: Move) => highlightedMove.from === pointNumber);
-  const isHighlightedToPoint = highlightedMoves.some((highlightedMove: Move) => highlightedMove.to === pointNumber);
+  const isHighlightedFromPoint = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.from === pointNumber);
+  const isHighlightedToPoint = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.to === pointNumber);
   if (isHighlightedFromPoint || isHighlightedToPoint) {
     highlight = <div className={cx("Point-wrapper-highlight", {
       ...topOrBottomClass,

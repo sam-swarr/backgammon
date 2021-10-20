@@ -1,6 +1,6 @@
 import { applyMoveToGameBoardState } from './gameBoardSlice';
 import { MOVE_FROM_INDICES } from '../Constants';
-import { GameBoardState, Move, Player, PointState } from '../Types';
+import { GameBoardState, Move, Player, PointState, ValidMove } from '../Types';
 
 export function getPointStateAtIndex(
   gameBoardState: GameBoardState,
@@ -89,7 +89,7 @@ export function getMoveIfValid(
   fromPoint: number | "BAR",
   dieValue: number,
   currentPlayer: Player,
-): Move | null {
+): ValidMove | null {
   const fromPointState = getPointStateAtIndex(
     gameBoardState,
     fromPoint,
@@ -145,8 +145,11 @@ export function getMoveIfValid(
     currentPlayer,
   )) {
     return {
-      from: fromPoint,
-      to: toPointIndex,
+      move: {
+        from: fromPoint,
+        to: toPointIndex,
+      },
+      dieUsed: dieValue,
     };
   }
 
@@ -241,7 +244,7 @@ export function getAllPossibleMovesForGivenDieRoll(
       currentPlayer,
     );
     if (possibleMove !== null) {
-      moves.push(possibleMove);
+      moves.push(possibleMove.move);
     }
   });
 
