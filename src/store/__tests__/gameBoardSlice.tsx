@@ -2,7 +2,7 @@ import {
   applyMoveToGameBoardState,
   deepCloneGameBoardState,
 } from '../gameBoardSlice';
-import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from '../../Constants'
+import { EMPTY_BOARD_STATE } from '../../Constants'
 import { GameBoardState, Player } from '../../Types'
 
 const areBoardStatesEquivalent = function(

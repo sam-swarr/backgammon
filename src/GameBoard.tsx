@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
+import { getAvailableDice } from './store/dice';
 import { applyMoveToGameBoardState } from './store/gameBoardSlice';
 import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
@@ -35,6 +36,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   ]);
   const dispatch = useAppDispatch();
 
+  const availableDice = getAvailableDice(
+    dice,
+    provisionalMoves,
+  );
+
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
     return applyMoveToGameBoardState(
       prevBoardState,
@@ -57,19 +63,19 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     } else {
       const possibleMoves: ValidMove[] = [];
       const seenDieValues = new Set();
-      for (let i = 0; i < dice.length; i++) {
-        if (!seenDieValues.has(dice[i])) {
+      for (let i = 0; i < availableDice.length; i++) {
+        if (!seenDieValues.has(availableDice[i])) {
           const possibleMove = getMoveIfValid(
             gameBoardState,
             pointClicked,
-            dice[i],
+            availableDice[i],
             currentPlayer,
           );
           if (possibleMove !== null) {
             possibleMoves.push(possibleMove);
           }
         }
-        seenDieValues.add(dice[i]);
+        seenDieValues.add(availableDice[i]);
       }
       dispatch(setHighlightedMoves({
         lastPointClicked: pointClicked,
