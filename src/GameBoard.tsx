@@ -214,7 +214,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       <div className="Game-board-half">
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
-          diceValues={dice} />
+          diceValues={dice}
+          hasProvisionalMoves={provisionalMoves.length > 0} />
         <div className="Game-board-quadrant top">
           {topRightPoints}
         </div>

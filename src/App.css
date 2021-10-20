@@ -177,11 +177,10 @@
 .Dice {
   display: flex;
   height: 10%;
-  justify-content: space-between;
-  left: 35%;
+  justify-content: center;
   position: absolute;
   top: 45%;
-  width: 30%;
+  width: 100%;
   z-index: 3;
 }
 
@@ -190,8 +189,10 @@
   flex-direction: column;
   height: 100%;
   justify-content: center;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
   text-align: center;
-  width: 38.6%;
+  width: 11.6%;
 }
 
 .Die.white {
@@ -200,4 +201,26 @@
 
 .Die.black {
   background-color: rgb(56, 48, 27);
+}
+
+.Submit-button-wrapper {
+  height: 100%;
+  margin-left: 2.5%;
+  width: 10%;
+}
+
+.Submit-button {
+  height: 100%;
+  width: 100%;
+}
+
+.Undo-button-wrapper {
+  height: 100%;
+  margin-right: 2.5%;
+  width: 10%;
+}
+
+.Undo-button {
+  height: 100%;
+  width: 100%;
 }
