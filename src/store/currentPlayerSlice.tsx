@@ -7,11 +7,7 @@ export const currentPlayerSlice = createSlice({
   initialState: Player.One,
   reducers: {
     endTurn: (state) => {
-      if (state === Player.One) {
-        state = Player.Two;
-      } else {
-        state = Player.One;
-      }
+      return state === Player.One ? Player.Two : Player.One;
     },
   },
 })

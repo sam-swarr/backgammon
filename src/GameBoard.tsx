@@ -1,6 +1,8 @@
 import { FunctionComponent } from 'react';
 
+import { endTurn } from './store/currentPlayerSlice';
 import { getAvailableDice } from './store/dice';
+import { rollDice } from './store/diceSlice';
 import { applyMoves, applyMoveToGameBoardState } from './store/gameBoardSlice';
 import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
@@ -91,6 +93,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     }));
     dispatch(clearProvisionalMoves());
     dispatch(clearHighlightedMoves());
+    dispatch(endTurn());
+    dispatch(rollDice());
   };
 
   const pointsState = gameBoardState.pointsState;

@@ -12,3 +12,10 @@ export function getAvailableDice(
   // Else, filter out the dice whose value has been used by a provisional move.
   return dice.filter(die => !provisionalMoves.some(move => move.dieUsed === die));
 }
+
+export function rollDiceImpl(): number[] {
+  const dieOne = Math.floor(Math.random() * 6) + 1;
+  const dieTwo = Math.floor(Math.random() * 6) + 1;
+
+  return dieOne === dieTwo ? [dieOne, dieOne, dieOne, dieOne] : [dieOne, dieTwo];
+}

@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import { rollDiceImpl } from './dice'
+
 export const diceSlice = createSlice({
   name: 'diceState',
   initialState: [4, 2],
   reducers: {
-    rollDice: (state) => {
-      // TODO
+    rollDice: (_state) => {
+      return rollDiceImpl();
     },
   },
 })
