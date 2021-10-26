@@ -1,5 +1,6 @@
 import { deepCloneGameBoardState } from '../gameBoardSlice';
 import {
+  areProvisionalMovesSubmittable,
   canPlayerOccupyPoint,
   getAllPossibleMoveSets,
   getAllPossibleMovesForGivenDieRoll,
@@ -8,6 +9,7 @@ import {
   getMoveIfValid,
   getPointStateAtIndex,
   hasAllCheckersInHomeBoard,
+  maxDieValueUsedInMoveSet,
 } from '../moves';
 import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from '../../Constants'
 import { Player } from '../../Types'
@@ -759,9 +761,9 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     1,
     Player.One,
   )).toEqual([
-    {from: 5, to: 4},
-    {from: 7, to: 6},
-    {from: 23, to: 22},
+    {dieUsed: 1, move: {from: 5, to: 4}},
+    {dieUsed: 1, move: {from: 7, to: 6}},
+    {dieUsed: 1, move: {from: 23, to: 22}},
   ]);
 
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -769,9 +771,9 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     1,
     Player.Two,
   )).toEqual([
-    {from: 0, to: 1},
-    {from: 16, to: 17},
-    {from: 18, to: 19},
+    {dieUsed: 1, move: {from: 0, to: 1}},
+    {dieUsed: 1, move: {from: 16, to: 17}},
+    {dieUsed: 1, move: {from: 18, to: 19}},
   ]);
 
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -779,10 +781,10 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     2,
     Player.One,
   )).toEqual([
-    {from: 5, to: 3},
-    {from: 7, to: 5},
-    {from: 12, to: 10},
-    {from: 23, to: 21},
+    {dieUsed: 2, move: {from: 5, to: 3}},
+    {dieUsed: 2, move: {from: 7, to: 5}},
+    {dieUsed: 2, move: {from: 12, to: 10}},
+    {dieUsed: 2, move: {from: 23, to: 21}},
   ]);
 
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -790,10 +792,10 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     2,
     Player.Two,
   )).toEqual([
-    {from: 0, to: 2},
-    {from: 11, to: 13},
-    {from: 16, to: 18},
-    {from: 18, to: 20},
+    {dieUsed: 2, move: {from: 0, to: 2}},
+    {dieUsed: 2, move: {from: 11, to: 13}},
+    {dieUsed: 2, move: {from: 16, to: 18}},
+    {dieUsed: 2, move: {from: 18, to: 20}},
   ]);
 
   let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
@@ -807,7 +809,7 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     2,
     Player.Two,
   )).toEqual([
-    {from: "BAR", to: 1},
+    {dieUsed: 2, move: {from: "BAR", to: 1}},
   ]);
   // No moves since Player One is blocked from entering off the bar.
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -828,32 +830,51 @@ test('getAllPossibleMoveSets works', () => {
     Player.Two,
   )).toEqual([
     [
-      {from: 18, to: 19},
-      {from: 19, to: 21},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 2, move: {from: 19, to: 21}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 18, to: 20},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 2, move: {from: 18, to: 20}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 20, to: 22},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 2, move: {from: 20, to: 22}},
     ],
     [
-      {from: 18, to: 20},
-      {from: 19, to: 20},
+      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
     ],
     [
-      {from: 18, to: 20},
-      {from: 20, to: 21},
+      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
     ],
     [
-      {from: 19, to: 21},
-      {from: 18, to: 19},
+      {dieUsed: 2, move: {from: 19, to: 21}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
     ],
     [
-      {from: 19, to: 21},
-      {from: 21, to: 22},
+      {dieUsed: 2, move: {from: 19, to: 21}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
+    ],
+  ]);
+});
+
+test('getAllPossibleMoveSets works when not all dice can be used', () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[18] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[21] = {[Player.One]: 2, [Player.Two]: 0};
+
+  expect(getAllPossibleMoveSets(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+  )).toEqual([
+    [
+      {dieUsed: 1, move: {from: 18, to: 19}},
+    ],
+    [
+      {dieUsed: 2, move: {from: 18, to: 20}},
     ],
   ]);
 });
@@ -869,64 +890,191 @@ test('getAllPossibleMoveSets works with doubles', () => {
     Player.Two,
   )).toEqual([
     [
-      {from: 18, to: 19},
-      {from: 19, to: 20},
-      {from: 19, to: 20},
-      {from: 20, to: 21},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
     ],
     [
-      {from: 18, to: 19},
-      {from: 19, to: 20},
-      {from: 20, to: 21},
-      {from: 19, to: 20},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
     ],
     [
-      {from: 18, to: 19},
-      {from: 19, to: 20},
-      {from: 20, to: 21},
-      {from: 21, to: 22},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 18, to: 19},
-      {from: 19, to: 20},
-      {from: 20, to: 21},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 18, to: 19},
-      {from: 20, to: 21},
-      {from: 19, to: 20},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 18, to: 19},
-      {from: 20, to: 21},
-      {from: 21, to: 22},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 20, to: 21},
-      {from: 18, to: 19},
-      {from: 19, to: 20},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 19, to: 20}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 20, to: 21},
-      {from: 18, to: 19},
-      {from: 21, to: 22},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 20, to: 21},
-      {from: 21, to: 22},
-      {from: 18, to: 19},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 18, to: 19}},
     ],
     [
-      {from: 19, to: 20},
-      {from: 20, to: 21},
-      {from: 21, to: 22},
-      {from: 22, to: 23},
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 22, to: 23}},
     ],
   ]);
+});
+
+test('maxDieValueUsedInMoveSet works', () => {
+  expect(maxDieValueUsedInMoveSet([])).toEqual(0);
+  expect(maxDieValueUsedInMoveSet([
+    {dieUsed: 1, move: {from: 19, to: 20}},
+    {dieUsed: 3, move: {from: 19, to: 22}},
+    {dieUsed: 2, move: {from: 19, to: 21}},
+  ])).toEqual(3);
+  expect(maxDieValueUsedInMoveSet([
+    {dieUsed: 5, move: {from: 10, to: 15}},
+    {dieUsed: 5, move: {from: 12, to: 17}},
+  ])).toEqual(5);
+});
+
+test('areProvisionalMovesSubmittable ensures as many dice as possible are used', () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[18] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[19] = {[Player.One]: 0, [Player.Two]: 1};
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+    [],
+  )).toEqual(false);
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+    [
+      {dieUsed: 2, move: {from: 18, to: 20}},
+    ],
+  )).toEqual(false);
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+    [
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 2, move: {from: 18, to: 20}},
+    ],
+  )).toEqual(true);
+});
+
+test('areProvisionalMovesSubmittable ensures as many dice as possible are used (doubles)', () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[18] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[19] = {[Player.One]: 0, [Player.Two]: 1};
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1, 1, 1, 1],
+    Player.Two,
+    []
+  )).toEqual(false);
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1, 1, 1, 1],
+    Player.Two,
+    [
+      {dieUsed: 1, move: {from: 22, to: 23}},
+    ]
+  )).toEqual(false);
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1, 1, 1, 1],
+    Player.Two,
+    [
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 22, to: 23}},
+    ]
+  )).toEqual(false);
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1, 1, 1, 1],
+    Player.Two,
+    [
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 22, to: 23}},
+    ]
+  )).toEqual(false);
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1, 1, 1, 1],
+    Player.Two,
+    [
+      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 22, to: 23}},
+    ]
+  )).toEqual(true);
+});
+
+test('areProvisionalMovesSubmittable ensures max die value is used when not all dice can be used', () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[18] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[21] = {[Player.One]: 2, [Player.Two]: 0};
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+    [],
+  )).toEqual(false);
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+    [
+      {dieUsed: 1, move: {from: 18, to: 19}},
+    ],
+  )).toEqual(false);
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [1,2],
+    Player.Two,
+    [
+      {dieUsed: 2, move: {from: 18, to: 20}},
+    ],
+  )).toEqual(true);
 });

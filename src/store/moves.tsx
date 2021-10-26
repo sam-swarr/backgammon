@@ -206,6 +206,10 @@ export function getAllPossibleMoveSetsImpl(
 
   // Base Case: This was the last die to use.
   if (dieIndex === dieRolls.length - 1) {
+    // If there are no further moves, just return the moveSet up to this point.
+    if (allPossibleMoves.length === 0) {
+      return [[...moveSet]];
+    }
     return allPossibleMoves.map(move => [...moveSet, move]);
   }
 
@@ -249,4 +253,50 @@ export function getAllPossibleMovesForGivenDieRoll(
   });
 
   return moves;
+}
+
+export function areProvisionalMovesSubmittable(
+  gameBoardState: GameBoardState,
+  dieRolls: number[],
+  currentPlayer: Player,
+  provisionalMoves: ValidMove[],
+): boolean {
+  const allPossibleMoveSets: ValidMove[][] = getAllPossibleMoveSets(
+    gameBoardState,
+    dieRolls,
+    currentPlayer,
+  );
+
+  const maxNumberOfMoves = allPossibleMoveSets.reduce(
+    (maxNumberOfMoves, currMoveSet) => currMoveSet.length > maxNumberOfMoves ? currMoveSet.length : maxNumberOfMoves,
+    0,
+  );
+
+  // The player did not use the max number of dice possible.
+  if (provisionalMoves.length < maxNumberOfMoves) {
+    return false;
+  }
+
+  const moveSetsWithMaxNumberOfMoves = allPossibleMoveSets.filter((moveSet) => moveSet.length === maxNumberOfMoves);
+
+  const maxPossibleDieValueUsed = moveSetsWithMaxNumberOfMoves.reduce(
+    (prevMaxDieValueUsed, currMoveSet) => {
+      const currMaxDieValueUsed: number = maxDieValueUsedInMoveSet(currMoveSet);
+      return currMaxDieValueUsed > prevMaxDieValueUsed ? currMaxDieValueUsed : prevMaxDieValueUsed;
+    },
+    0,
+  );
+  const maxProvisionalDieValueUsed = maxDieValueUsedInMoveSet(provisionalMoves);
+
+  // The player must use the biggest die value possible.
+  return maxProvisionalDieValueUsed === maxPossibleDieValueUsed;
+}
+
+export function maxDieValueUsedInMoveSet(
+  moveSet: ValidMove[],
+): number {
+  return moveSet.reduce(
+    (maxDieValueUsed, move) => move.dieUsed > maxDieValueUsed ? move.dieUsed : maxDieValueUsed,
+    0,
+  );
 }
