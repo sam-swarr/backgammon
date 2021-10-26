@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import {STARTING_BOARD_STATE} from '../Constants';
-import { GameBoardState, Move, Player } from '../Types';
+import { GameBoardState, Player, ValidMove } from '../Types';
 
 type ApplyMoveState = {
-  move: Move,
+  move: ValidMove,
   currentPlayer: Player,
 };
 
@@ -49,21 +49,21 @@ export function deepCloneGameBoardState(
 
 export function applyMoveToGameBoardState(
   gameBoardState: GameBoardState,
-  move: Move,
+  move: ValidMove,
   currentPlayer: Player,
 ): GameBoardState {
   const opponent = currentPlayer === Player.One ? Player.Two : Player.One;
   const result = deepCloneGameBoardState(gameBoardState);
-  if (move.from === "BAR") {
+  if (move.move.from === "BAR") {
     result.barState[currentPlayer] -= 1;
   } else {
-    result.pointsState[move.from][currentPlayer] -= 1;
+    result.pointsState[move.move.from][currentPlayer] -= 1;
   }
 
-  if (move.to === "HOME") {
+  if (move.move.to === "HOME") {
     result.homeState[currentPlayer] += 1;
   } else {
-    const destPoint = result.pointsState[move.to];
+    const destPoint = result.pointsState[move.move.to];
     if (destPoint[opponent] > 1) {
       console.error("Trying to apply invalid move. Destination occupied by 2+ opposing checkers");
       console.error(gameBoardState);

@@ -44,7 +44,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
     return applyMoveToGameBoardState(
       prevBoardState,
-      currMove.move,
+      currMove,
       currentPlayer,
     );
   }, originalGameBoardState);

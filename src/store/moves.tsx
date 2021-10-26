@@ -1,6 +1,6 @@
 import { applyMoveToGameBoardState } from './gameBoardSlice';
 import { MOVE_FROM_INDICES } from '../Constants';
-import { GameBoardState, Move, Player, PointState, ValidMove } from '../Types';
+import { GameBoardState, Player, PointState, ValidMove } from '../Types';
 
 export function getPointStateAtIndex(
   gameBoardState: GameBoardState,
@@ -160,8 +160,8 @@ export function getAllPossibleMoveSets(
   gameBoardState: GameBoardState,
   dieRolls: number[],
   currentPlayer: Player,
-): Move[][] {
-  let result: Move[][] = [];
+): ValidMove[][] {
+  let result: ValidMove[][] = [];
   result = result.concat(
     getAllPossibleMoveSetsImpl(
       gameBoardState,
@@ -196,8 +196,8 @@ export function getAllPossibleMoveSetsImpl(
   dieRolls: number[],
   dieIndex: number,
   currentPlayer: Player,
-  moveSet: Array<Move>
-): Move[][] {
+  moveSet: Array<ValidMove>
+): ValidMove[][] {
   const allPossibleMoves = getAllPossibleMovesForGivenDieRoll(
     gameBoardState,
     dieRolls[dieIndex],
@@ -209,7 +209,7 @@ export function getAllPossibleMoveSetsImpl(
     return allPossibleMoves.map(move => [...moveSet, move]);
   }
 
-  let result: Move[][] = [];
+  let result: ValidMove[][] = [];
   allPossibleMoves.forEach(move => {
     const newGameBoardState = applyMoveToGameBoardState(
       gameBoardState,
@@ -234,8 +234,8 @@ export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,
   currentPlayer: Player,
-): Move[] {
-  const moves: Move[] = [];
+): ValidMove[] {
+  const moves: ValidMove[] = [];
   MOVE_FROM_INDICES.forEach(from => {
     const possibleMove = getMoveIfValid(
       gameBoardState,
@@ -244,7 +244,7 @@ export function getAllPossibleMovesForGivenDieRoll(
       currentPlayer,
     );
     if (possibleMove !== null) {
-      moves.push(possibleMove.move);
+      moves.push(possibleMove);
     }
   });
 

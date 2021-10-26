@@ -24,12 +24,10 @@ export type PointState = {
   [Player.Two]: number,
 };
 
-export type Move = {
-  from: number | "BAR",
-  to: number | "HOME",
-};
-
 export type ValidMove = {
-  move: Move,
+  move: {
+    from: number | "BAR",
+    to: number | "HOME",
+  },
   dieUsed: number,
 };
