@@ -10,12 +10,14 @@ type DiceProps = {
   currentPlayerColor: Color,
   diceValues: number[],
   hasProvisionalMoves: boolean,
+  canSubmit: boolean,
 };
 
 const Dice: FunctionComponent<DiceProps> = ({
   currentPlayerColor,
   diceValues,
   hasProvisionalMoves,
+  canSubmit,
 }: DiceProps) => {
   const dispatch = useAppDispatch();
   return (
@@ -41,7 +43,9 @@ const Dice: FunctionComponent<DiceProps> = ({
           {diceValues[1]}
         </div>
         <div className={"Submit-button-wrapper"}>
-          <button className={"Submit-button"}>
+          <button
+            className={"Submit-button"}
+            hidden={!canSubmit}>
             Submit
           </button>
         </div>

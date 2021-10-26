@@ -4,7 +4,7 @@ import { getAvailableDice } from './store/dice';
 import { applyMoveToGameBoardState } from './store/gameBoardSlice';
 import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
-import { getMoveIfValid } from './store/moves';
+import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
 import { appendProvisionalMove } from './store/provisionalMovesSlice';
 import {Color, MovementDirection, Player, ValidMove} from './Types';
 import BoardPoint from './BoardPoint';
@@ -221,7 +221,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
           diceValues={dice}
-          hasProvisionalMoves={provisionalMoves.length > 0} />
+          hasProvisionalMoves={provisionalMoves.length > 0}
+          canSubmit={areProvisionalMovesSubmittable(
+            originalGameBoardState,
+            dice,
+            currentPlayer,
+            provisionalMoves,
+          )} />
         <div className="Game-board-quadrant top">
           {topRightPoints}
         </div>
