@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import {STARTING_BOARD_STATE} from '../Constants';
 import { GameBoardState, Player, ValidMove } from '../Types';
 
-type ApplyMoveState = {
-  move: ValidMove,
+type ApplyMovesState = {
+  moves: ValidMove[],
   currentPlayer: Player,
 };
 
@@ -12,16 +12,15 @@ export const gameBoardSlice = createSlice({
   name: 'gameBoardState',
   initialState: STARTING_BOARD_STATE,
   reducers: {
-    applyMove: (state, action: { type: string, payload: ApplyMoveState }) => {
-      return applyMoveToGameBoardState(
-        state,
-        action.payload.move,
-        action.payload.currentPlayer,
-      );
+    applyMoves: (state, action: { type: string, payload: ApplyMovesState }) => {
+      return action.payload.moves.reduce((prevBoardState, currMove) => {
+        return applyMoveToGameBoardState(
+          prevBoardState,
+          currMove,
+          action.payload.currentPlayer,
+        );
+      }, state);
     },
-    undoMove: (state, move) => {
-      // TODO
-    }
   },
 })
 
@@ -80,6 +79,6 @@ export function applyMoveToGameBoardState(
 }
 
 // Action creators are generated for each case reducer function
-export const { applyMove, undoMove } = gameBoardSlice.actions
+export const { applyMoves } = gameBoardSlice.actions
 
 export default gameBoardSlice.reducer

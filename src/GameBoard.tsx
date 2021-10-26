@@ -1,11 +1,11 @@
 import { FunctionComponent } from 'react';
 
 import { getAvailableDice } from './store/dice';
-import { applyMoveToGameBoardState } from './store/gameBoardSlice';
+import { applyMoves, applyMoveToGameBoardState } from './store/gameBoardSlice';
 import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
-import { appendProvisionalMove } from './store/provisionalMovesSlice';
+import { appendProvisionalMove, clearProvisionalMoves } from './store/provisionalMovesSlice';
 import {Color, MovementDirection, Player, ValidMove} from './Types';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
@@ -82,6 +82,15 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         moves: possibleMoves,
       }));
     }
+  };
+
+  const submitButtonHandler = () => {
+    dispatch(applyMoves({
+      moves: provisionalMoves,
+      currentPlayer: currentPlayer,
+    }));
+    dispatch(clearProvisionalMoves());
+    dispatch(clearHighlightedMoves());
   };
 
   const pointsState = gameBoardState.pointsState;
@@ -227,7 +236,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
             dice,
             currentPlayer,
             provisionalMoves,
-          )} />
+          )}
+          submitButtonHandler={submitButtonHandler} />
         <div className="Game-board-quadrant top">
           {topRightPoints}
         </div>

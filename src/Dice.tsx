@@ -11,6 +11,7 @@ type DiceProps = {
   diceValues: number[],
   hasProvisionalMoves: boolean,
   canSubmit: boolean,
+  submitButtonHandler: Function,
 };
 
 const Dice: FunctionComponent<DiceProps> = ({
@@ -18,6 +19,7 @@ const Dice: FunctionComponent<DiceProps> = ({
   diceValues,
   hasProvisionalMoves,
   canSubmit,
+  submitButtonHandler,
 }: DiceProps) => {
   const dispatch = useAppDispatch();
   return (
@@ -45,7 +47,8 @@ const Dice: FunctionComponent<DiceProps> = ({
         <div className={"Submit-button-wrapper"}>
           <button
             className={"Submit-button"}
-            hidden={!canSubmit}>
+            hidden={!canSubmit}
+            onClick={() => {submitButtonHandler()}}>
             Submit
           </button>
         </div>
