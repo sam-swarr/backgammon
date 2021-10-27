@@ -19,3 +19,15 @@ export function rollDiceImpl(): number[] {
 
   return dieOne === dieTwo ? [dieOne, dieOne, dieOne, dieOne] : [dieOne, dieTwo];
 }
+
+export function performInitialRolls(): number[][] {
+  const rolls: number[][] = [];
+
+  let currRoll = null;
+  do {
+    currRoll = rollDiceImpl();
+    rolls.push(currRoll);
+  } while (currRoll.length === 4);
+
+  return rolls;
+}

@@ -4,7 +4,7 @@ import {Player} from '../Types';
 
 export const currentPlayerSlice = createSlice({
   name: 'currentPlayerState',
-  initialState: Player.One,
+  initialState: Math.random() > 0.5 ? Player.One : Player.Two,
   reducers: {
     endTurn: (state) => {
       return state === Player.One ? Player.Two : Player.One;

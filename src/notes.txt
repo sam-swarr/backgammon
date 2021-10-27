@@ -18,11 +18,6 @@ Support both local and networked mulitplayer:
 
 
 TODO:
-  - display pieces on the bar / home 
-  - add handlers to bar / home to allow movement from / to them
-  
-  - implement first die roll logic (roll until no tie, set current player appropriately)
-
   - check for game end state
     - add game state slice (can later add state to track if player has rolled dice or not)
 
@@ -30,6 +25,7 @@ TODO:
 
   - add ability to double
     - player's will need to explicitly roll dice rather than them automatically rolling
+    - take into account any ties during opening rolls
 
   - online mulitplayer
 
