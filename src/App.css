@@ -80,7 +80,10 @@
 
 .Game-board-home {
   background-color:rgb(32, 78, 5);
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  justify-content: space-around;
   width: 5%;
 }
 
@@ -181,7 +184,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 45%;
+  height: 47.5%;
 }
 
 .Player-one-bar-checkers {
@@ -200,6 +203,42 @@
   border-radius: 50%;
   padding-top: 83.5%;
   width: 83.5%;
+}
+
+.Player-one-home-checkers, .Player-two-home-checkers {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 47.5%;
+}
+
+.Player-one-home-checkers {
+  justify-content: flex-end;
+}
+
+.Player-one-home-checkers.highlighted {
+  background-color: #2ac4b154;
+  border-top-left-radius: 1vh;
+  border-top-right-radius: 1vh;
+}
+
+.Player-two-home-checkers.highlighted {
+  background-color: #2ac4b154;
+  border-bottom-left-radius: 1vh;
+  border-bottom-right-radius: 1vh;
+}
+
+.Game-board-home-spacer {
+  height: 5%;
+}
+
+.Player-one-home-checkers .Checker, .Player-two-home-checkers .Checker {
+  border-radius: 15%;
+  height: 4%;
+  margin-bottom: 3%;
+  margin-top: 3%;
+  padding-top: 0;
+  width: 70%;
 }
 
 .Dice {

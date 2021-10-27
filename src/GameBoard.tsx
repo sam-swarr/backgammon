@@ -12,6 +12,7 @@ import {Color, MovementDirection, Player, ValidMove} from './Types';
 import Bar from './Bar';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
+import Home from './Home';
 
 type GameBoardProps = {
   currentPlayer: Player,
@@ -57,13 +58,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const topRightPoints = [];
   const bottomRightPoints = [];
 
-  const boardPointClickHandler = (pointClicked: number | "BAR") => {
+  const boardPointClickHandler = (pointClicked: number | "BAR" | "HOME") => {
     // Check if player clicked on a highlighted destination.
     const moveToApply = highlightedMoves.find(m => m.move.to === pointClicked);
     if (moveToApply != null) {
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
-    } else {
+    } else if (pointClicked !== "HOME") {
       const possibleMoves: ValidMove[] = [];
       const seenDieValues = new Set();
       for (let i = 0; i < availableDice.length; i++) {
@@ -207,19 +208,17 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     }
   }
 
-  let leftHome = null;
-  if (playerMovementDirection === MovementDirection.Clockwise) {
-    leftHome = <div className="Game-board-home" />;
-  }
-
-  let rightHome = null;
-  if (playerMovementDirection === MovementDirection.CounterClockwise) {
-    rightHome = <div className="Game-board-home" />;
-  }
+  const home = <Home
+    homeState={gameBoardState.homeState}
+    isHighlighted={highlightedMoves.some(m => m.move.to === "HOME")}
+    clickHandler={boardPointClickHandler}
+    currentPlayer={currentPlayer}
+    playerOneColor={playerOneColor}
+    playerTwoColor={playerTwoColor} />;
 
   return (
     <div className="Game-board-wrapper">
-      {leftHome}
+      {playerMovementDirection === MovementDirection.Clockwise ? home : null}
       <div className="Game-board-half">
         <div className="Game-board-quadrant top">
           {topLeftPoints}
@@ -252,7 +251,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           {bottomRightPoints}
         </div>
       </div>
-      {rightHome}
+      {playerMovementDirection === MovementDirection.CounterClockwise ? home : null}
     </div>
   );
 }
