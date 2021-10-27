@@ -2,6 +2,7 @@ import cx from "classnames";
 import { FunctionComponent } from "react";
 
 import { useAppDispatch } from './store/hooks';
+import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
 import { clearProvisionalMoves } from './store/provisionalMovesSlice';
 
 import {Color} from './Types';
@@ -28,7 +29,10 @@ const Dice: FunctionComponent<DiceProps> = ({
           <button
             className={"Undo-button"}
             hidden={!hasProvisionalMoves}
-            onClick={() => {dispatch(clearProvisionalMoves())}}>
+            onClick={() => {
+              dispatch(clearProvisionalMoves());
+              dispatch(clearHighlightedMoves());
+            }}>
             Undo
           </button>
         </div>

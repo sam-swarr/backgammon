@@ -20,6 +20,7 @@ Support both local and networked mulitplayer:
 TODO:
   - check for game end state
     - add game state slice (can later add state to track if player has rolled dice or not)
+    - check for gammon/backgammon
 
   - dice fade as dice are used provisionally
 
