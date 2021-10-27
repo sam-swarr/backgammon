@@ -230,6 +230,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       </div>
       <Bar
         barState={gameBoardState.barState}
+        clickHandler={boardPointClickHandler}
         playerOneColor={playerOneColor}
         playerTwoColor={playerTwoColor} />
       <div className="Game-board-half">

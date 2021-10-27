@@ -4,12 +4,14 @@ import { Color, Player, PointState } from './Types';
 
 type BarProps = {
   barState: PointState,
+  clickHandler: Function,
   playerOneColor: Color,
   playerTwoColor: Color,
 };
 
 const Bar: FunctionComponent<BarProps> = ({
   barState,
+  clickHandler,
   playerOneColor,
   playerTwoColor,
 }: BarProps) => {
@@ -28,10 +30,11 @@ const Bar: FunctionComponent<BarProps> = ({
   }
 
   return (
-    <div className="Game-board-bar">
+    <div className="Game-board-bar" onClick={() => {clickHandler("BAR")}}>
       <div className="Player-one-bar-checkers">
         {playerOneCheckers}
       </div>
+      <div className="Game-board-bar-spacer" />
       <div className="Player-two-bar-checkers">
         {playerTwoCheckers}
       </div> 

@@ -178,9 +178,22 @@
 }
 
 .Player-one-bar-checkers, .Player-two-bar-checkers {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 45%;
+}
+
+.Player-one-bar-checkers {
+  justify-content: flex-end;
+}
+
+.Player-two-bar-checkers {
+  justify-content: flex-start;
+}
+
+.Game-board-bar-spacer {
+  height: 5%
 }
 
 .Player-one-bar-checkers .Checker, .Player-two-bar-checkers .Checker {
