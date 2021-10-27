@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
 import { appendProvisionalMove, clearProvisionalMoves } from './store/provisionalMovesSlice';
 import {Color, MovementDirection, Player, ValidMove} from './Types';
+import Bar from './Bar';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
 
@@ -227,9 +228,10 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           {bottomLeftPoints}
         </div>
       </div>
-      <div className="Game-board-bar">
-
-      </div>
+      <Bar
+        barState={gameBoardState.barState}
+        playerOneColor={playerOneColor}
+        playerTwoColor={playerTwoColor} />
       <div className="Game-board-half">
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}

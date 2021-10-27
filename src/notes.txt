@@ -32,4 +32,6 @@ TODO:
     - player's will need to explicitly roll dice rather than them automatically rolling
 
   - online mulitplayer
+
+  - add settings menu
   

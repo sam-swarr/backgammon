@@ -70,8 +70,11 @@
 }
 
 .Game-board-bar {
-  background-color:rgb(51, 40, 17);
+  background-color:rgb(32, 78, 5);
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  justify-content: space-around;
   width: 4%;
 }
 
@@ -172,6 +175,18 @@
 
 .Checker.black {
   background-color: rgb(56, 48, 27);
+}
+
+.Player-one-bar-checkers, .Player-two-bar-checkers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Player-one-bar-checkers .Checker, .Player-two-bar-checkers .Checker {
+  border-radius: 50%;
+  padding-top: 83.5%;
+  width: 83.5%;
 }
 
 .Dice {
