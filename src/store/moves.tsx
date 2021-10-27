@@ -112,7 +112,7 @@ export function getMoveIfValid(
   );
 
   // If the move would bear the checker off the board.
-  if (toPointIndex === "HOME") {
+  if (toPointIndex === "HOME" && fromPoint !== "BAR") {
     // Move is invalid if not all checkers are in home board.
     if (!hasAllCheckersInHomeBoard(gameBoardState, currentPlayer)) {
       return null;
@@ -122,13 +122,13 @@ export function getMoveIfValid(
     if (dieValue > getDistanceFromHome(fromPoint, currentPlayer)) {
       // The move is invalid if the player occupies any home board points that are further away.
       if (currentPlayer === Player.One) {
-        for (let i = dieValue - 1; i <= 5; i++) {
+        for (let i = fromPoint + 1; i <= 5; i++) {
           if (getPointStateAtIndex(gameBoardState, i)[Player.One] > 0) {
             return null;
           }
         }
       } else {
-        for (let i = 24 - dieValue; i >= 18; i--) {
+        for (let i = fromPoint -1; i >= 18; i--) {
           if (getPointStateAtIndex(gameBoardState, i)[Player.Two] > 0) {
             return null;
           }
