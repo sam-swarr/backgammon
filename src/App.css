@@ -18,6 +18,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: 'Barlow', sans-serif;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -46,6 +47,40 @@
   justify-content: center;
   min-height: 46.3vw;
   min-width: 100vw;
+}
+
+.Main-menu-wrapper {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 46.3vw;
+  justify-content: center;
+  min-height: 46.3vw;
+  min-width: 100vw;
+}
+
+.Title-wrapper {
+  font-size: 5vw;
+  margin-bottom: 10vh;
+  text-shadow: 4px 4px 6px black;
+}
+
+.Menu-button-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.Local-multiplayer-button, .Online-multiplayer-button {
+  background-color: rgb(111 143 204);
+  border-color: rgb(52 89 132);
+  border-radius: 1vw;
+  border-width: 0.5vw;
+  font-family: 'Barlow', sans-serif;
+  height: 10vh;
+  margin: 2vh;
+  width: 20vw;
 }
 
 .Game-board-half {
