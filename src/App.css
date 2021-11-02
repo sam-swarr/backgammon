@@ -351,7 +351,7 @@
   width: 3vw;
 }
 
-.Settings-menu-button.show, .Settings-menu-button:hover {
+.Settings-menu-button.show {
   background: url(gear-hover.svg) no-repeat top left;
 }
 
@@ -366,4 +366,5 @@
   position: absolute;
   top: 4.5vw;
   width: 68vw;
+  z-index: 4;
 }
