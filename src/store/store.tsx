@@ -3,18 +3,20 @@ import { configureStore } from '@reduxjs/toolkit'
 import currentPlayerReducer from './currentPlayerSlice'
 import diceReducer from './diceSlice'
 import gameBoardReducer from './gameBoardSlice'
-import gameStateSlice from './gameStateSlice'
+import gameStateReducer from './gameStateSlice'
 import highlightedMovesReducer from './highlightedMovesSlice'
 import provisionalMovesReducer from './provisionalMovesSlice'
+import settingsReducer from './settingsSlice'
 
 export const store = configureStore({
   reducer: {
     gameBoard: gameBoardReducer,
-    gameState: gameStateSlice,
+    gameState: gameStateReducer,
     highlightedMoves: highlightedMovesReducer,
     provisionalMoves: provisionalMovesReducer,
     dice: diceReducer,
     currentPlayer: currentPlayerReducer,
+    settings: settingsReducer,
   },
 })
 
