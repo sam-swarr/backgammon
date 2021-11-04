@@ -17,14 +17,14 @@ export const settingsSlice = createSlice({
       state.playerOneColor = action.payload;
       return state;
     },
-    toggleSettingsMenu: (state) => {
-      state.showSettingsMenu = !state.showSettingsMenu;
+    setShowSettingsMenu: (state, action: { type: string, payload: boolean }) => {
+      state.showSettingsMenu = action.payload;
       return state;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setMovementDirection, setPlayerOneColor, toggleSettingsMenu } = settingsSlice.actions
+export const { setMovementDirection, setPlayerOneColor, setShowSettingsMenu } = settingsSlice.actions
 
 export default settingsSlice.reducer

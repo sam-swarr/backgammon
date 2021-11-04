@@ -15,11 +15,9 @@ const App: FunctionComponent<AppProps> = () => {
   const [
     currentPlayer,
     gameState,
-    settings,
   ] = useAppSelector((state) => [
     state.currentPlayer,
     state.gameState,
-    state.settings,
   ]);
 
   let contents = null;
@@ -38,15 +36,10 @@ const App: FunctionComponent<AppProps> = () => {
     );
   }
 
-  let settingsMenu = null;
-  if (settings.showSettingsMenu) {
-    settingsMenu = <SettingsMenu />;
-  }
-
   return (
     <div className={"App-wrapper"}>
       <SettingsMenuButton />
-      {settingsMenu}
+      <SettingsMenu />
       {contents}
     </div>
   );
