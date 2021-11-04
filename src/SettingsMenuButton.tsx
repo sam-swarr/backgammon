@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useAppDispatch } from './store/hooks';
 import { setShowSettingsMenu } from './store/settingsSlice';
 
 type SettingsMenuButtonProps = {};

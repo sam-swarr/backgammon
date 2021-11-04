@@ -3,7 +3,7 @@ import './App.css';
 
 import { GameState } from './store/gameStateSlice';
 import { useAppSelector } from './store/hooks';
-import {Color, MovementDirection} from './Types';
+import { Color } from './Types';
 import GameBoard from './GameBoard';
 import MainMenu from './MainMenu';
 import SettingsMenuButton from './SettingsMenuButton';
@@ -15,9 +15,11 @@ const App: FunctionComponent<AppProps> = () => {
   const [
     currentPlayer,
     gameState,
+    settings,
   ] = useAppSelector((state) => [
     state.currentPlayer,
     state.gameState,
+    state.settings,
   ]);
 
   let contents = null;
@@ -28,9 +30,9 @@ const App: FunctionComponent<AppProps> = () => {
       <div>
         <GameBoard
           currentPlayer={currentPlayer}
-          playerOneColor={Color.White}
-          playerTwoColor={Color.Black}
-          playerMovementDirection={MovementDirection.CounterClockwise}
+          playerOneColor={settings.playerOneColor}
+          playerTwoColor={settings.playerOneColor === Color.White ? Color.Black : Color.White}
+          playerMovementDirection={settings.movementDirection}
         />
       </div>
     );
