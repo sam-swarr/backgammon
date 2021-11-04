@@ -21,6 +21,7 @@ export const gameBoardSlice = createSlice({
         );
       }, state);
     },
+    reset: () => STARTING_BOARD_STATE,
   },
 })
 
@@ -124,6 +125,6 @@ export function didPlayerWin(
 }
 
 // Action creators are generated for each case reducer function
-export const { applyMoves } = gameBoardSlice.actions
+export const { applyMoves, reset } = gameBoardSlice.actions
 
 export default gameBoardSlice.reducer

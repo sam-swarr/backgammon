@@ -5,7 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import { Player } from './Types';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { setShowGameOverDialog } from './store/settingsSlice';
-import { GameState } from "./store/gameStateSlice";
+import { GameState, setState } from "./store/gameStateSlice";
+import { reset as resetCurrentPlayer } from './store/currentPlayerSlice';
+import { reset as resetDice } from './store/diceSlice';
+import { reset as resetGameBoard } from './store/gameBoardSlice';
 
 type GameOverDialogProps = {};
 
@@ -22,6 +25,13 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
   ]);
   const dispatch = useAppDispatch();
   const closeDialog = () => dispatch(setShowGameOverDialog(false));
+  const backToMenu = () => {
+    dispatch(setShowGameOverDialog(false));
+    dispatch(setState({ newState: GameState.NotStarted }));
+    dispatch(resetDice());
+    dispatch(resetGameBoard());
+    dispatch(resetCurrentPlayer());
+  };
 
   const winnerText = currentPlayer === Player.One ? "Player One" : "Player Two";
 
@@ -65,8 +75,8 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
         {gammonText}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={closeDialog}>
-          Okay
+        <Button variant="primary" onClick={backToMenu}>
+          Exit
         </Button>
       </Modal.Footer>
     </Modal>

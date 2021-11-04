@@ -9,10 +9,11 @@ export const currentPlayerSlice = createSlice({
     endTurn: (state) => {
       return state === Player.One ? Player.Two : Player.One;
     },
+    reset: () => Math.random() > 0.5 ? Player.One : Player.Two,
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { endTurn } = currentPlayerSlice.actions
+export const { endTurn, reset } = currentPlayerSlice.actions
 
 export default currentPlayerSlice.reducer

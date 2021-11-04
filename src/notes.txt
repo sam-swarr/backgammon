@@ -18,11 +18,15 @@ Support both local and networked mulitplayer:
 
 
 TODO:
+  - style dice and undo / submit buttons
+
   - dice fade as dice are used provisionally
 
   - add ability to double
     - player's will need to explicitly roll dice rather than them automatically rolling
     - take into account any ties during opening rolls
+
+  - allow players to start new game from game over dialog (maintain current stakes score)
 
   - online mulitplayer
   
