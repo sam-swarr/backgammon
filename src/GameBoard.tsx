@@ -62,8 +62,17 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
 
   const boardPointClickHandler = (pointClicked: number | "BAR" | "HOME") => {
     // Check if player clicked on a highlighted destination.
-    const moveToApply = highlightedMoves.find(m => m.move.to === pointClicked);
-    if (moveToApply != null) {
+    const movesToApply = highlightedMoves.filter(m => m.move.to === pointClicked);
+    if (movesToApply.length > 0) {
+      // There may be multiple potential moves to apply in the case where
+      // both dice can bear a checker off. If this is the case, find the
+      // move that uses the bigger die.
+      let moveToApply = movesToApply[0];
+      for (let i = 1; i < movesToApply.length; i++) {
+        if (movesToApply[i].dieUsed > moveToApply.dieUsed) {
+          moveToApply = movesToApply[i];
+        }
+      }
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
     } else if (pointClicked !== "HOME") {
