@@ -50,6 +50,7 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
   return (
     <Modal
       show={settings.showGameOverDialog}
+      backdrop={'static'}
       centered={true}
       dialogClassName={'Game-over-dialog'}
       keyboard={true}
@@ -65,7 +66,7 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={closeDialog}>
-          Close
+          Okay
         </Button>
       </Modal.Footer>
     </Modal>

@@ -405,3 +405,32 @@
   height: 3vw;
   width: 3vw;
 }
+
+.Game-over-dialog .modal-content {
+  background-color:rgb(132, 171, 203);
+  border: 0.5vw solid rgb(78, 96, 124);
+  font-family: 'Barlow', sans-serif;
+}
+
+.Game-over-dialog .modal-header {
+  border-bottom: 1px solid rgb(78, 96, 124);
+  justify-content: center;
+}
+
+.Game-over-dialog .modal-title {
+  font-size: 3.5vw;
+}
+
+.Game-over-dialog .modal-body {
+  text-align: center;
+}
+
+.Game-over-dialog .modal-footer {
+  border-top: 1px solid rgb(78, 96, 124);
+  justify-content: center;
+}
+
+.Game-over-dialog .modal-footer .btn {
+  background-color: #4e607c;
+  border-color: rgb(78, 96, 124);
+}
