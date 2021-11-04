@@ -6,6 +6,7 @@ export const settingsSlice = createSlice({
   initialState: {
     movementDirection: MovementDirection.CounterClockwise,
     playerOneColor: Color.White,
+    showGameOverDialog: false,
     showSettingsMenu: false,
   },
   reducers: {
@@ -17,14 +18,23 @@ export const settingsSlice = createSlice({
       state.playerOneColor = action.payload;
       return state;
     },
+    setShowGameOverDialog: (state, action: { type: string, payload: boolean }) => {
+      state.showGameOverDialog = action.payload;
+      return state;
+    },
     setShowSettingsMenu: (state, action: { type: string, payload: boolean }) => {
       state.showSettingsMenu = action.payload;
       return state;
-    }
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setMovementDirection, setPlayerOneColor, setShowSettingsMenu } = settingsSlice.actions
+export const {
+  setMovementDirection,
+  setPlayerOneColor,
+  setShowGameOverDialog,
+  setShowSettingsMenu,
+} = settingsSlice.actions;
 
-export default settingsSlice.reducer
+export default settingsSlice.reducer;

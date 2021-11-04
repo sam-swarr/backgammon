@@ -9,6 +9,7 @@ import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedM
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
 import { appendProvisionalMove, clearProvisionalMoves } from './store/provisionalMovesSlice';
+import { setShowGameOverDialog } from './store/settingsSlice';
 import {Color, GameResult, MovementDirection, Player, ValidMove} from './Types';
 import Bar from './Bar';
 import BoardPoint from './BoardPoint';
@@ -33,7 +34,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     originalGameBoardState,
     highlightedMoves,
     provisionalMoves,
-  ]= useAppSelector((state) => [
+  ] = useAppSelector((state) => [
     state.dice,
     state.gameBoard,
     state.highlightedMoves.moves,
@@ -106,14 +107,17 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
 
       case GameResult.PlayerWon:
         dispatch(setState({ newState: GameState.GameOver }));
+        dispatch(setShowGameOverDialog(true));
         break;
 
       case GameResult.PlayerWonGammon:
         dispatch(setState({ newState: GameState.GameOverGammon }));
+        dispatch(setShowGameOverDialog(true));
         break;
 
       case GameResult.PlayerWonBackgammon:
         dispatch(setState({ newState: GameState.GameOverBackgammon }));
+        dispatch(setShowGameOverDialog(true));
         break;
 
       default:

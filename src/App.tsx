@@ -8,6 +8,7 @@ import GameBoard from './GameBoard';
 import MainMenu from './MainMenu';
 import SettingsMenuButton from './SettingsMenuButton';
 import SettingsMenu from './SettingsMenu';
+import GameOverDialog from './GameOverDialog';
 
 type AppProps = {};
 
@@ -42,6 +43,7 @@ const App: FunctionComponent<AppProps> = () => {
     <div className={"App-wrapper"}>
       <SettingsMenuButton />
       <SettingsMenu />
+      <GameOverDialog />
       {contents}
     </div>
   );
