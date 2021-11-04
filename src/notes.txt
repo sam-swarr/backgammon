@@ -18,14 +18,6 @@ Support both local and networked mulitplayer:
 
 
 TODO:
-  - add settings menu
-    - look into using react bootstrap modal instead
-    - using styled checkbox input for settings options
-
-  - check for game end state
-    - add game state slice (can later add state to track if player has rolled dice or not)
-    - check for gammon/backgammon
-
   - dice fade as dice are used provisionally
 
   - add ability to double

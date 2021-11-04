@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import {STARTING_BOARD_STATE} from '../Constants';
-import { GameBoardState, Player, ValidMove } from '../Types';
+import { GameBoardState, GameResult, Player, ValidMove } from '../Types';
 
 type ApplyMovesState = {
   moves: ValidMove[],
@@ -76,6 +76,51 @@ export function applyMoveToGameBoardState(
   }
 
   return result;
+}
+
+export function didPlayerWin(
+  gameBoardState: GameBoardState,
+  currentPlayer: Player,
+): GameResult {
+  // Check for any checkers on bar or points.
+  if (
+    gameBoardState.barState[currentPlayer] > 0 ||
+    gameBoardState.pointsState.some((point) => point[currentPlayer] > 0)
+  ) {
+    return GameResult.NotOver;
+  }
+
+  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
+  // Just a normal win if the other player has borne off at least one checker.
+  if (gameBoardState.homeState[otherPlayer] > 0) {
+    return GameResult.PlayerWon;
+  }
+
+  let otherPlayerHasCheckerInWinnersHomeBoard = false;
+  if (otherPlayer === Player.One) {
+    for (let i = 18; i < 23; i++) {
+      if (gameBoardState.pointsState[i][otherPlayer] > 0) {
+        otherPlayerHasCheckerInWinnersHomeBoard = true;
+        break;
+      }
+    }
+  } else {
+    for (let i = 0; i < 5; i++) {
+      if (gameBoardState.pointsState[i][otherPlayer] > 0) {
+        otherPlayerHasCheckerInWinnersHomeBoard = true;
+        break;
+      }
+    }
+  }
+
+  if (
+    gameBoardState.barState[otherPlayer] > 0 ||
+    otherPlayerHasCheckerInWinnersHomeBoard
+  ) {
+    return GameResult.PlayerWonBackgammon;
+  }
+
+  return GameResult.PlayerWonGammon;
 }
 
 // Action creators are generated for each case reducer function

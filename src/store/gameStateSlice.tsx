@@ -6,6 +6,8 @@ export enum GameState {
   PlayerOfferingDouble = "PLAYER_OFFERING_DOUBLE",
   PlayerMoving = "PLAYER_MOVING",
   GameOver = "GAME_OVER",
+  GameOverGammon = "GAME_OVER_GAMMON",
+  GameOverBackgammon = "GAME_OVER_BACKGAMMON",
 };
 
 type SetGameStatePayload = {

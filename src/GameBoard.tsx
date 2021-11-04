@@ -3,12 +3,13 @@ import { FunctionComponent } from 'react';
 import { endTurn } from './store/currentPlayerSlice';
 import { getAvailableDice } from './store/dice';
 import { rollDice } from './store/diceSlice';
-import { applyMoves, applyMoveToGameBoardState } from './store/gameBoardSlice';
+import { applyMoves, applyMoveToGameBoardState, didPlayerWin } from './store/gameBoardSlice';
+import { GameState, setState } from './store/gameStateSlice';
 import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
 import { appendProvisionalMove, clearProvisionalMoves } from './store/provisionalMovesSlice';
-import {Color, MovementDirection, Player, ValidMove} from './Types';
+import {Color, GameResult, MovementDirection, Player, ValidMove} from './Types';
 import Bar from './Bar';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
@@ -95,8 +96,29 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     }));
     dispatch(clearProvisionalMoves());
     dispatch(clearHighlightedMoves());
-    dispatch(endTurn());
-    dispatch(rollDice());
+
+    const gameResult = didPlayerWin(gameBoardState, currentPlayer);
+    switch (gameResult) {
+      case GameResult.NotOver:
+        dispatch(endTurn());
+        dispatch(rollDice());
+        break;
+
+      case GameResult.PlayerWon:
+        dispatch(setState({ newState: GameState.GameOver }));
+        break;
+
+      case GameResult.PlayerWonGammon:
+        dispatch(setState({ newState: GameState.GameOverGammon }));
+        break;
+
+      case GameResult.PlayerWonBackgammon:
+        dispatch(setState({ newState: GameState.GameOverBackgammon }));
+        break;
+
+      default:
+        console.error('Unhandled GameResult: ' + gameResult);
+    }
   };
 
   const pointsState = gameBoardState.pointsState;

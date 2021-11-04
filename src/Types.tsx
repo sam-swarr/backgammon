@@ -31,3 +31,10 @@ export type ValidMove = {
   },
   dieUsed: number,
 };
+
+export enum GameResult {
+  NotOver = "NOT_OVER",
+  PlayerWon = "PLAYER_WON",
+  PlayerWonGammon = "PLAYER_WON_GAMMON",
+  PlayerWonBackgammon = "PLAYER_WON_BACKGAMMON",
+};

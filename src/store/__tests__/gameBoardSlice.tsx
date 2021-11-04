@@ -1,9 +1,10 @@
 import {
   applyMoveToGameBoardState,
   deepCloneGameBoardState,
+  didPlayerWin,
 } from '../gameBoardSlice';
-import { EMPTY_BOARD_STATE } from '../../Constants'
-import { GameBoardState, Player } from '../../Types'
+import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from '../../Constants'
+import { GameBoardState, GameResult, Player } from '../../Types'
 
 const areBoardStatesEquivalent = function(
   boardA: GameBoardState,
@@ -188,4 +189,176 @@ test('applyMoveToGameBoardState handles hitting a blot 2', () => {
     RESULT,
     EXPECTED,
   )).toEqual(true);
+});
+
+test('didPlayerWin detects game is not over', () => {
+  const TEST_BOARD = deepCloneGameBoardState(STARTING_BOARD_STATE);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.NotOver);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.NotOver);
+});
+
+test('didPlayerWin detects normal win for player 1', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 15;
+  TEST_BOARD.homeState[Player.Two] = 14;
+  TEST_BOARD.pointsState[22][Player.Two] = 1;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.PlayerWon);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.NotOver);
+});
+
+test('didPlayerWin detects normal win for player 2', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 14;
+  TEST_BOARD.homeState[Player.Two] = 15;
+  TEST_BOARD.pointsState[3][Player.One] = 1;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.NotOver);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.PlayerWon);
+});
+
+test('didPlayerWin detects gammon win for player 1', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 15;
+  TEST_BOARD.homeState[Player.Two] = 0;
+  TEST_BOARD.pointsState[17][Player.Two] = 2;
+  TEST_BOARD.pointsState[21][Player.Two] = 5;
+  TEST_BOARD.pointsState[22][Player.Two] = 4;
+  TEST_BOARD.pointsState[23][Player.Two] = 4;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.PlayerWonGammon);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.NotOver);
+});
+
+test('didPlayerWin detects gammon win for player 2', () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 0;
+  TEST_BOARD.homeState[Player.Two] = 15;
+  TEST_BOARD.pointsState[8][Player.One] = 2;
+  TEST_BOARD.pointsState[4][Player.One] = 5;
+  TEST_BOARD.pointsState[3][Player.One] = 4;
+  TEST_BOARD.pointsState[1][Player.One] = 4;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.NotOver);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.PlayerWonGammon);
+});
+
+test('didPlayerWin detects backgammon win for player 1', () => {
+  // Scenario where other player has checker on the bar.
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 15;
+  TEST_BOARD.homeState[Player.Two] = 0;
+  TEST_BOARD.barState[Player.Two] = 1;
+  TEST_BOARD.pointsState[17][Player.Two] = 2;
+  TEST_BOARD.pointsState[21][Player.Two] = 4;
+  TEST_BOARD.pointsState[22][Player.Two] = 4;
+  TEST_BOARD.pointsState[23][Player.Two] = 4;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.PlayerWonBackgammon);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.NotOver);
+
+  // Scenario where other player has checker in homeboard.
+  TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 15;
+  TEST_BOARD.homeState[Player.Two] = 0;
+  TEST_BOARD.pointsState[4][Player.Two] = 1;
+  TEST_BOARD.pointsState[17][Player.Two] = 2;
+  TEST_BOARD.pointsState[21][Player.Two] = 4;
+  TEST_BOARD.pointsState[22][Player.Two] = 4;
+  TEST_BOARD.pointsState[23][Player.Two] = 4;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.PlayerWonBackgammon);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.NotOver);
+});
+
+test('didPlayerWin detects backgammon win for player 2', () => {
+  // Scenario where other player has checker on the bar.
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 0;
+  TEST_BOARD.homeState[Player.Two] = 15;
+  TEST_BOARD.barState[Player.One] = 1;
+  TEST_BOARD.pointsState[9][Player.One] = 2;
+  TEST_BOARD.pointsState[4][Player.One] = 4;
+  TEST_BOARD.pointsState[3][Player.One] = 4;
+  TEST_BOARD.pointsState[1][Player.One] = 4;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.NotOver);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.PlayerWonBackgammon);
+
+  // Scenario where other player has checker in homeboard.
+  TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 0;
+  TEST_BOARD.homeState[Player.Two] = 15;
+  TEST_BOARD.pointsState[19][Player.One] = 1;
+  TEST_BOARD.pointsState[9][Player.One] = 2;
+  TEST_BOARD.pointsState[4][Player.One] = 4;
+  TEST_BOARD.pointsState[3][Player.One] = 4;
+  TEST_BOARD.pointsState[1][Player.One] = 4;
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.One,
+  )).toEqual(GameResult.NotOver);
+
+  expect(didPlayerWin(
+    TEST_BOARD,
+    Player.Two,
+  )).toEqual(GameResult.PlayerWonBackgammon);
 });
