@@ -314,16 +314,6 @@
   width: 70%;
 }
 
-.Dice {
-  display: flex;
-  height: 10%;
-  justify-content: center;
-  position: absolute;
-  top: 45%;
-  width: 100%;
-  z-index: 3;
-}
-
 .Submit-button-wrapper {
   height: 100%;
   margin-left: 2.5%;
@@ -465,14 +455,25 @@
 /********
  * DICE *
  ********/
+ .Dice {
+  display: flex;
+  height: 4.63vw;
+  justify-content: center;
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  z-index: 3;
+}
+
 .Die-faces {
   align-items: center;
-  /* animation: rolling 10s 1.5s linear infinite reverse; */
+
+
   display: flex;
-  height: 100%;
+  height: 4vw;
   justify-content: center;
   transform-style: preserve-3d;
-  width: 11.6%;
+  width: 4vw;
 
   /* display: flex;
   flex-direction: column;
@@ -485,53 +486,78 @@
 }
 
 .Die-face {
-  background: linear-gradient(45deg, #4caf50, #607d8b);
-  border: 3px solid #ffffff69;
+  border: 0.3vw solid #ffffff69;
   color: white;
   display: grid;
-  font-size: 10em;
-  gap: 10px;
+  gap: 0.4vw;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   height: 100%;
+  padding: 0.2vw;
   position: absolute;
   width: 100%;
 }
 
+.Die-faces.white .Die-face {
+  background-color: rgb(226, 213, 223);
+}
+
+.Die-faces.black .Die-face {
+  background-color: rgb(56, 48, 27);
+}
+
 .Die-pip {
-  background-color: #fff;
   border-radius: 50%;
   height: 95%;
   width: 95%;
 }
 
-.Die.white {
-  background-color: rgb(226, 213, 223);
+.Die-faces.white .Die-pip {
+  background-color: black;
 }
 
-.Die.black {
-  background-color: rgb(56, 48, 27);
+.Die-faces.black .Die-pip {
+  background-color: white;
+}
+
+.Die-faces.one {
+  transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+}
+.Die-faces.two {
+  transform: rotateX(450deg) rotateY(720deg) rotateZ(270deg);
+}
+.Die-faces.three {
+  transform: rotateX(90deg) rotateY(270deg) rotateZ(360deg);
+}
+.Die-faces.four {
+  transform: rotateX(270deg) rotateY(810deg) rotateZ(360deg);
+}
+.Die-faces.five {
+  transform: rotateX(270deg) rotateY(0deg) rotateZ(270deg);
+}
+.Die-faces.six {
+  transform: rotateX(360deg) rotateY(900deg) rotateZ(90deg);
 }
 
 .Die-face.one {
-  transform: translateZ(125px);
+  transform: translateZ(2vw);
 }
 .Die-face.two {
-  transform: translateZ(-125px) rotateY(-90deg);
+  transform: translateZ(-2vw) rotateY(-90deg);
   transform-origin: left;
 }
 .Die-face.three {
-  transform: translateY(125px) rotateX(90deg) rotateY(180deg);
+  transform: translateY(2vw) rotateX(90deg) rotateY(180deg);
 }
 .Die-face.four {
-  transform: translateY(-125px) rotateX(90deg);
+  transform: translateY(-2vw) rotateX(90deg);
 }
 .Die-face.five {
-  transform: translateZ(-125px) rotateY(90deg);
+  transform: translateZ(-2vw) rotateY(90deg);
   transform-origin: right;
 }
 .Die-face.six {
-  transform: translateZ(-125px) rotateY(180deg);
+  transform: translateZ(-2vw) rotateY(180deg);
 }
 
 .Die-pip.one {

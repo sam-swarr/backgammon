@@ -13,7 +13,16 @@ const Die: FunctionComponent<DieProps> = ({
   color,
 }: DieProps) => {
   return (
-    <div className="Die-faces" data-roll="1">
+    <div className={cx("Die-faces", {
+      "white": color === Color.White,
+      "black": color === Color.Black,
+      "one": dieValue === 1,
+      "two": dieValue === 2,
+      "three": dieValue === 3,
+      "four": dieValue === 4,
+      "five": dieValue === 5,
+      "six": dieValue === 6,
+    })}>
       <div className={cx("Die-face", "one")}>
         <div className={cx("Die-pip", "five")} />
       </div>
@@ -48,7 +57,6 @@ const Die: FunctionComponent<DieProps> = ({
         <div className={cx("Die-pip", "nine")} />
       </div>
     </div>
-    
   );
 
   // <div className={cx("Die", {
