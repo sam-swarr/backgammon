@@ -316,23 +316,25 @@
 }
 
 .Submit-button-wrapper {
-  height: 100%;
-  margin-left: 2.5%;
-  width: 12%;
+  height: 4vw;
+  width: 4vw;
 }
 
 .Submit-button {
+  background: url(submit-button.svg) no-repeat top left;
+  background-size: contain;
   height: 100%;
   width: 100%;
 }
 
 .Undo-button-wrapper {
-  height: 100%;
-  margin-right: 2.5%;
-  width: 12%;
+  height: 4vw;
+  width: 4vw;
 }
 
 .Undo-button {
+  background: url(undo-button.svg) no-repeat top left;
+  background-size: contain;
   height: 100%;
   width: 100%;
 }
@@ -457,6 +459,7 @@
  * DICE *
  ********/
  .Dice {
+  align-items: center;
   display: flex;
   height: 4.63vw;
   left: 10%;

@@ -1,12 +1,12 @@
-import cx from "classnames";
 import { FunctionComponent } from "react";
 
 import { useAppDispatch } from './store/hooks';
-import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
-import { clearProvisionalMoves } from './store/provisionalMovesSlice';
 
 import {Color} from './Types';
 import Die from "./Die";
+import SubmitMoveButton from "./SubmitMoveButton";
+import UndoMoveButton from "./UndoButton";
+
 
 type DiceProps = {
   currentPlayerColor: Color,
@@ -26,27 +26,10 @@ const Dice: FunctionComponent<DiceProps> = ({
   const dispatch = useAppDispatch();
   return (
       <div className={"Dice"}>
-        <div className={"Undo-button-wrapper"}>
-          <button
-            className={"Undo-button"}
-            hidden={!hasProvisionalMoves}
-            onClick={() => {
-              dispatch(clearProvisionalMoves());
-              dispatch(clearHighlightedMoves());
-            }}>
-            Undo
-          </button>
-        </div>
+        <UndoMoveButton hasProvisionalMoves={hasProvisionalMoves} />
         <Die dieValue={diceValues[0]} color={currentPlayerColor} />
         <Die dieValue={diceValues[1]} color={currentPlayerColor} />
-        <div className={"Submit-button-wrapper"}>
-          <button
-            className={"Submit-button"}
-            hidden={!canSubmit}
-            onClick={() => {submitButtonHandler()}}>
-            Submit
-          </button>
-        </div>
+        <SubmitMoveButton canSubmit={canSubmit} submitButtonHandler={submitButtonHandler} />
       </div>
   );
 }
