@@ -58,13 +58,6 @@ const Die: FunctionComponent<DieProps> = ({
       </div>
     </div>
   );
-
-  // <div className={cx("Die", {
-  //   "white": color === Color.White,
-  //   "black": color === Color.Black,
-  // })}>
-  //   {dieValue}
-  // </div>
 }
 
 export default Die;
