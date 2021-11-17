@@ -458,31 +458,22 @@
  .Dice {
   display: flex;
   height: 4.63vw;
-  justify-content: center;
+  left: 10%;
+  justify-content: space-evenly;
   position: absolute;
   top: 45%;
-  width: 100%;
+  width: 80%;
   z-index: 3;
 }
 
 .Die-faces {
   align-items: center;
-
-
   display: flex;
   height: 4vw;
   justify-content: center;
   transform-style: preserve-3d;
+  transition: transform 1.3s ease-out;
   width: 4vw;
-
-  /* display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  margin-left: 2.5%;
-  margin-right: 2.5%;
-  text-align: center;
-  width: 11.6%; */
 }
 
 .Die-face {
@@ -524,40 +515,57 @@
   transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
 }
 .Die-faces.two {
-  transform: rotateX(450deg) rotateY(720deg) rotateZ(270deg);
+  transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
 }
 .Die-faces.three {
-  transform: rotateX(90deg) rotateY(270deg) rotateZ(360deg);
+  transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
 }
 .Die-faces.four {
-  transform: rotateX(270deg) rotateY(810deg) rotateZ(360deg);
+  transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
 }
 .Die-faces.five {
-  transform: rotateX(270deg) rotateY(0deg) rotateZ(270deg);
+  transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
 }
 .Die-faces.six {
-  transform: rotateX(360deg) rotateY(900deg) rotateZ(90deg);
+  transform: rotateX(360deg) rotateY(900deg) rotateZ(360deg);
+}
+
+.Die-faces.one.black {
+  transform: rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);
+}
+.Die-faces.two.black {
+  transform: rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);
+}
+.Die-faces.three.black {
+  transform: rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);
+}
+.Die-faces.four.black {
+  transform: rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);
+}
+.Die-faces.five.black {
+  transform: rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);
+}
+.Die-faces.six.black {
+  transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);
 }
 
 .Die-face.one {
-  transform: translateZ(2vw);
+  transform: rotate3d(0, 0, 0, 90deg) translateZ(2vw);
 }
 .Die-face.two {
-  transform: translateZ(-2vw) rotateY(-90deg);
-  transform-origin: left;
+  transform: rotate3d(-1, 0, 0, 90deg) translateZ(2vw);
 }
 .Die-face.three {
-  transform: translateY(2vw) rotateX(90deg) rotateY(180deg);
+  transform: rotate3d(0, 1, 0, 90deg) translateZ(2vw);
 }
 .Die-face.four {
-  transform: translateY(-2vw) rotateX(90deg);
+  transform: rotate3d(0, -1, 0, 90deg) translateZ(2vw);
 }
 .Die-face.five {
-  transform: translateZ(-2vw) rotateY(90deg);
-  transform-origin: right;
+  transform: rotate3d(1, 0, 0, 90deg) translateZ(2vw);
 }
 .Die-face.six {
-  transform: translateZ(-2vw) rotateY(180deg);
+  transform: rotate3d(1, 0, 0, 180deg) translateZ(2vw);
 }
 
 .Die-pip.one {
@@ -567,23 +575,17 @@
   grid-area: 1/3;
 }
 .Die-pip.four {
-  grid-area: 3/2;
+  grid-area: 2/1;
 }
 .Die-pip.five {
   grid-area: 2/2;
+}
+.Die-pip.six {
+  grid-area: 2/3;
 }
 .Die-pip.seven {
   grid-area: 3/1;
 }
 .Die-pip.nine {
   grid-area: 3/3;
-}
-
-@keyframes rolling {
-  0% {
-    transform: rotate3d(3, 4, 1, 0deg);
-  }
-  100% {
-    transform: rotate3d(3, 4, 1, 720deg);
-  }
 }
