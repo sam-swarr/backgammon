@@ -6,6 +6,7 @@ import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
 import { clearProvisionalMoves } from './store/provisionalMovesSlice';
 
 import {Color} from './Types';
+import Die from "./Die";
 
 type DiceProps = {
   currentPlayerColor: Color,
@@ -36,18 +37,8 @@ const Dice: FunctionComponent<DiceProps> = ({
             Undo
           </button>
         </div>
-        <div className={cx("Die", {
-          "white": currentPlayerColor === Color.White,
-          "black": currentPlayerColor === Color.Black,
-        })}>
-          {diceValues[0]}
-        </div>
-        <div className={cx("Die", {
-          "white": currentPlayerColor === Color.White,
-          "black": currentPlayerColor === Color.Black,
-        })}>
-          {diceValues[1]}
-        </div>
+        <Die dieValue={diceValues[0]} color={currentPlayerColor} />
+        <Die dieValue={diceValues[1]} color={currentPlayerColor} />
         <div className={"Submit-button-wrapper"}>
           <button
             className={"Submit-button"}
