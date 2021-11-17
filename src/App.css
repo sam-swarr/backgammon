@@ -14,11 +14,18 @@
 }
 
 .App-wrapper {
+  align-items: center;
   background-color: #282c34;
   display: flex;
   flex-direction: column;
-  height: 120vh;
+  height: 130vh;
   justify-content: center;
+  width: 130vw;
+}
+
+.App-wrapper.mainmenu {
+  height: 100vh;
+  width: 100vw;
 }
 
 .App-header {
@@ -53,8 +60,7 @@
   display: flex;
   height: 46.3vw;
   justify-content: center;
-  min-height: 46.3vw;
-  min-width: 100vw;
+  width: 100vw;
 }
 
 .Main-menu-wrapper {
@@ -70,9 +76,21 @@
 }
 
 .Title-wrapper {
-  font-size: 5vw;
-  margin-bottom: 10vh;
   text-shadow: 4px 4px 6px black;
+}
+
+@media screen and (orientation: landscape) {
+  .Title-wrapper {
+    font-size: 5vw;
+    margin-bottom: 10vh;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Title-wrapper {
+    font-size: 10vw;
+    margin-bottom: 4vh;
+  }
 }
 
 .Menu-button-wrapper {
@@ -86,9 +104,21 @@
   border-radius: 1vw;
   border-width: 0.5vw;
   font-family: 'Barlow', sans-serif;
-  height: 10vh;
   margin: 2vh;
-  width: 20vw;
+}
+
+@media screen and (orientation: landscape) {
+  .Local-multiplayer-button, .Online-multiplayer-button {
+    height: 15vh;
+    width: 25vw;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Local-multiplayer-button, .Online-multiplayer-button {
+    height: 9vh;
+    width: 50vw;
+  }
 }
 
 .Game-board-half {
@@ -335,10 +365,14 @@
   width: 100%;
 }
 
+.mainmenu .Settings-menu-button-wrapper {
+  right: 2vw;
+}
+
 .Settings-menu-button-wrapper {
   position: absolute;
-  right: 1vw;
-  top: 1vw;
+  right: -28vw;
+  top: 2vw;
 }
 
 .Settings-menu .modal-content {
@@ -402,8 +436,20 @@
 .Settings-menu-button {
   background: url(gear.svg) no-repeat top left;
   background-size: contain;
-  height: 3vw;
-  width: 3vw;
+}
+
+@media screen and (orientation: landscape) {
+  .Settings-menu-button {
+    height: 3vw;
+    width: 3vw;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Settings-menu-button {
+    height: 3vh;
+    width: 3vh;
+  }
 }
 
 .Game-over-dialog .modal-content {

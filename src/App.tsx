@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import cx from "classnames";
 import './App.css';
 
 import { GameState } from './store/gameStateSlice';
@@ -40,7 +41,9 @@ const App: FunctionComponent<AppProps> = () => {
   }
 
   return (
-    <div className={"App-wrapper"}>
+    <div className={cx("App-wrapper", {
+      "mainmenu": gameState === GameState.NotStarted,
+    })}>
       <SettingsMenuButton />
       <SettingsMenu />
       <GameOverDialog />
