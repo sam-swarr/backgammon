@@ -10,11 +10,13 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
 import { appendProvisionalMove, clearProvisionalMoves } from './store/provisionalMovesSlice';
 import { setShowGameOverDialog } from './store/settingsSlice';
-import {Color, GameResult, MovementDirection, Player, ValidMove} from './Types';
+import {Color, GameBoardState, GameResult, MovementDirection, Player, ValidMove} from './Types';
 import Bar from './Bar';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
 import Home from './Home';
+import { appendAnimation } from './store/animationsSlice';
+import { calculateTranslationOffsets } from './store/animations';
 
 type GameBoardProps = {
   currentPlayer: Player,
@@ -73,6 +75,15 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           moveToApply = movesToApply[i];
         }
       }
+      dispatch(appendAnimation({
+        point: moveToApply.move.to,
+        translation: calculateTranslationOffsets(
+          gameBoardState,
+          moveToApply,
+          currentPlayer,
+          playerMovementDirection,
+        ),
+      }));
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
     } else if (pointClicked !== "HOME") {
