@@ -1078,3 +1078,34 @@ test('areProvisionalMovesSubmittable ensures max die value is used when not all 
     ],
   )).toEqual(true);
 });
+
+test('areProvisionalMovesSubmittable handles situations where not all doubles can be used', () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+
+  TEST_BOARD.pointsState[1] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[7] = {[Player.One]: 2, [Player.Two]: 0};
+
+  TEST_BOARD.pointsState[17] = {[Player.One]: 0, [Player.Two]: 1};
+  TEST_BOARD.pointsState[18] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[19] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[20] = {[Player.One]: 0, [Player.Two]: 2};
+  TEST_BOARD.pointsState[21] = {[Player.One]: 0, [Player.Two]: 0};
+  TEST_BOARD.pointsState[22] = {[Player.One]: 0, [Player.Two]: 3};
+  TEST_BOARD.pointsState[23] = {[Player.One]: 0, [Player.Two]: 3};
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [6,6,6,6],
+    Player.Two,
+    [],
+  )).toEqual(false);
+
+  expect(areProvisionalMovesSubmittable(
+    TEST_BOARD,
+    [6,6,6,6],
+    Player.Two,
+    [
+      {dieUsed: 6, move: {from: 17, to: 23}},
+    ],
+  )).toEqual(true);
+});

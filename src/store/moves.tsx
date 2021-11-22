@@ -204,12 +204,14 @@ export function getAllPossibleMoveSetsImpl(
     currentPlayer,
   );
 
-  // Base Case: This was the last die to use.
+  // Base Case: if there are no further moves, return the moveSet up to this point.
+  if (allPossibleMoves.length === 0) {
+    return [[...moveSet]];
+  }
+
+  // Base Case: if this was the last die to use, append each possible move from this
+  // state to the moveSet so far, and return.
   if (dieIndex === dieRolls.length - 1) {
-    // If there are no further moves, just return the moveSet up to this point.
-    if (allPossibleMoves.length === 0) {
-      return [[...moveSet]];
-    }
     return allPossibleMoves.map(move => [...moveSet, move]);
   }
 
