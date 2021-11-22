@@ -60,7 +60,7 @@
   display: flex;
   height: 36.92vw;
   justify-content: center;
-  width:80vw;
+  width: 80vw;
 }
 
 .Main-menu-wrapper {
@@ -461,7 +461,7 @@
  .Dice {
   align-items: center;
   display: flex;
-  height: 4.63vw;
+  height: 3.69vw;
   left: 10%;
   justify-content: space-evenly;
   position: absolute;
