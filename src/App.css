@@ -18,9 +18,9 @@
   background-color: #282c34;
   display: flex;
   flex-direction: column;
-  height: 130vh;
+  height: 100vh;
   justify-content: center;
-  width: 130vw;
+  width: 100vw;
 }
 
 .App-wrapper.mainmenu {
@@ -58,9 +58,9 @@
   background-color: #282c34;
   color: white;
   display: flex;
-  height: 46.3vw;
+  height: 36.92vw;
   justify-content: center;
-  width: 100vw;
+  width:80vw;
 }
 
 .Main-menu-wrapper {
@@ -345,7 +345,7 @@
 
 .Settings-menu-button-wrapper {
   position: absolute;
-  right: -28vw;
+  right: 2vw;
   top: 2vw;
 }
 
