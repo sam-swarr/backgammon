@@ -30,6 +30,7 @@ export type ValidMove = {
     to: number | "HOME",
   },
   dieUsed: number,
+  isHit: boolean,
 };
 
 export type AppliableMove = {

@@ -1,6 +1,7 @@
 import { deepCloneGameBoardState } from '../gameBoardSlice';
 import {
   areProvisionalMovesSubmittable,
+  CanOccupyResult,
   canPlayerOccupyPoint,
   getAllPossibleMoveSets,
   getAllPossibleMovesForGivenDieRoll,
@@ -103,49 +104,49 @@ test('canPlayerOccupyPoint works', () => {
     STARTING_BOARD_STATE, // boardState
     "HOME", // toPoint
     Player.One, // currentPlayer
-  )).toEqual(true);
+  )).toEqual(CanOccupyResult.Yes);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     "HOME", // toPoint
     Player.Two, // currentPlayer
-  )).toEqual(true);
+  )).toEqual(CanOccupyResult.Yes);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     23, // toPoint
     Player.One, // currentPlayer
-  )).toEqual(true);
+  )).toEqual(CanOccupyResult.Yes);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     23, // toPoint
     Player.Two, // currentPlayer
-  )).toEqual(false);
+  )).toEqual(CanOccupyResult.No);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     22, // toPoint
     Player.One, // currentPlayer
-  )).toEqual(true);
+  )).toEqual(CanOccupyResult.Yes);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     22, // toPoint
     Player.Two, // currentPlayer
-  )).toEqual(true);
+  )).toEqual(CanOccupyResult.Yes);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     0, // toPoint
     Player.One, // currentPlayer
-  )).toEqual(false);
+  )).toEqual(CanOccupyResult.No);
 
   expect(canPlayerOccupyPoint(
     STARTING_BOARD_STATE, // boardState
     0, // toPoint
     Player.Two, // currentPlayer
-  )).toEqual(true);
+  )).toEqual(CanOccupyResult.Yes);
 });
 
 test('hasAllCheckersInHomeBoard works', () => {
@@ -395,6 +396,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
       from: 3,
       to: 1,
     },
+    isHit: false,
   });
   expect(getMoveIfValid(
     TEST_BOARD,
@@ -407,6 +409,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
       from: 4,
       to: 2,
     },
+    isHit: false,
   });
 
   // This is a valid move since die roll is exact.
@@ -421,6 +424,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
       from: 3,
       to: "HOME",
     },
+    isHit: false,
   });
 
   // This is an invalid move since there is a checker on the 5 point that
@@ -442,7 +446,8 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
     move: {
       from: 4,
       to: 'HOME',
-    }
+    },
+    isHit: false,
   });
 
   // This is a valid move since die roll is exact.
@@ -457,6 +462,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
       from: 0,
       to: "HOME",
     },
+    isHit: false,
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -470,6 +476,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
       from: 3,
       to: 2,
     },
+    isHit: false,
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -483,6 +490,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.One', () => {
       from: 4,
       to: 3,
     },
+    isHit: false,
   });
 });
 
@@ -510,6 +518,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 20,
       to: 22,
     },
+    isHit: false,
   });
   expect(getMoveIfValid(
     TEST_BOARD,
@@ -522,6 +531,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 19,
       to: 21,
     },
+    isHit: false,
   });
 
   // This is a valid move since die roll is exact.
@@ -536,6 +546,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 20,
       to: "HOME",
     },
+    isHit: false,
   });
 
   // This is an invalid move since there is a checker on the 5 point that
@@ -558,6 +569,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 19,
       to: 'HOME',
     },
+    isHit: false,
   });
 
   // This is a valid move since die roll is exact.
@@ -572,6 +584,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 23,
       to: "HOME",
     },
+    isHit: false,
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -585,6 +598,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 20,
       to: 21,
     },
+    isHit: false,
   });
   // This is also a valid move since player is not obligated to bear off.
   expect(getMoveIfValid(
@@ -598,6 +612,7 @@ test('getMoveIfValid properly handles bearing off rules for Player.Two', () => {
       from: 19,
       to: 20,
     },
+    isHit: false,
   });
 });
 
@@ -630,6 +645,7 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
       from: 17,
       to: 15,
     },
+    isHit: true,
   });
 
   // Player already has 2 checkers at destination.
@@ -644,6 +660,7 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
       from: 17,
       to: 14,
     },
+    isHit: false,
   });
 
   // Player already has a checker at destination.
@@ -658,6 +675,7 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
       from: 17,
       to: 13,
     },
+    isHit: false,
   });
 
   // Destination is empty.
@@ -672,6 +690,7 @@ test('getMoveIfValid returns valid Move for Player.One if destination point is o
       from: 17,
       to: 12,
     },
+    isHit: false,
   });
 });
 
@@ -704,6 +723,7 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
       from: 12,
       to: 14,
     },
+    isHit: true,
   });
 
   // Player already has 2 checkers at destination.
@@ -718,6 +738,7 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
       from: 12,
       to: 15,
     },
+    isHit: false,
   });
 
   // Player already has a checker at destination.
@@ -732,6 +753,7 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
       from: 12,
       to: 16,
     },
+    isHit: false,
   });
 
   // Destination is empty.
@@ -746,6 +768,7 @@ test('getMoveIfValid returns valid Move for Player.Two if destination point is o
       from: 12,
       to: 17,
     },
+    isHit: false,
   });
 });
 
@@ -761,9 +784,9 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     1,
     Player.One,
   )).toEqual([
-    {dieUsed: 1, move: {from: 5, to: 4}},
-    {dieUsed: 1, move: {from: 7, to: 6}},
-    {dieUsed: 1, move: {from: 23, to: 22}},
+    {dieUsed: 1, move: {from: 5, to: 4}, isHit: false},
+    {dieUsed: 1, move: {from: 7, to: 6}, isHit: false},
+    {dieUsed: 1, move: {from: 23, to: 22}, isHit: false},
   ]);
 
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -771,9 +794,9 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     1,
     Player.Two,
   )).toEqual([
-    {dieUsed: 1, move: {from: 0, to: 1}},
-    {dieUsed: 1, move: {from: 16, to: 17}},
-    {dieUsed: 1, move: {from: 18, to: 19}},
+    {dieUsed: 1, move: {from: 0, to: 1}, isHit: false},
+    {dieUsed: 1, move: {from: 16, to: 17}, isHit: false},
+    {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
   ]);
 
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -781,10 +804,10 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     2,
     Player.One,
   )).toEqual([
-    {dieUsed: 2, move: {from: 5, to: 3}},
-    {dieUsed: 2, move: {from: 7, to: 5}},
-    {dieUsed: 2, move: {from: 12, to: 10}},
-    {dieUsed: 2, move: {from: 23, to: 21}},
+    {dieUsed: 2, move: {from: 5, to: 3}, isHit: false},
+    {dieUsed: 2, move: {from: 7, to: 5}, isHit: false},
+    {dieUsed: 2, move: {from: 12, to: 10}, isHit: false},
+    {dieUsed: 2, move: {from: 23, to: 21}, isHit: false},
   ]);
 
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -792,10 +815,10 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     2,
     Player.Two,
   )).toEqual([
-    {dieUsed: 2, move: {from: 0, to: 2}},
-    {dieUsed: 2, move: {from: 11, to: 13}},
-    {dieUsed: 2, move: {from: 16, to: 18}},
-    {dieUsed: 2, move: {from: 18, to: 20}},
+    {dieUsed: 2, move: {from: 0, to: 2}, isHit: false},
+    {dieUsed: 2, move: {from: 11, to: 13}, isHit: false},
+    {dieUsed: 2, move: {from: 16, to: 18}, isHit: false},
+    {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
   ]);
 
   let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
@@ -809,7 +832,7 @@ test('getAllPossibleMovesForGivenDieRoll works', () => {
     2,
     Player.Two,
   )).toEqual([
-    {dieUsed: 2, move: {from: "BAR", to: 1}},
+    {dieUsed: 2, move: {from: "BAR", to: 1}, isHit: false},
   ]);
   // No moves since Player One is blocked from entering off the bar.
   expect(getAllPossibleMovesForGivenDieRoll(
@@ -830,32 +853,32 @@ test('getAllPossibleMoveSets works', () => {
     Player.Two,
   )).toEqual([
     [
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 2, move: {from: 19, to: 21}},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 2, move: {from: 19, to: 21}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 2, move: {from: 20, to: 22}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 2, move: {from: 20, to: 22}, isHit: false},
     ],
     [
-      {dieUsed: 2, move: {from: 18, to: 20}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
     ],
     [
-      {dieUsed: 2, move: {from: 18, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
     ],
     [
-      {dieUsed: 2, move: {from: 19, to: 21}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 2, move: {from: 19, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
     ],
     [
-      {dieUsed: 2, move: {from: 19, to: 21}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 2, move: {from: 19, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
     ],
   ]);
 });
@@ -871,10 +894,10 @@ test('getAllPossibleMoveSets works when not all dice can be used', () => {
     Player.Two,
   )).toEqual([
     [
-      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
     ],
     [
-      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
     ],
   ]);
 });
@@ -890,64 +913,64 @@ test('getAllPossibleMoveSets works with doubles', () => {
     Player.Two,
   )).toEqual([
     [
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 19, to: 20}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
-      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
     ],
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
-      {dieUsed: 1, move: {from: 22, to: 23}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
+      {dieUsed: 1, move: {from: 22, to: 23}, isHit: false},
     ],
   ]);
 });
@@ -955,13 +978,13 @@ test('getAllPossibleMoveSets works with doubles', () => {
 test('maxDieValueUsedInMoveSet works', () => {
   expect(maxDieValueUsedInMoveSet([])).toEqual(0);
   expect(maxDieValueUsedInMoveSet([
-    {dieUsed: 1, move: {from: 19, to: 20}},
-    {dieUsed: 3, move: {from: 19, to: 22}},
-    {dieUsed: 2, move: {from: 19, to: 21}},
+    {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+    {dieUsed: 3, move: {from: 19, to: 22}, isHit: false},
+    {dieUsed: 2, move: {from: 19, to: 21}, isHit: false},
   ])).toEqual(3);
   expect(maxDieValueUsedInMoveSet([
-    {dieUsed: 5, move: {from: 10, to: 15}},
-    {dieUsed: 5, move: {from: 12, to: 17}},
+    {dieUsed: 5, move: {from: 10, to: 15}, isHit: false},
+    {dieUsed: 5, move: {from: 12, to: 17}, isHit: false},
   ])).toEqual(5);
 });
 
@@ -982,7 +1005,7 @@ test('areProvisionalMovesSubmittable ensures as many dice as possible are used',
     [1,2],
     Player.Two,
     [
-      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
     ],
   )).toEqual(false);
 
@@ -991,8 +1014,8 @@ test('areProvisionalMovesSubmittable ensures as many dice as possible are used',
     [1,2],
     Player.Two,
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
     ],
   )).toEqual(true);
 });
@@ -1013,7 +1036,7 @@ test('areProvisionalMovesSubmittable ensures as many dice as possible are used (
     [1, 1, 1, 1],
     Player.Two,
     [
-      {dieUsed: 1, move: {from: 22, to: 23}},
+      {dieUsed: 1, move: {from: 22, to: 23}, isHit: false},
     ]
   )).toEqual(false);
   expect(areProvisionalMovesSubmittable(
@@ -1021,8 +1044,8 @@ test('areProvisionalMovesSubmittable ensures as many dice as possible are used (
     [1, 1, 1, 1],
     Player.Two,
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 22, to: 23}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 22, to: 23}, isHit: false},
     ]
   )).toEqual(false);
   expect(areProvisionalMovesSubmittable(
@@ -1030,9 +1053,9 @@ test('areProvisionalMovesSubmittable ensures as many dice as possible are used (
     [1, 1, 1, 1],
     Player.Two,
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
-      {dieUsed: 1, move: {from: 22, to: 23}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
+      {dieUsed: 1, move: {from: 22, to: 23}, isHit: false},
     ]
   )).toEqual(false);
   expect(areProvisionalMovesSubmittable(
@@ -1040,10 +1063,10 @@ test('areProvisionalMovesSubmittable ensures as many dice as possible are used (
     [1, 1, 1, 1],
     Player.Two,
     [
-      {dieUsed: 1, move: {from: 19, to: 20}},
-      {dieUsed: 1, move: {from: 20, to: 21}},
-      {dieUsed: 1, move: {from: 21, to: 22}},
-      {dieUsed: 1, move: {from: 22, to: 23}},
+      {dieUsed: 1, move: {from: 19, to: 20}, isHit: false},
+      {dieUsed: 1, move: {from: 20, to: 21}, isHit: false},
+      {dieUsed: 1, move: {from: 21, to: 22}, isHit: false},
+      {dieUsed: 1, move: {from: 22, to: 23}, isHit: false},
     ]
   )).toEqual(true);
 });
@@ -1065,7 +1088,7 @@ test('areProvisionalMovesSubmittable ensures max die value is used when not all 
     [1,2],
     Player.Two,
     [
-      {dieUsed: 1, move: {from: 18, to: 19}},
+      {dieUsed: 1, move: {from: 18, to: 19}, isHit: false},
     ],
   )).toEqual(false);
 
@@ -1074,7 +1097,7 @@ test('areProvisionalMovesSubmittable ensures max die value is used when not all 
     [1,2],
     Player.Two,
     [
-      {dieUsed: 2, move: {from: 18, to: 20}},
+      {dieUsed: 2, move: {from: 18, to: 20}, isHit: false},
     ],
   )).toEqual(true);
 });
@@ -1105,7 +1128,7 @@ test('areProvisionalMovesSubmittable handles situations where not all doubles ca
     [6,6,6,6],
     Player.Two,
     [
-      {dieUsed: 6, move: {from: 17, to: 23}},
+      {dieUsed: 6, move: {from: 17, to: 23}, isHit: false},
     ],
   )).toEqual(true);
 });

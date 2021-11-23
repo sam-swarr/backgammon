@@ -37,16 +37,29 @@ export function getIndexAfterMoving(
   }
 }
 
+export enum CanOccupyResult {
+  No = "NO",
+  Yes = "YES",
+  Hit = "HIT",
+};
+
 export function canPlayerOccupyPoint(
   gameBoardState: GameBoardState,
   toPoint: number | "HOME",
   currentPlayer: Player,
-): boolean {
+): CanOccupyResult {
   if (toPoint === "HOME") {
-    return true;
+    return CanOccupyResult.Yes;
   }
   const pointState = getPointStateAtIndex(gameBoardState, toPoint);
-  return currentPlayer === Player.One ? (pointState[Player.Two] < 2) : (pointState[Player.One] < 2);
+  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
+  if (pointState[otherPlayer] >= 2) {
+    return CanOccupyResult.No;
+  } else if (pointState[otherPlayer] === 1) {
+    return CanOccupyResult.Hit;
+  } else {
+    return CanOccupyResult.Yes;
+  }
 }
 
 export function hasAllCheckersInHomeBoard(
@@ -139,17 +152,19 @@ export function getMoveIfValid(
 
   // Otherwise, as long as destination point is not occupied by 2+ opposing checkers,
   // the move is valid.
-  if (canPlayerOccupyPoint(
+  const canOccupy = canPlayerOccupyPoint(
     gameBoardState,
     toPointIndex,
     currentPlayer,
-  )) {
+  )
+  if (canOccupy === CanOccupyResult.Yes || canOccupy === CanOccupyResult.Hit) {
     return {
       move: {
         from: fromPoint,
         to: toPointIndex,
       },
       dieUsed: dieValue,
+      isHit: canOccupy === CanOccupyResult.Hit,
     };
   }
 
