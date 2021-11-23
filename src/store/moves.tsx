@@ -4,12 +4,15 @@ import { GameBoardState, Player, PointState, ValidMove } from '../Types';
 
 export function getPointStateAtIndex(
   gameBoardState: GameBoardState,
-  pointIndex: number | "BAR",
+  pointIndex: number | "BAR" | "HOME",
 ): PointState {
   if (pointIndex === "BAR") {
     return gameBoardState.barState;
+  } else if (pointIndex === "HOME") {
+    return gameBoardState.homeState;
+  } else {
+    return gameBoardState.pointsState[pointIndex];
   }
-  return gameBoardState.pointsState[pointIndex];
 }
 
 export function doesPlayerOccupyBar(

@@ -41,15 +41,9 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
       playerOneColor : playerTwoColor;
 
     const animationForCurrentChecker = animations.find((animation) => animation.checkerNumber === i + 1);
-    if (animationForCurrentChecker != null) {
-      checkers.push(
-        <Checker key={i} color={color} animation={animationForCurrentChecker} location={pointNumber} />
-      );
-    } else {
-      checkers.push(
-        <Checker key={i} color={color} location={pointNumber} />
-      );
-    }
+    checkers.push(
+      <Checker key={i} color={color} animation={animationForCurrentChecker} location={pointNumber} />
+    );
   }
 
   const topOrBottomClass = {

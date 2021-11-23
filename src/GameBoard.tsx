@@ -77,6 +77,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           moveToApply = movesToApply[i];
         }
       }
+
       dispatch(addAnimation({
         player: currentPlayer,
         location: moveToApply.move.to,
@@ -87,6 +88,24 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerMovementDirection,
         ),
       }));
+
+      if (moveToApply.isHit) {
+        const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
+        dispatch(addAnimation({
+          player: otherPlayer,
+          location: "BAR",
+          animation: calculateTranslationOffsets(
+            gameBoardState,
+            {
+              from: moveToApply.move.to,
+              to: "BAR",
+            },
+            otherPlayer,
+            playerMovementDirection,
+          ),
+        }));
+      }
+
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
     } else if (pointClicked !== "HOME") {
@@ -271,7 +290,9 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     clickHandler={boardPointClickHandler}
     currentPlayer={currentPlayer}
     playerOneColor={playerOneColor}
-    playerTwoColor={playerTwoColor} />;
+    playerTwoColor={playerTwoColor}
+    playerOneAnimations={animations[Player.One].HOME}
+    playerTwoAnimations={animations[Player.Two].HOME} />;
 
   return (
     <div className="Game-board-wrapper">
@@ -288,7 +309,9 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         barState={gameBoardState.barState}
         clickHandler={boardPointClickHandler}
         playerOneColor={playerOneColor}
-        playerTwoColor={playerTwoColor} />
+        playerTwoColor={playerTwoColor}
+        playerOneAnimations={animations[Player.One].BAR}
+        playerTwoAnimations={animations[Player.Two].BAR} />
       <div className="Game-board-half">
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}

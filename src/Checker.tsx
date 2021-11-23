@@ -4,10 +4,10 @@ import { getTranslationOffsetStyleString } from "./store/animations";
 import { Animation, clearAnimation } from "./store/animationsSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 
-import {Color} from './Types';
+import {Color, Player} from './Types';
 
 type CheckerProps = {
-  animation?: Animation,
+  animation: Animation | undefined | null,
   color: Color,
   location: number | "HOME" | "BAR",
 };
@@ -22,6 +22,7 @@ const Checker: FunctionComponent<CheckerProps> = ({
   ] = useAppSelector((state) => [
     state.currentPlayer,
   ]);
+  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
   const dispatch = useAppDispatch();
   const colorClass = color === Color.White ? "white" : "black";
   const ref = React.useRef(null);
@@ -43,7 +44,7 @@ const Checker: FunctionComponent<CheckerProps> = ({
           timeout={0}
           onEntered={() => {
             setTimeout(() => dispatch(clearAnimation({
-              player: currentPlayer,
+              player: location === "BAR" ? otherPlayer: currentPlayer,
               checkerNumber: animation.checkerNumber,
               location,
             })), 300) }}>

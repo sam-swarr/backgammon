@@ -18,9 +18,11 @@ Support both local and networked mulitplayer:
 
 
 TODO:
-  - animate checkers moving (figure out CSSTransition)
-  
-  - style dice and undo / submit buttons
+  - finish checker animation
+    - need to animate checkers moving back from the bar when undoing a move that includes a hit 
+    - test animation when bearing off / undoing
+
+  - don't show submit button until dice are done rolling (in cases where there are no valid moves)
 
   - dice fade as dice are used provisionally
 
@@ -30,5 +32,5 @@ TODO:
 
   - allow players to start new game from game over dialog (maintain current stakes score)
 
-  - online mulitplayer
+  - online multiplayer
   
