@@ -1,17 +1,17 @@
 import { GameBoardState, MovementDirection, Player, ValidMove } from "../Types";
 import { Animation, TranslationOffset } from "./animationsSlice";
 
+const POINT_WIDTH = 5.333;
+const BAR_WIDTH = 3.2;
+const CHECKER_HEIGHT = 2.667;
+const BOARD_HEIGHT = 36.92;
+
 export function calculateTranslationOffsets(
   gameBoardState: GameBoardState,
   move: ValidMove,
   currentPlayer: Player,
   playerMovementDirection: MovementDirection,
 ): Animation {
-  const POINT_WIDTH = 5.333;
-  const BAR_WIDTH = 3.2;
-  const CHECKER_HEIGHT = 2.667;
-  const BOARD_HEIGHT = 36.92;
-
   const fromPoint = move.move.from;
   const toPoint = move.move.to;
 
@@ -25,38 +25,15 @@ export function calculateTranslationOffsets(
     };
   }
   if (playerMovementDirection === MovementDirection.CounterClockwise) {
-    let pointsFromLeftBefore;
-    if (fromPoint >= 12) {
-      pointsFromLeftBefore = fromPoint - 11;
-    } else {
-      pointsFromLeftBefore = 12 - fromPoint;
-    }
-    const fromX = pointsFromLeftBefore * POINT_WIDTH + (pointsFromLeftBefore > 6 ? BAR_WIDTH : 0);
-
-    let pointsFromLeftAfter;
-    if (toPoint >= 12) {
-      pointsFromLeftAfter = toPoint - 11;
-    } else {
-      pointsFromLeftAfter = 12 - toPoint;
-    }
-    const toX = pointsFromLeftAfter * POINT_WIDTH + (pointsFromLeftAfter > 6 ? BAR_WIDTH : 0);
+    const fromX = calculateDistanceOnXAxisCCW(fromPoint);
+    const toX = calculateDistanceOnXAxisCCW(toPoint);
 
     const fromNumberOfCheckers = gameBoardState.pointsState[fromPoint][currentPlayer];
+    const fromY = calculateDistanceOnYAxis(fromPoint, fromNumberOfCheckers);
+
+    // Add one since the checker hasn't logically been moved yet.
     const toNumberOfCheckers = gameBoardState.pointsState[toPoint][currentPlayer] + 1;
-
-    let fromY;
-    if (fromPoint >= 12) {
-      fromY = CHECKER_HEIGHT * (fromNumberOfCheckers - 1);
-    } else {
-      fromY = BOARD_HEIGHT - (CHECKER_HEIGHT * fromNumberOfCheckers);
-    }
-
-    let toY;
-    if (toPoint >= 12) {
-      toY = CHECKER_HEIGHT * (toNumberOfCheckers - 1);
-    } else {
-      toY = BOARD_HEIGHT - (CHECKER_HEIGHT * toNumberOfCheckers);
-    }
+    const toY = calculateDistanceOnYAxis(toPoint, toNumberOfCheckers);
 
     return {
       translation: {
@@ -64,13 +41,66 @@ export function calculateTranslationOffsets(
         translateY: fromY - toY,
       },
     };
-  } else {
+  }
+  // MovementDirection.Clockwise
+  else {
+    const fromX = calculateDistanceOnXAxisCW(fromPoint);
+    const toX = calculateDistanceOnXAxisCW(toPoint);
+
+    const fromNumberOfCheckers = gameBoardState.pointsState[fromPoint][currentPlayer];
+    const fromY = calculateDistanceOnYAxis(fromPoint, fromNumberOfCheckers);
+
+    // Add one since the checker hasn't logically been moved yet.
+    const toNumberOfCheckers = gameBoardState.pointsState[toPoint][currentPlayer] + 1;
+    const toY = calculateDistanceOnYAxis(toPoint, toNumberOfCheckers);
+
     return {
       translation: {
-        translateX: 0,
-        translateY: 0,
+        translateX: fromX - toX,
+        translateY: fromY - toY,
       },
     };
+  }
+}
+
+function calculateDistanceOnXAxisCCW(
+  point: number,
+): number {
+  // Calculate how many points from the left edge of the board.
+  let pointsFromLeft;
+  if (point >= 12) {
+    pointsFromLeft = point - 11;
+  } else {
+    pointsFromLeft = 12 - point;
+  }
+  // Convert to vw units, accounting for the bar if necessary.
+  return pointsFromLeft * POINT_WIDTH + (pointsFromLeft > 6 ? BAR_WIDTH : 0);
+}
+
+function calculateDistanceOnXAxisCW(
+  point: number,
+): number {
+  // Calculate how many points from the left edge of the board.
+  let pointsFromLeft;
+  if (point >= 12) {
+    pointsFromLeft = 24 - point;
+  } else {
+    pointsFromLeft = point + 1;
+  }
+  // Convert to vw units, accounting for the bar if necessary.
+  return pointsFromLeft * POINT_WIDTH + (pointsFromLeft > 6 ? BAR_WIDTH : 0);
+}
+
+function calculateDistanceOnYAxis(
+  point: number,
+  numCheckers: number,
+): number {
+  if (point >= 12) {
+    // These points are on the top of the screen. Checkers are stacked from the top edge down.
+    return CHECKER_HEIGHT * (numCheckers - 1);
+  } else {
+    // These points are on the bottom of the screen. Checkers are stacked from the bottom edge up.
+    return BOARD_HEIGHT - (CHECKER_HEIGHT * numCheckers);
   }
 }
 
