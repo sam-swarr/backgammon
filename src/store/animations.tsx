@@ -39,9 +39,6 @@ export function calculateTranslationOffsets(
       pointsFromLeftAfter = 12 - toPoint;
     }
     const toX = pointsFromLeftAfter * POINT_WIDTH + (pointsFromLeftAfter > 6 ? BAR_WIDTH : 0);
-  
-    console.log("translate X: ", toX - fromX);
-
 
     const fromNumberOfCheckers = gameBoardState.pointsState[fromPoint][currentPlayer];
     const toNumberOfCheckers = gameBoardState.pointsState[toPoint][currentPlayer] + 1;
@@ -67,4 +64,8 @@ export function calculateTranslationOffsets(
   } else {
     return {translateX: 0, translateY: 0};
   }
+}
+
+export function getTranslationOffsetStyleString(offset: TranslationOffset): string {
+  return "translate(" + offset.translateX + "vw, " + offset.translateY + "vw)";
 }

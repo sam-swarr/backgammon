@@ -18,6 +18,8 @@ Support both local and networked mulitplayer:
 
 
 TODO:
+  - animate checkers moving (figure out CSSTransition)
+  
   - style dice and undo / submit buttons
 
   - dice fade as dice are used provisionally

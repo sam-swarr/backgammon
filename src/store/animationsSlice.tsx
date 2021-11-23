@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { TranslationOffset } from './animations';
 
-type Animation = {
+export type Animation = {
   point: number | "BAR" | "HOME",
   translation: TranslationOffset
 };
