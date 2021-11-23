@@ -243,6 +243,7 @@
 .Checker {
   border-radius: 50%;
   padding-top: 50%;
+  transition: transform 0.3s ease-out;
   width: 50%;
 }
 

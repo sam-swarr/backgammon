@@ -3,7 +3,7 @@ import cx from "classnames";
 
 import Checker from './Checker';
 import {Color, ValidMove, Player, PointState} from './Types';
-import { useAppSelector } from "./store/hooks";
+import { Animation } from "./store/animationsSlice";
 
 type BoardPointProps = {
   pointState: PointState,
@@ -13,6 +13,7 @@ type BoardPointProps = {
   pointNumber: number,
   clickHandler: (fromPoint: number | "BAR") => void,
   highlightedMoves: ValidMove[],
+  animation: Animation | null,
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -23,13 +24,8 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   pointNumber,
   clickHandler,
   highlightedMoves,
+  animation,
 }: BoardPointProps) => {
-  const [
-    animations
-  ] = useAppSelector((state) => [
-    state.animations
-  ]);
-  const animation = animations.find((a) => a.point === pointNumber);
 
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
@@ -44,14 +40,13 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
     const color = occupyingPlayer === Player.One ?
       playerOneColor : playerTwoColor;
 
-    
     if (animation != null && i === checkerCount - 1) {
       checkers.push(
-        <Checker key={i} color={color} animation={animation} />
+        <Checker key={i} color={color} animation={animation} location={pointNumber} />
       );
     } else {
       checkers.push(
-        <Checker key={i} color={color} />
+        <Checker key={i} color={color} location={pointNumber} />
       );
     }
   }

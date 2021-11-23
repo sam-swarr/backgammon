@@ -1,16 +1,12 @@
 import { GameBoardState, MovementDirection, Player, ValidMove } from "../Types";
-
-export type TranslationOffset = {
-  translateX: number,
-  translateY: number,
-};
+import { Animation, TranslationOffset } from "./animationsSlice";
 
 export function calculateTranslationOffsets(
   gameBoardState: GameBoardState,
   move: ValidMove,
   currentPlayer: Player,
   playerMovementDirection: MovementDirection,
-): TranslationOffset {
+): Animation {
   const POINT_WIDTH = 5.333;
   const BAR_WIDTH = 3.2;
   const CHECKER_HEIGHT = 2.667;
@@ -21,7 +17,12 @@ export function calculateTranslationOffsets(
 
   if (fromPoint === 'BAR' || toPoint === 'HOME') {
     // TODO
-    return {translateX: 0, translateY: 0};
+    return {
+      translation: {
+        translateX: 0,
+        translateY: 0,
+      },
+    };
   }
   if (playerMovementDirection === MovementDirection.CounterClockwise) {
     let pointsFromLeftBefore;
@@ -58,11 +59,18 @@ export function calculateTranslationOffsets(
     }
 
     return {
-      translateX: fromX - toX,
-      translateY: fromY - toY,
+      translation: {
+        translateX: fromX - toX,
+        translateY: fromY - toY,
+      },
     };
   } else {
-    return {translateX: 0, translateY: 0};
+    return {
+      translation: {
+        translateX: 0,
+        translateY: 0,
+      },
+    };
   }
 }
 

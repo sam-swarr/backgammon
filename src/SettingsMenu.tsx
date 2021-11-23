@@ -44,7 +44,7 @@ const SettingsMenu: FunctionComponent<SettingsMenuProps> = () => {
           <div
             className={"Settings-menu-checker-wrapper"}
             onClick={togglePlayerColor}>
-            <Checker color={settings.playerOneColor} />
+            <Checker color={settings.playerOneColor} location={"HOME"} />
           </div>
         </div>
         <div className={"Settings-option-row bottom"}>

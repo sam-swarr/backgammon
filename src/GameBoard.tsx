@@ -15,7 +15,7 @@ import Bar from './Bar';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
 import Home from './Home';
-import { appendAnimation } from './store/animationsSlice';
+import { addAnimation } from './store/animationsSlice';
 import { calculateTranslationOffsets } from './store/animations';
 
 type GameBoardProps = {
@@ -36,11 +36,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     originalGameBoardState,
     highlightedMoves,
     provisionalMoves,
+    animations,
   ] = useAppSelector((state) => [
     state.dice,
     state.gameBoard,
     state.highlightedMoves.moves,
     state.provisionalMoves,
+    state.animations,
   ]);
   const dispatch = useAppDispatch();
 
@@ -75,9 +77,10 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           moveToApply = movesToApply[i];
         }
       }
-      dispatch(appendAnimation({
-        point: moveToApply.move.to,
-        translation: calculateTranslationOffsets(
+      dispatch(addAnimation({
+        player: currentPlayer,
+        location: moveToApply.move.to,
+        animation: calculateTranslationOffsets(
           gameBoardState,
           moveToApply,
           currentPlayer,
@@ -157,7 +160,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 11; i >= 6; i--) {
@@ -170,7 +174,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 18; i <= 23; i++) {
@@ -183,7 +188,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 5; i >= 0; i--) {
@@ -196,7 +202,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
   } else {
@@ -210,7 +217,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 0; i <= 5; i++) {
@@ -223,7 +231,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 17; i >= 12; i--) {
@@ -236,7 +245,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 6; i <= 11; i++) {
@@ -249,7 +259,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
-          pointNumber={i} />
+          pointNumber={i}
+          animation={animations[currentPlayer].points[i]} />
       );
     }
   }

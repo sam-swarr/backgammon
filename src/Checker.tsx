@@ -1,38 +1,55 @@
-import { FunctionComponent } from "react";
-import { CSSTransition } from 'react-transition-group';
+import React, { FunctionComponent } from "react";
+import { Transition } from 'react-transition-group';
 import { getTranslationOffsetStyleString } from "./store/animations";
-import { Animation } from "./store/animationsSlice";
+import { Animation, clearAnimation } from "./store/animationsSlice";
+import { useAppDispatch } from "./store/hooks";
 
 import {Color} from './Types';
 
 type CheckerProps = {
   animation?: Animation,
   color: Color,
+  location: number | "HOME" | "BAR",
 };
 
-const Checker: FunctionComponent<CheckerProps> = ({ color, animation }: CheckerProps) => {
+const Checker: FunctionComponent<CheckerProps> = ({
+  color,
+  animation,
+  location,
+}: CheckerProps) => {
+  const dispatch = useAppDispatch();
   const colorClass = color === Color.White ? "white" : "black";
+  const ref = React.useRef(null);
 
-  let styles = {};
-  // if (animation != null) {
-  //   // styles = {
-  //   //   transform: getTranslationOffsetStyleString(animation.translation),
-  //   // };
+  if (animation != null) {
+    const transitionStyles = {
+      entering: { transform: getTranslationOffsetStyleString(animation.translation) },
+      entered: { transform: 'none' },
+      exiting: {},
+      exited: {},
+      unmounted: {},
+    };
 
     return(
-      // TODO: figure out how this works
-      <CSSTransition
+      <Transition
           in={true}
-          timeout={3000}
-          classNames="checker-animate">
-        <div className={"Checker " + colorClass} style={styles}  />
-      </CSSTransition>
+          appear={true}
+          nodeRef={ref}
+          timeout={0}
+          onEntered={() => { setTimeout(() => dispatch(clearAnimation({ location })), 300) }}>
+        {state => (
+          <div
+            className={"Checker " + colorClass}
+            ref={ref}
+            style={transitionStyles[state]} />
+        )}
+      </Transition>
     );
-  // }
+  }
 
-  // return (
-  //   <div className={"Checker " + colorClass} style={styles}  />
-  // );
+  return (
+    <div className={"Checker " + colorClass} />
+  );
 }
 
 export default Checker;

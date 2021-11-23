@@ -24,14 +24,14 @@ const Home: FunctionComponent<HomeProps> = ({
   const playerOneCheckers = [];
   for (let i = 0; i < homeState[Player.One]; i++) {
     playerOneCheckers.push(
-      <Checker key={i} color={playerOneColor} />
+      <Checker key={i} color={playerOneColor} location={"HOME"} />
     );
   }
 
   const playerTwoCheckers = [];
   for (let i = 0; i < homeState[Player.Two]; i++) {
     playerTwoCheckers.push(
-      <Checker key={i} color={playerTwoColor} />
+      <Checker key={i} color={playerTwoColor} location={"HOME"} />
     );
   }
 

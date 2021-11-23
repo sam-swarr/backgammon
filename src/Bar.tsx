@@ -18,14 +18,14 @@ const Bar: FunctionComponent<BarProps> = ({
   const playerOneCheckers = [];
   for (let i = 0; i < barState[Player.One]; i++) {
     playerOneCheckers.push(
-      <Checker key={i} color={playerOneColor} />
+      <Checker key={i} color={playerOneColor} location={"BAR"} />
     );
   }
 
   const playerTwoCheckers = [];
   for (let i = 0; i < barState[Player.Two]; i++) {
     playerTwoCheckers.push(
-      <Checker key={i} color={playerTwoColor} />
+      <Checker key={i} color={playerTwoColor} location={"BAR"} />
     );
   }
 
