@@ -98,7 +98,7 @@ test('applyMoveToGameBoardState handles entering from the bar', () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    {dieUsed: 2, move: {from: "BAR", to: 22}},
+    {from: "BAR", to: 22},
     Player.One,
   );
 
@@ -118,7 +118,7 @@ test('applyMoveToGameBoardState handles bearing off', () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    {dieUsed: 6, move: {from: 5, to: "HOME"}},
+    {from: 5, to: "HOME"},
     Player.One,
   );
 
@@ -138,7 +138,7 @@ test('applyMoveToGameBoardState handles moving', () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    {dieUsed: 1, move: {from: 5, to: 4}},
+    {from: 5, to: 4},
     Player.One,
   );
 
@@ -160,7 +160,7 @@ test('applyMoveToGameBoardState handles hitting a blot', () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    {dieUsed: 1, move: {from: 22, to: 23}},
+    {from: 22, to: 23},
     Player.Two,
   );
 
@@ -181,7 +181,7 @@ test('applyMoveToGameBoardState handles hitting a blot 2', () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    {dieUsed: 2, move: {from: 12, to: 10}},
+    {from: 12, to: 10},
     Player.One,
   );
 
