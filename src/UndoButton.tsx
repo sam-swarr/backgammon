@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
-import { clearProvisionalMoves, removeLastProvisionalMove } from './store/provisionalMovesSlice';
+import { removeLastProvisionalMove } from './store/provisionalMovesSlice';
 import { addAnimation } from './store/animationsSlice';
-import { GameBoardState, Player, ValidMove } from './Types';
+import { GameBoardState } from './Types';
 import { calculateTranslationOffsets } from './store/animations';
 import { applyMoveToGameBoardState } from './store/gameBoardSlice';
 
@@ -15,6 +15,8 @@ type UndoMoveButtonProps = {
 const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
   provisionalGameBoardState,
 }: UndoMoveButtonProps) => {
+  const [disableUndoButton, setDisableUndoButton] = useState(false);
+
   const [
     provisionalMoves,
     currentPlayer,
@@ -30,8 +32,9 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
     <div className={"Undo-button-wrapper"}>
       <div
         className={"Undo-button"}
-        hidden={provisionalMoves.length <= 0}
+        hidden={provisionalMoves.length <= 0 || disableUndoButton}
         onClick={() => {
+          setDisableUndoButton(true);
           let boardState = provisionalGameBoardState;
           // Setup animations to show the undoing of provisional moves.
           // Each provisional move is undone one at a time, with enough
@@ -58,6 +61,9 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
                 inverseMove,
                 currentPlayer,
               )
+              if (i === 0) {
+                setDisableUndoButton(false);
+              }
             } else {
               setTimeout(() => {
                 dispatch(addAnimation({
@@ -76,6 +82,9 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
                   inverseMove,
                   currentPlayer,
                 )
+                if (i === 0) {
+                  setDisableUndoButton(false);
+                }
               }, (provisionalMoves.length - 1 - i) * 300);
             }
           }
