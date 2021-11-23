@@ -32,6 +32,11 @@ export type ValidMove = {
   dieUsed: number,
 };
 
+export type AppliableMove = {
+  from: number | "BAR" | "HOME",
+  to: number | "BAR" | "HOME",
+}
+
 export enum GameResult {
   NotOver = "NOT_OVER",
   PlayerWon = "PLAYER_WON",

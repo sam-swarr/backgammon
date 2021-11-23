@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import {STARTING_BOARD_STATE} from '../Constants';
-import { GameBoardState, GameResult, Player, ValidMove } from '../Types';
+import { AppliableMove, GameBoardState, GameResult, Player, ValidMove } from '../Types';
 
 type ApplyMovesState = {
   moves: ValidMove[],
@@ -16,7 +16,7 @@ export const gameBoardSlice = createSlice({
       return action.payload.moves.reduce((prevBoardState, currMove) => {
         return applyMoveToGameBoardState(
           prevBoardState,
-          currMove,
+          currMove.move,
           action.payload.currentPlayer,
         );
       }, state);
@@ -49,21 +49,25 @@ export function deepCloneGameBoardState(
 
 export function applyMoveToGameBoardState(
   gameBoardState: GameBoardState,
-  move: ValidMove,
+  move: AppliableMove,
   currentPlayer: Player,
 ): GameBoardState {
   const opponent = currentPlayer === Player.One ? Player.Two : Player.One;
   const result = deepCloneGameBoardState(gameBoardState);
-  if (move.move.from === "BAR") {
+  if (move.from === "BAR") {
     result.barState[currentPlayer] -= 1;
+  } else if (move.from === "HOME") {
+    result.homeState[currentPlayer] -= 1;
   } else {
-    result.pointsState[move.move.from][currentPlayer] -= 1;
+    result.pointsState[move.from][currentPlayer] -= 1;
   }
 
-  if (move.move.to === "HOME") {
+  if (move.to === "HOME") {
     result.homeState[currentPlayer] += 1;
+  } else if (move.to === "BAR") {
+    result.barState[currentPlayer] += 1;
   } else {
-    const destPoint = result.pointsState[move.move.to];
+    const destPoint = result.pointsState[move.to];
     if (destPoint[opponent] > 1) {
       console.error("Trying to apply invalid move. Destination occupied by 2+ opposing checkers");
       console.error(gameBoardState);
@@ -78,7 +82,6 @@ export function applyMoveToGameBoardState(
 
   return result;
 }
-
 export function didPlayerWin(
   gameBoardState: GameBoardState,
   currentPlayer: Player,

@@ -15,7 +15,7 @@ import Bar from './Bar';
 import BoardPoint from './BoardPoint';
 import Dice from './Dice';
 import Home from './Home';
-import { addAnimation } from './store/animationsSlice';
+import { addAnimation, clearAnimation } from './store/animationsSlice';
 import { calculateTranslationOffsets } from './store/animations';
 
 type GameBoardProps = {
@@ -54,7 +54,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
     return applyMoveToGameBoardState(
       prevBoardState,
-      currMove,
+      currMove.move,
       currentPlayer,
     );
   }, originalGameBoardState);
@@ -82,7 +82,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         location: moveToApply.move.to,
         animation: calculateTranslationOffsets(
           gameBoardState,
-          moveToApply,
+          moveToApply.move,
           currentPlayer,
           playerMovementDirection,
         ),
@@ -161,7 +161,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 11; i >= 6; i--) {
@@ -175,7 +175,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 18; i <= 23; i++) {
@@ -189,7 +189,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 5; i >= 0; i--) {
@@ -203,7 +203,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
   } else {
@@ -218,7 +218,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 0; i <= 5; i++) {
@@ -232,7 +232,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 17; i >= 12; i--) {
@@ -246,7 +246,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
     for (let i = 6; i <= 11; i++) {
@@ -260,7 +260,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animation={animations[currentPlayer].points[i]} />
+          animations={animations[currentPlayer].points[i]} />
       );
     }
   }
@@ -293,13 +293,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
           diceValues={dice}
-          hasProvisionalMoves={provisionalMoves.length > 0}
           canSubmit={areProvisionalMovesSubmittable(
             originalGameBoardState,
             dice,
             currentPlayer,
             provisionalMoves,
           )}
+          provisionalGameBoardState={gameBoardState}
           submitButtonHandler={submitButtonHandler} />
         <div className="Game-board-quadrant top">
           {topRightPoints}

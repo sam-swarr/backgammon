@@ -219,7 +219,7 @@ export function getAllPossibleMoveSetsImpl(
   allPossibleMoves.forEach(move => {
     const newGameBoardState = applyMoveToGameBoardState(
       gameBoardState,
-      move,
+      move.move,
       currentPlayer,
     );
     result = result.concat(

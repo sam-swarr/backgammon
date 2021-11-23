@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Transition } from 'react-transition-group';
 import { getTranslationOffsetStyleString } from "./store/animations";
 import { Animation, clearAnimation } from "./store/animationsSlice";
-import { useAppDispatch } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 
 import {Color} from './Types';
 
@@ -17,6 +17,11 @@ const Checker: FunctionComponent<CheckerProps> = ({
   animation,
   location,
 }: CheckerProps) => {
+  const [
+    currentPlayer,
+  ] = useAppSelector((state) => [
+    state.currentPlayer,
+  ]);
   const dispatch = useAppDispatch();
   const colorClass = color === Color.White ? "white" : "black";
   const ref = React.useRef(null);
@@ -36,7 +41,12 @@ const Checker: FunctionComponent<CheckerProps> = ({
           appear={true}
           nodeRef={ref}
           timeout={0}
-          onEntered={() => { setTimeout(() => dispatch(clearAnimation({ location })), 300) }}>
+          onEntered={() => {
+            setTimeout(() => dispatch(clearAnimation({
+              player: currentPlayer,
+              checkerNumber: animation.checkerNumber,
+              location,
+            })), 300) }}>
         {state => (
           <div
             className={"Checker " + colorClass}

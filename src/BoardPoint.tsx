@@ -13,7 +13,7 @@ type BoardPointProps = {
   pointNumber: number,
   clickHandler: (fromPoint: number | "BAR") => void,
   highlightedMoves: ValidMove[],
-  animation: Animation | null,
+  animations: Animation[],
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -24,7 +24,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   pointNumber,
   clickHandler,
   highlightedMoves,
-  animation,
+  animations,
 }: BoardPointProps) => {
 
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
@@ -40,9 +40,10 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
     const color = occupyingPlayer === Player.One ?
       playerOneColor : playerTwoColor;
 
-    if (animation != null && i === checkerCount - 1) {
+    const animationForCurrentChecker = animations.find((animation) => animation.checkerNumber === i + 1);
+    if (animationForCurrentChecker != null) {
       checkers.push(
-        <Checker key={i} color={color} animation={animation} location={pointNumber} />
+        <Checker key={i} color={color} animation={animationForCurrentChecker} location={pointNumber} />
       );
     } else {
       checkers.push(

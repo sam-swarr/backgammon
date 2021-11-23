@@ -7,13 +7,14 @@ export type TranslationOffset = {
 };
 
 export type Animation = {
+  checkerNumber: number,
   translation: TranslationOffset
 };
 
 export type AnimationState = {
-  points: Array<Animation | null>,
-  BAR: Animation | null,
-  HOME: Animation | null,
+  points: Array<Animation[]>,
+  BAR: Animation[],
+  HOME: Animation[],
 };
 
 export type Animations = {
@@ -24,23 +25,23 @@ export type Animations = {
 const initialState: Animations = {
   [Player.One]: {
     points: [
-      null, null, null, null, null, null,
-      null, null, null, null, null, null,
-      null, null, null, null, null, null,
-      null, null, null, null, null, null,
+      [], [], [], [], [], [],
+      [], [], [], [], [], [],
+      [], [], [], [], [], [],
+      [], [], [], [], [], [],
     ],
-    BAR: null,
-    HOME: null,
+    BAR: [],
+    HOME: [],
   },
   [Player.Two]: {
     points: [
-      null, null, null, null, null, null,
-      null, null, null, null, null, null,
-      null, null, null, null, null, null,
-      null, null, null, null, null, null,
+      [], [], [], [], [], [],
+      [], [], [], [], [], [],
+      [], [], [], [], [], [],
+      [], [], [], [], [], [],
     ],
-    BAR: null,
-    HOME: null,
+    BAR: [],
+    HOME: [],
   },
 };
 
@@ -51,6 +52,8 @@ export type AddAnimationPayload = {
 };
 
 export type ClearAnimationPayload = {
+  player: Player,
+  checkerNumber: number,
   location: number | "HOME" | "BAR",
 };
 
@@ -62,10 +65,10 @@ export const animationsSlice = createSlice({
       switch (action.payload.location) {
         case "HOME":
         case "BAR":
-          state[action.payload.player][action.payload.location] = action.payload.animation;
+          state[action.payload.player][action.payload.location].push(action.payload.animation);
           break;
         default:
-          state[action.payload.player].points[action.payload.location] = action.payload.animation;
+          state[action.payload.player].points[action.payload.location].push(action.payload.animation);
       }
       return state;
     },
@@ -73,12 +76,14 @@ export const animationsSlice = createSlice({
       switch (action.payload.location) {
         case "HOME":
         case "BAR":
-          state[Player.One][action.payload.location] = null;
-          state[Player.Two][action.payload.location] = null;
+          state[action.payload.player][action.payload.location] = state[action.payload.player][action.payload.location].filter(
+            (animation => animation.checkerNumber !== action.payload.checkerNumber)
+          );
           break;
         default:
-          state[Player.One].points[action.payload.location] = null;
-          state[Player.Two].points[action.payload.location] = null;
+          state[action.payload.player].points[action.payload.location] = state[action.payload.player].points[action.payload.location].filter(
+            (animation => animation.checkerNumber !== action.payload.checkerNumber)
+          );
       }
       return state;
     }
