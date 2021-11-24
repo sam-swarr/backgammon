@@ -37,6 +37,7 @@ export function calculateTranslationOffsets(
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
+      owner: currentPlayer,
     };
   }
   // MovementDirection.Clockwise
@@ -57,6 +58,7 @@ export function calculateTranslationOffsets(
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
+      owner: currentPlayer,
     };
   }
 }
@@ -65,7 +67,7 @@ function calculateDistanceOnXAxisCCW(
   point: number | "BAR" | "HOME",
 ): number {
   if (point === "BAR") {
-    return BOARD_HALF_WIDTH + BAR_WIDTH;
+    return BOARD_HALF_WIDTH + BAR_WIDTH + 1;
   } else if (point === "HOME") {
     return BOARD_HALF_WIDTH * 2 + BAR_WIDTH;
   } else {

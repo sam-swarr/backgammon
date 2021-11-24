@@ -17,12 +17,6 @@ const Checker: FunctionComponent<CheckerProps> = ({
   animation,
   location,
 }: CheckerProps) => {
-  const [
-    currentPlayer,
-  ] = useAppSelector((state) => [
-    state.currentPlayer,
-  ]);
-  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
   const dispatch = useAppDispatch();
   const colorClass = color === Color.White ? "white" : "black";
   const ref = React.useRef(null);
@@ -44,7 +38,7 @@ const Checker: FunctionComponent<CheckerProps> = ({
           timeout={0}
           onEntered={() => {
             setTimeout(() => dispatch(clearAnimation({
-              player: location === "BAR" ? otherPlayer: currentPlayer,
+              owner: animation.owner,
               checkerNumber: animation.checkerNumber,
               location,
             })), 300) }}>

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
 import { removeLastProvisionalMove } from './store/provisionalMovesSlice';
 import { addAnimation } from './store/animationsSlice';
-import { GameBoardState } from './Types';
+import { GameBoardState, Player } from './Types';
 import { calculateTranslationOffsets } from './store/animations';
 import { applyMoveToGameBoardState } from './store/gameBoardSlice';
 
@@ -45,8 +45,24 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
               to: provisionalMoves[i].move.from,
             };
             if (i === provisionalMoves.length - 1) {
+              // If we're undoing a hit, also add an animation for the checker that
+              // was captured.
+              if (provisionalMoves[i].isHit) {
+                const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
+                dispatch(addAnimation({
+                  location: provisionalMoves[i].move.to,
+                  animation: calculateTranslationOffsets(
+                    boardState,
+                    {
+                      from: "BAR",
+                      to: provisionalMoves[i].move.to,
+                    },
+                    otherPlayer,
+                    settings.movementDirection,
+                  ),
+                }));
+              }
               dispatch(addAnimation({
-                player: currentPlayer,
                 location: inverseMove.to,
                 animation: calculateTranslationOffsets(
                   boardState,
@@ -66,8 +82,24 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
               }
             } else {
               setTimeout(() => {
+                // If we're undoing a hit, also add an animation for the checker that
+                // was captured.
+                if (provisionalMoves[i].isHit) {
+                  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
+                  dispatch(addAnimation({
+                    location: provisionalMoves[i].move.to,
+                    animation: calculateTranslationOffsets(
+                      boardState,
+                      {
+                        from: "BAR",
+                        to: provisionalMoves[i].move.to,
+                      },
+                      otherPlayer,
+                      settings.movementDirection,
+                    ),
+                  }));
+                }
                 dispatch(addAnimation({
-                  player: currentPlayer,
                   location: inverseMove.to,
                   animation: calculateTranslationOffsets(
                     boardState,

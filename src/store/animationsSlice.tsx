@@ -7,52 +7,35 @@ export type TranslationOffset = {
 };
 
 export type Animation = {
+  owner: Player,
   checkerNumber: number,
   translation: TranslationOffset
 };
 
-export type AnimationState = {
+export type Animations = {
   points: Array<Animation[]>,
   BAR: Animation[],
   HOME: Animation[],
 };
 
-export type Animations = {
-  [Player.One]: AnimationState,
-  [Player.Two]: AnimationState,
-};
-
 const initialState: Animations = {
-  [Player.One]: {
-    points: [
-      [], [], [], [], [], [],
-      [], [], [], [], [], [],
-      [], [], [], [], [], [],
-      [], [], [], [], [], [],
-    ],
-    BAR: [],
-    HOME: [],
-  },
-  [Player.Two]: {
-    points: [
-      [], [], [], [], [], [],
-      [], [], [], [], [], [],
-      [], [], [], [], [], [],
-      [], [], [], [], [], [],
-    ],
-    BAR: [],
-    HOME: [],
-  },
+  points: [
+    [], [], [], [], [], [],
+    [], [], [], [], [], [],
+    [], [], [], [], [], [],
+    [], [], [], [], [], [],
+  ],
+  BAR: [],
+  HOME: [],
 };
 
 export type AddAnimationPayload = {
-  player: Player,
   location: number| "HOME" | "BAR",
   animation: Animation,
 };
 
 export type ClearAnimationPayload = {
-  player: Player,
+  owner: Player,
   checkerNumber: number,
   location: number | "HOME" | "BAR",
 };
@@ -65,10 +48,10 @@ export const animationsSlice = createSlice({
       switch (action.payload.location) {
         case "HOME":
         case "BAR":
-          state[action.payload.player][action.payload.location].push(action.payload.animation);
+          state[action.payload.location].push(action.payload.animation);
           break;
         default:
-          state[action.payload.player].points[action.payload.location].push(action.payload.animation);
+          state.points[action.payload.location].push(action.payload.animation);
       }
       return state;
     },
@@ -76,13 +59,13 @@ export const animationsSlice = createSlice({
       switch (action.payload.location) {
         case "HOME":
         case "BAR":
-          state[action.payload.player][action.payload.location] = state[action.payload.player][action.payload.location].filter(
-            (animation => animation.checkerNumber !== action.payload.checkerNumber)
+          state[action.payload.location] = state[action.payload.location].filter(
+            (animation => animation.checkerNumber !== action.payload.checkerNumber && animation.owner !== action.payload.owner)
           );
           break;
         default:
-          state[action.payload.player].points[action.payload.location] = state[action.payload.player].points[action.payload.location].filter(
-            (animation => animation.checkerNumber !== action.payload.checkerNumber)
+          state.points[action.payload.location] = state.points[action.payload.location].filter(
+            (animation => animation.checkerNumber !== action.payload.checkerNumber && animation.owner !== action.payload.owner)
           );
       }
       return state;

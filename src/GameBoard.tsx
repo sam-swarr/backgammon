@@ -79,7 +79,6 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       }
 
       dispatch(addAnimation({
-        player: currentPlayer,
         location: moveToApply.move.to,
         animation: calculateTranslationOffsets(
           gameBoardState,
@@ -92,7 +91,6 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       if (moveToApply.isHit) {
         const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
         dispatch(addAnimation({
-          player: otherPlayer,
           location: "BAR",
           animation: calculateTranslationOffsets(
             gameBoardState,
@@ -180,7 +178,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
     for (let i = 11; i >= 6; i--) {
@@ -194,7 +192,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
     for (let i = 18; i <= 23; i++) {
@@ -208,7 +206,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
     for (let i = 5; i >= 0; i--) {
@@ -222,7 +220,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
   } else {
@@ -237,7 +235,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
     for (let i = 0; i <= 5; i++) {
@@ -251,7 +249,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
     for (let i = 17; i >= 12; i--) {
@@ -265,7 +263,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
     for (let i = 6; i <= 11; i++) {
@@ -279,7 +277,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations[currentPlayer].points[i]} />
+          animations={animations.points[i]} />
       );
     }
   }
@@ -291,8 +289,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     currentPlayer={currentPlayer}
     playerOneColor={playerOneColor}
     playerTwoColor={playerTwoColor}
-    playerOneAnimations={animations[Player.One].HOME}
-    playerTwoAnimations={animations[Player.Two].HOME} />;
+    playerOneAnimations={animations.HOME.filter((animation) => animation.owner === Player.One)}
+    playerTwoAnimations={animations.HOME.filter((animation) => animation.owner === Player.Two)} />;
 
   return (
     <div className="Game-board-wrapper">
@@ -310,8 +308,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         clickHandler={boardPointClickHandler}
         playerOneColor={playerOneColor}
         playerTwoColor={playerTwoColor}
-        playerOneAnimations={animations[Player.One].BAR}
-        playerTwoAnimations={animations[Player.Two].BAR} />
+        playerOneAnimations={animations.BAR.filter((animation) => animation.owner === Player.One)}
+        playerTwoAnimations={animations.BAR.filter((animation) => animation.owner === Player.Two)} />
       <div className="Game-board-half">
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
