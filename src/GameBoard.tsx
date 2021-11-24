@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { endTurn } from './store/currentPlayerSlice';
 import { getAvailableDice } from './store/dice';
@@ -45,6 +45,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     state.animations,
   ]);
   const dispatch = useAppDispatch();
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   const availableDice = getAvailableDice(
     dice,
@@ -131,6 +132,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   };
 
   const submitButtonHandler = () => {
+    // Temporarily prevent the submit button from showing up to avoid it
+    // appearing immediately when dice are still rolling when there are no
+    // legal moves.
+    setDisableSubmitButton(true);
+    setTimeout(() => { setDisableSubmitButton(false);}, 1300);
     dispatch(applyMoves({
       moves: provisionalMoves,
       currentPlayer: currentPlayer,
@@ -314,7 +320,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
           diceValues={dice}
-          canSubmit={areProvisionalMovesSubmittable(
+          canSubmit={!disableSubmitButton && areProvisionalMovesSubmittable(
             originalGameBoardState,
             dice,
             currentPlayer,

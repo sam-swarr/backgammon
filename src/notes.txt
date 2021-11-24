@@ -18,12 +18,6 @@ Support both local and networked mulitplayer:
 
 
 TODO:
-  - finish checker animation
-    - need to animate checkers moving back from the bar when undoing a move that includes a hit 
-    - test animation when bearing off / undoing
-
-  - don't show submit button until dice are done rolling (in cases where there are no valid moves)
-
   - dice fade as dice are used provisionally
 
   - add ability to double
