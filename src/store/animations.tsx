@@ -112,7 +112,7 @@ function calculateDistanceOnYAxis(
       return BAR_HALF_HEIGHT - (numCheckers * CHECKER_HEIGHT);
     } else {
       // Player Two's bar checkers are stacked on bottom half of bar from middle downward.
-      return BAR_HALF_HEIGHT + BAR_SPACER + (numCheckers * CHECKER_HEIGHT);
+      return BAR_HALF_HEIGHT + BAR_SPACER + ((numCheckers - 1) * CHECKER_HEIGHT);
     }
   } else if (point === "HOME") {
     if (currentPlayer === Player.One) {
