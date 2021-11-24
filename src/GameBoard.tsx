@@ -314,10 +314,12 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       <Bar
         barState={gameBoardState.barState}
         clickHandler={boardPointClickHandler}
+        currentPlayer={currentPlayer}
         playerOneColor={playerOneColor}
         playerTwoColor={playerTwoColor}
         playerOneAnimations={animations.BAR.filter((animation) => animation.owner === Player.One)}
-        playerTwoAnimations={animations.BAR.filter((animation) => animation.owner === Player.Two)} />
+        playerTwoAnimations={animations.BAR.filter((animation) => animation.owner === Player.Two)}
+        highlightedMoves={highlightedMoves} />
       <div className="Game-board-half">
         <Dice
           currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}

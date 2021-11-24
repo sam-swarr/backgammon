@@ -285,6 +285,18 @@
   flex-direction: column;
 }
 
+.Player-one-bar-checkers.highlight {
+  background-color: #e4cb6454;
+  border-bottom-left-radius: 5vh;
+  border-bottom-right-radius: 5vh;
+}
+
+.Player-two-bar-checkers.highlight {
+  background-color: #e4cb6454;
+  border-top-left-radius: 5vh;
+  border-top-right-radius: 5vh;
+}
+
 .Game-board-bar-spacer {
   height: 5%
 }

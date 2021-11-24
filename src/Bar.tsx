@@ -1,24 +1,30 @@
 import { FunctionComponent } from "react";
+import cx from "classnames";
+
 import Checker from "./Checker";
 import { Animation } from "./store/animationsSlice";
-import { Color, Player, PointState } from './Types';
+import { Color, Player, PointState, ValidMove } from './Types';
 
 type BarProps = {
   barState: PointState,
   clickHandler: Function,
+  currentPlayer: Player,
   playerOneColor: Color,
   playerTwoColor: Color,
   playerOneAnimations: Animation[],
   playerTwoAnimations: Animation[],
+  highlightedMoves: ValidMove[],
 };
 
 const Bar: FunctionComponent<BarProps> = ({
   barState,
   clickHandler,
+  currentPlayer,
   playerOneColor,
   playerTwoColor,
   playerOneAnimations,
-  playerTwoAnimations
+  playerTwoAnimations,
+  highlightedMoves,
 }: BarProps) => {
   const playerOneCheckers = [];
   for (let i = 0; i < barState[Player.One]; i++) {
@@ -36,13 +42,19 @@ const Bar: FunctionComponent<BarProps> = ({
     );
   }
 
+  const isHighlighted = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.from === "BAR");
+
   return (
     <div className="Game-board-bar" onClick={() => {clickHandler("BAR")}}>
-      <div className="Player-one-bar-checkers">
+      <div className={cx("Player-one-bar-checkers", {
+        highlight: isHighlighted && currentPlayer === Player.One,
+      })}>
         {playerOneCheckers}
       </div>
       <div className="Game-board-bar-spacer" />
-      <div className="Player-two-bar-checkers">
+      <div className={cx("Player-two-bar-checkers", {
+        highlight: isHighlighted && currentPlayer === Player.Two,
+      })}>
         {playerTwoCheckers}
       </div>
     </div>
