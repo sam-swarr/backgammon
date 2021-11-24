@@ -9,6 +9,8 @@ import { GameState, setState } from "./store/gameStateSlice";
 import { reset as resetCurrentPlayer } from './store/currentPlayerSlice';
 import { reset as resetDice } from './store/diceSlice';
 import { reset as resetGameBoard } from './store/gameBoardSlice';
+import { clearProvisionalMoves } from './store/provisionalMovesSlice';
+import { clearHighlightedMoves } from './store/highlightedMovesSlice';
 
 type GameOverDialogProps = {};
 
@@ -31,6 +33,8 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
     dispatch(resetDice());
     dispatch(resetGameBoard());
     dispatch(resetCurrentPlayer());
+    dispatch(clearProvisionalMoves());
+    dispatch(clearHighlightedMoves());
   };
 
   const winnerText = currentPlayer === Player.One ? "Player One" : "Player Two";

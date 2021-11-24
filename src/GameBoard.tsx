@@ -60,6 +60,31 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     );
   }, originalGameBoardState);
 
+  // Check for game win here after applying provisional moves.
+  const gameResult = didPlayerWin(gameBoardState, currentPlayer);
+  switch (gameResult) {
+    case GameResult.NotOver:
+      break;
+
+    case GameResult.PlayerWon:
+      dispatch(setState({ newState: GameState.GameOver }));
+      dispatch(setShowGameOverDialog(true));
+      break;
+
+    case GameResult.PlayerWonGammon:
+      dispatch(setState({ newState: GameState.GameOverGammon }));
+      dispatch(setShowGameOverDialog(true));
+      break;
+
+    case GameResult.PlayerWonBackgammon:
+      dispatch(setState({ newState: GameState.GameOverBackgammon }));
+      dispatch(setShowGameOverDialog(true));
+      break;
+
+    default:
+      console.error('Unhandled GameResult: ' + gameResult);
+  }
+
   const topLeftPoints = [];
   const bottomLeftPoints = [];
   const topRightPoints = [];
@@ -145,32 +170,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     }));
     dispatch(clearProvisionalMoves());
     dispatch(clearHighlightedMoves());
-
-    const gameResult = didPlayerWin(gameBoardState, currentPlayer);
-    switch (gameResult) {
-      case GameResult.NotOver:
-        dispatch(endTurn());
-        dispatch(rollDice());
-        break;
-
-      case GameResult.PlayerWon:
-        dispatch(setState({ newState: GameState.GameOver }));
-        dispatch(setShowGameOverDialog(true));
-        break;
-
-      case GameResult.PlayerWonGammon:
-        dispatch(setState({ newState: GameState.GameOverGammon }));
-        dispatch(setShowGameOverDialog(true));
-        break;
-
-      case GameResult.PlayerWonBackgammon:
-        dispatch(setState({ newState: GameState.GameOverBackgammon }));
-        dispatch(setShowGameOverDialog(true));
-        break;
-
-      default:
-        console.error('Unhandled GameResult: ' + gameResult);
-    }
+    dispatch(endTurn());
+    dispatch(rollDice());
   };
 
   const pointsState = gameBoardState.pointsState;
