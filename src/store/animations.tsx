@@ -69,7 +69,7 @@ function calculateDistanceOnXAxisCCW(
   if (point === "BAR") {
     return BOARD_HALF_WIDTH + BAR_WIDTH + 1;
   } else if (point === "HOME") {
-    return BOARD_HALF_WIDTH * 2 + BAR_WIDTH;
+    return BOARD_HALF_WIDTH * 2 + BAR_WIDTH + HOME_WIDTH;
   } else {
     // Calculate how many points from the left edge of the board.
     let pointsFromLeft;
