@@ -104,9 +104,9 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           ),
         }));
       }
-
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
+      return true;
     } else if (pointClicked !== "HOME") {
       const possibleMoves: ValidMove[] = [];
       const seenDieValues = new Set();
@@ -128,7 +128,9 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         lastPointClicked: pointClicked,
         moves: possibleMoves,
       }));
+      return possibleMoves.length > 0;
     }
+    return false;
   };
 
   const submitButtonHandler = () => {

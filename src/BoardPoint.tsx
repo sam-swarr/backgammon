@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import cx from "classnames";
 
 import Checker from './Checker';
@@ -11,7 +11,7 @@ type BoardPointProps = {
   playerOneColor: Color,
   playerTwoColor: Color,
   pointNumber: number,
-  clickHandler: (fromPoint: number | "BAR") => void,
+  clickHandler: (fromPoint: number | "BAR") => boolean,
   highlightedMoves: ValidMove[],
   animations: Animation[],
 };
@@ -26,11 +26,11 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   highlightedMoves,
   animations,
 }: BoardPointProps) => {
-
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
     console.error(pointState);
   }
+  const [showNoMoveHighlight, setShowNoMoveHighlight] = useState(false);
 
   const occupyingPlayer = pointState[Player.One] > pointState[Player.Two] ? Player.One : Player.Two;
   const checkerCount = pointState[Player.One] > pointState[Player.Two] ? pointState[Player.One] : pointState[Player.Two];
@@ -54,16 +54,25 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   let highlight = null;
   const isHighlightedFromPoint = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.from === pointNumber);
   const isHighlightedToPoint = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.to === pointNumber);
-  if (isHighlightedFromPoint || isHighlightedToPoint) {
+  if (isHighlightedFromPoint || isHighlightedToPoint || showNoMoveHighlight) {
     highlight = <div className={cx("Point-wrapper-highlight", {
       ...topOrBottomClass,
       "from": isHighlightedFromPoint,
       "to": isHighlightedToPoint,
+      "noMove": showNoMoveHighlight,
     })}/>;
   }
 
   return (
-    <div className={cx("Point-wrapper", topOrBottomClass)} onClick={() => {clickHandler(pointNumber)}}>
+    <div
+      className={cx("Point-wrapper", topOrBottomClass)}
+      onClick={() => {
+        const result = clickHandler(pointNumber);
+        if (!result) {
+          setShowNoMoveHighlight(true);
+          setTimeout(() => { setShowNoMoveHighlight(false); }, 1000);
+        }
+      }}>
       <div className={cx("Checkers-wrapper", topOrBottomClass)}>
         {checkers}
       </div>

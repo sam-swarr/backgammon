@@ -184,6 +184,21 @@
   background-color: #2ac4b154;
 }
 
+.Point-wrapper-highlight.noMove {
+  animation-duration: 1s;
+  animation-name: nomove;
+}
+
+@keyframes nomove {
+  from {
+    background-color: #c7262154;
+  }
+
+  to {
+    background-color: none;
+  }
+}
+
 .Point-wrapper-highlight.bottom {
   border-top-left-radius: 5vh;
   border-top-right-radius: 5vh;
