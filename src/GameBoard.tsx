@@ -1,28 +1,45 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from "react";
 
-import { endTurn } from './store/currentPlayerSlice';
-import { getAvailableDice } from './store/dice';
-import { rollDice } from './store/diceSlice';
-import { applyMoves, applyMoveToGameBoardState, didPlayerWin } from './store/gameBoardSlice';
-import { GameState, setState } from './store/gameStateSlice';
-import { clearHighlightedMoves, setHighlightedMoves } from './store/highlightedMovesSlice';
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import { areProvisionalMovesSubmittable, getMoveIfValid } from './store/moves';
-import { appendProvisionalMove, clearProvisionalMoves } from './store/provisionalMovesSlice';
-import { setShowGameOverDialog } from './store/settingsSlice';
-import {Color, GameBoardState, GameResult, MovementDirection, Player, ValidMove} from './Types';
-import Bar from './Bar';
-import BoardPoint from './BoardPoint';
-import Dice from './Dice';
-import Home from './Home';
-import { addAnimation, clearAnimation } from './store/animationsSlice';
-import { calculateTranslationOffsets } from './store/animations';
+import { endTurn } from "./store/currentPlayerSlice";
+import { getAvailableDice } from "./store/dice";
+import { rollDice } from "./store/diceSlice";
+import {
+  applyMoves,
+  applyMoveToGameBoardState,
+  didPlayerWin,
+} from "./store/gameBoardSlice";
+import { GameState, setState } from "./store/gameStateSlice";
+import {
+  clearHighlightedMoves,
+  setHighlightedMoves,
+} from "./store/highlightedMovesSlice";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { areProvisionalMovesSubmittable, getMoveIfValid } from "./store/moves";
+import {
+  appendProvisionalMove,
+  clearProvisionalMoves,
+} from "./store/provisionalMovesSlice";
+import { setShowGameOverDialog } from "./store/settingsSlice";
+import {
+  Color,
+  GameBoardState,
+  GameResult,
+  MovementDirection,
+  Player,
+  ValidMove,
+} from "./Types";
+import Bar from "./Bar";
+import BoardPoint from "./BoardPoint";
+import Dice from "./Dice";
+import Home from "./Home";
+import { addAnimation, clearAnimation } from "./store/animationsSlice";
+import { calculateTranslationOffsets } from "./store/animations";
 
 type GameBoardProps = {
-  currentPlayer: Player,
-  playerOneColor: Color,
-  playerTwoColor: Color,
-  playerMovementDirection: MovementDirection,
+  currentPlayer: Player;
+  playerOneColor: Color;
+  playerTwoColor: Color;
+  playerMovementDirection: MovementDirection;
 };
 
 const GameBoard: FunctionComponent<GameBoardProps> = ({
@@ -47,16 +64,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
-  const availableDice = getAvailableDice(
-    dice,
-    provisionalMoves,
-  );
+  const availableDice = getAvailableDice(dice, provisionalMoves);
 
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
     return applyMoveToGameBoardState(
       prevBoardState,
       currMove.move,
-      currentPlayer,
+      currentPlayer
     );
   }, originalGameBoardState);
 
@@ -82,7 +96,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       break;
 
     default:
-      console.error('Unhandled GameResult: ' + gameResult);
+      console.error("Unhandled GameResult: " + gameResult);
   }
 
   const topLeftPoints = [];
@@ -92,7 +106,9 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
 
   const boardPointClickHandler = (pointClicked: number | "BAR" | "HOME") => {
     // Check if player clicked on a highlighted destination.
-    const movesToApply = highlightedMoves.filter(m => m.move.to === pointClicked);
+    const movesToApply = highlightedMoves.filter(
+      (m) => m.move.to === pointClicked
+    );
     if (movesToApply.length > 0) {
       // There may be multiple potential moves to apply in the case where
       // both dice can bear a checker off. If this is the case, find the
@@ -104,30 +120,35 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         }
       }
 
-      dispatch(addAnimation({
-        location: moveToApply.move.to,
-        animation: calculateTranslationOffsets(
-          gameBoardState,
-          moveToApply.move,
-          currentPlayer,
-          playerMovementDirection,
-        ),
-      }));
-
-      if (moveToApply.isHit) {
-        const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
-        dispatch(addAnimation({
-          location: "BAR",
+      dispatch(
+        addAnimation({
+          location: moveToApply.move.to,
           animation: calculateTranslationOffsets(
             gameBoardState,
-            {
-              from: moveToApply.move.to,
-              to: "BAR",
-            },
-            otherPlayer,
-            playerMovementDirection,
+            moveToApply.move,
+            currentPlayer,
+            playerMovementDirection
           ),
-        }));
+        })
+      );
+
+      if (moveToApply.isHit) {
+        const otherPlayer =
+          currentPlayer === Player.One ? Player.Two : Player.One;
+        dispatch(
+          addAnimation({
+            location: "BAR",
+            animation: calculateTranslationOffsets(
+              gameBoardState,
+              {
+                from: moveToApply.move.to,
+                to: "BAR",
+              },
+              otherPlayer,
+              playerMovementDirection
+            ),
+          })
+        );
       }
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
@@ -141,7 +162,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
             gameBoardState,
             pointClicked,
             availableDice[i],
-            currentPlayer,
+            currentPlayer
           );
           if (possibleMove !== null) {
             possibleMoves.push(possibleMove);
@@ -149,10 +170,12 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         }
         seenDieValues.add(availableDice[i]);
       }
-      dispatch(setHighlightedMoves({
-        lastPointClicked: pointClicked,
-        moves: possibleMoves,
-      }));
+      dispatch(
+        setHighlightedMoves({
+          lastPointClicked: pointClicked,
+          moves: possibleMoves,
+        })
+      );
       return possibleMoves.length > 0;
     }
     return false;
@@ -163,11 +186,15 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     // appearing immediately when dice are still rolling when there are no
     // legal moves.
     setDisableSubmitButton(true);
-    setTimeout(() => { setDisableSubmitButton(false);}, 1300);
-    dispatch(applyMoves({
-      moves: provisionalMoves,
-      currentPlayer: currentPlayer,
-    }));
+    setTimeout(() => {
+      setDisableSubmitButton(false);
+    }, 1300);
+    dispatch(
+      applyMoves({
+        moves: provisionalMoves,
+        currentPlayer: currentPlayer,
+      })
+    );
     dispatch(clearProvisionalMoves());
     dispatch(clearHighlightedMoves());
     dispatch(endTurn());
@@ -187,7 +214,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
     for (let i = 11; i >= 6; i--) {
@@ -201,7 +229,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
     for (let i = 18; i <= 23; i++) {
@@ -215,7 +244,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
     for (let i = 5; i >= 0; i--) {
@@ -229,7 +259,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
   } else {
@@ -244,7 +275,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
     for (let i = 0; i <= 5; i++) {
@@ -258,7 +290,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
     for (let i = 17; i >= 12; i--) {
@@ -272,7 +305,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
     for (let i = 6; i <= 11; i++) {
@@ -286,31 +320,35 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]} />
+          animations={animations.points[i]}
+        />
       );
     }
   }
 
-  const home = <Home
-    homeState={gameBoardState.homeState}
-    isHighlighted={highlightedMoves.some(m => m.move.to === "HOME")}
-    clickHandler={boardPointClickHandler}
-    currentPlayer={currentPlayer}
-    playerOneColor={playerOneColor}
-    playerTwoColor={playerTwoColor}
-    playerOneAnimations={animations.HOME.filter((animation) => animation.owner === Player.One)}
-    playerTwoAnimations={animations.HOME.filter((animation) => animation.owner === Player.Two)} />;
+  const home = (
+    <Home
+      homeState={gameBoardState.homeState}
+      isHighlighted={highlightedMoves.some((m) => m.move.to === "HOME")}
+      clickHandler={boardPointClickHandler}
+      currentPlayer={currentPlayer}
+      playerOneColor={playerOneColor}
+      playerTwoColor={playerTwoColor}
+      playerOneAnimations={animations.HOME.filter(
+        (animation) => animation.owner === Player.One
+      )}
+      playerTwoAnimations={animations.HOME.filter(
+        (animation) => animation.owner === Player.Two
+      )}
+    />
+  );
 
   return (
     <div className="Game-board-wrapper">
       {playerMovementDirection === MovementDirection.Clockwise ? home : null}
       <div className="Game-board-half">
-        <div className="Game-board-quadrant top">
-          {topLeftPoints}
-        </div>
-        <div className="Game-board-quadrant bottom">
-          {bottomLeftPoints}
-        </div>
+        <div className="Game-board-quadrant top">{topLeftPoints}</div>
+        <div className="Game-board-quadrant bottom">{bottomLeftPoints}</div>
       </div>
       <Bar
         barState={gameBoardState.barState}
@@ -318,31 +356,41 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         currentPlayer={currentPlayer}
         playerOneColor={playerOneColor}
         playerTwoColor={playerTwoColor}
-        playerOneAnimations={animations.BAR.filter((animation) => animation.owner === Player.One)}
-        playerTwoAnimations={animations.BAR.filter((animation) => animation.owner === Player.Two)}
-        highlightedMoves={highlightedMoves} />
+        playerOneAnimations={animations.BAR.filter(
+          (animation) => animation.owner === Player.One
+        )}
+        playerTwoAnimations={animations.BAR.filter(
+          (animation) => animation.owner === Player.Two
+        )}
+        highlightedMoves={highlightedMoves}
+      />
       <div className="Game-board-half">
         <Dice
-          currentPlayerColor={currentPlayer === Player.One ? playerOneColor : playerTwoColor}
+          currentPlayerColor={
+            currentPlayer === Player.One ? playerOneColor : playerTwoColor
+          }
+          availableDice={availableDice}
           diceValues={dice}
-          canSubmit={!disableSubmitButton && areProvisionalMovesSubmittable(
-            originalGameBoardState,
-            dice,
-            currentPlayer,
-            provisionalMoves,
-          )}
+          canSubmit={
+            !disableSubmitButton &&
+            areProvisionalMovesSubmittable(
+              originalGameBoardState,
+              dice,
+              currentPlayer,
+              provisionalMoves
+            )
+          }
           provisionalGameBoardState={gameBoardState}
-          submitButtonHandler={submitButtonHandler} />
-        <div className="Game-board-quadrant top">
-          {topRightPoints}
-        </div>
-        <div className="Game-board-quadrant bottom">
-          {bottomRightPoints}
-        </div>
+          submitButtonHandler={submitButtonHandler}
+        />
+        <div className="Game-board-quadrant top">{topRightPoints}</div>
+        <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>
       </div>
-      {playerMovementDirection === MovementDirection.CounterClockwise ? home : null}
+      {playerMovementDirection === MovementDirection.CounterClockwise
+        ? home
+        : null}
     </div>
   );
-}
+};
 
 export default GameBoard;

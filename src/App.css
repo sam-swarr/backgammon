@@ -529,6 +529,30 @@
   background-color: rgb(56, 48, 27);
 }
 
+.Die-faces.white.spent .Die-face, .Die-faces.black.spent .Die-face {
+  display: none;
+}
+
+.Die-faces.white.spent.one .Die-face.one,
+.Die-faces.white.spent.two .Die-face.two,
+.Die-faces.white.spent.three .Die-face.three,
+.Die-faces.white.spent.four .Die-face.four,
+.Die-faces.white.spent.five .Die-face.five,
+.Die-faces.white.spent.six .Die-face.six {
+  background-color: rgba(226, 213, 223, 0.25);
+  display: grid;
+}
+
+.Die-faces.black.spent.one .Die-face.one,
+.Die-faces.black.spent.two .Die-face.two,
+.Die-faces.black.spent.three .Die-face.three,
+.Die-faces.black.spent.four .Die-face.four,
+.Die-faces.black.spent.five .Die-face.five,
+.Die-faces.black.spent.six .Die-face.six {
+  background-color: rgb(56, 48, 27, 0.25);
+  display: grid;
+}
+
 .Die-pip {
   border-radius: 50%;
   height: 95%;

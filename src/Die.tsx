@@ -1,28 +1,33 @@
 import cx from "classnames";
 import { FunctionComponent } from "react";
 
-import {Color} from './Types';
+import { Color } from "./Types";
 
 type DieProps = {
-  dieValue: number,
-  color: Color
+  dieValue: number;
+  dieSpent: boolean;
+  color: Color;
 };
 
 const Die: FunctionComponent<DieProps> = ({
   dieValue,
+  dieSpent,
   color,
 }: DieProps) => {
   return (
-    <div className={cx("Die-faces", {
-      "white": color === Color.White,
-      "black": color === Color.Black,
-      "one": dieValue === 1,
-      "two": dieValue === 2,
-      "three": dieValue === 3,
-      "four": dieValue === 4,
-      "five": dieValue === 5,
-      "six": dieValue === 6,
-    })}>
+    <div
+      className={cx("Die-faces", {
+        white: color === Color.White,
+        black: color === Color.Black,
+        one: dieValue === 1,
+        two: dieValue === 2,
+        three: dieValue === 3,
+        four: dieValue === 4,
+        five: dieValue === 5,
+        six: dieValue === 6,
+        spent: dieSpent,
+      })}
+    >
       <div className={cx("Die-face", "one")}>
         <div className={cx("Die-pip", "five")} />
       </div>
@@ -58,6 +63,6 @@ const Die: FunctionComponent<DieProps> = ({
       </div>
     </div>
   );
-}
+};
 
 export default Die;
