@@ -34,6 +34,7 @@ import Dice from "./Dice";
 import Home from "./Home";
 import { addAnimation, clearAnimation } from "./store/animationsSlice";
 import { calculateTranslationOffsets } from "./store/animations";
+import BeginGameButton from "./BeginGameButton";
 
 type GameBoardProps = {
   currentPlayer: Player;
@@ -51,12 +52,14 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const [
     dice,
     originalGameBoardState,
+    gameState,
     highlightedMoves,
     provisionalMoves,
     animations,
   ] = useAppSelector((state) => [
     state.dice,
     state.gameBoard,
+    state.gameState,
     state.highlightedMoves.moves,
     state.provisionalMoves,
     state.animations,
@@ -105,6 +108,10 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const bottomRightPoints = [];
 
   const boardPointClickHandler = (pointClicked: number | "BAR" | "HOME") => {
+    if (gameState != GameState.PlayerMoving) {
+      return true;
+    }
+
     // Check if player clicked on a highlighted destination.
     const movesToApply = highlightedMoves.filter(
       (m) => m.move.to === pointClicked
@@ -343,6 +350,37 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     />
   );
 
+  let beginGameButton =
+    gameState == GameState.GameWaitingToBegin ? (
+      <BeginGameButton
+        beginGameHandler={() => {
+          dispatch(setState({ newState: GameState.CoinFlip }));
+        }}
+      />
+    ) : null;
+
+  let diceComponent =
+    gameState == GameState.GameWaitingToBegin ? null : (
+      <Dice
+        currentPlayerColor={
+          currentPlayer === Player.One ? playerOneColor : playerTwoColor
+        }
+        availableDice={availableDice}
+        diceValues={dice}
+        canSubmit={
+          !disableSubmitButton &&
+          areProvisionalMovesSubmittable(
+            originalGameBoardState,
+            dice,
+            currentPlayer,
+            provisionalMoves
+          )
+        }
+        provisionalGameBoardState={gameBoardState}
+        submitButtonHandler={submitButtonHandler}
+      />
+    );
+
   return (
     <div className="Game-board-wrapper">
       {playerMovementDirection === MovementDirection.Clockwise ? home : null}
@@ -365,24 +403,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         highlightedMoves={highlightedMoves}
       />
       <div className="Game-board-half">
-        <Dice
-          currentPlayerColor={
-            currentPlayer === Player.One ? playerOneColor : playerTwoColor
-          }
-          availableDice={availableDice}
-          diceValues={dice}
-          canSubmit={
-            !disableSubmitButton &&
-            areProvisionalMovesSubmittable(
-              originalGameBoardState,
-              dice,
-              currentPlayer,
-              provisionalMoves
-            )
-          }
-          provisionalGameBoardState={gameBoardState}
-          submitButtonHandler={submitButtonHandler}
-        />
+        {beginGameButton}
+        {diceComponent}
         <div className="Game-board-quadrant top">{topRightPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>
       </div>

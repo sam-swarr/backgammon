@@ -53,6 +53,19 @@
   }
 }
 
+.Begin-game-button {
+  background-color: rgb(111 143 204);
+  border-color: rgb(52 89 132);
+  border-radius: 1vw;
+  border-style: solid;
+  border-width: 0.5vw;
+  font-family: 'Barlow', sans-serif;
+  font-size: max(2vh, 2vw);
+  padding: 0.5vh;
+  text-align: center;
+  width: 14vw;
+}
+
 .Game-board-wrapper {
   align-items: center;
   background-color: #282c34;
@@ -486,7 +499,7 @@
 /********
  * DICE *
  ********/
- .Dice {
+ .Dice, .Begin-game-button-wrapper {
   align-items: center;
   display: flex;
   height: 3.69vw;
