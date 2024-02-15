@@ -26,8 +26,8 @@ const Dice: FunctionComponent<DiceProps> = ({
   let dieTwoSpent = false;
 
   // Doubles case
-  if (diceValues.length == 4) {
-    if (availableDice.length == 0) {
+  if (diceValues.length === 4) {
+    if (availableDice.length === 0) {
       dieOneSpent = true;
       dieTwoSpent = true;
     } else if (availableDice.length >= 1 && availableDice.length <= 2) {
@@ -51,11 +51,13 @@ const Dice: FunctionComponent<DiceProps> = ({
         dieValue={diceValues[0]}
         dieSpent={dieOneSpent}
         color={currentPlayerColor}
+        forceReroll={false}
       />
       <Die
         dieValue={diceValues[1]}
         dieSpent={dieTwoSpent}
         color={currentPlayerColor}
+        forceReroll={false}
       />
       <SubmitMoveButton
         canSubmit={canSubmit}

@@ -7,18 +7,21 @@ type DieProps = {
   dieValue: number;
   dieSpent: boolean;
   color: Color;
+  forceReroll: boolean;
 };
 
 const Die: FunctionComponent<DieProps> = ({
   dieValue,
   dieSpent,
   color,
+  forceReroll,
 }: DieProps) => {
   return (
     <div
       className={cx("Die-faces", {
         white: color === Color.White,
         black: color === Color.Black,
+        reroll: forceReroll,
         one: dieValue === 1,
         two: dieValue === 2,
         three: dieValue === 3,

@@ -33,5 +33,7 @@ export function performInitialRolls(): number[][] {
     rolls.push(currRoll);
   } while (currRoll.length === 4);
 
-  return rolls;
+  // NOTE: The plan is to only support automatic doubling *once*
+  // so we can throw out extra doubles rolls if there are more than one.
+  return rolls.slice(-2);
 }

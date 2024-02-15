@@ -356,7 +356,7 @@
   width: 70%;
 }
 
-.Submit-button-wrapper {
+.Submit-button-wrapper, .Undo-button-wrapper, .Dice-row-spacer {
   height: 4vw;
   width: 4vw;
 }
@@ -366,11 +366,6 @@
   background-size: contain;
   height: 100%;
   width: 100%;
-}
-
-.Undo-button-wrapper {
-  height: 4vw;
-  width: 4vw;
 }
 
 .Undo-button {
@@ -580,41 +575,41 @@
   background-color: white;
 }
 
-.Die-faces.one {
+.Die-faces.one, .Die-faces.one.black.reroll {
   transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
 }
-.Die-faces.two {
+.Die-faces.two, .Die-faces.two.black.reroll {
   transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
 }
-.Die-faces.three {
+.Die-faces.three, .Die-faces.three.black.reroll {
   transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
 }
-.Die-faces.four {
+.Die-faces.four, .Die-faces.four.black.reroll {
   transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
 }
-.Die-faces.five {
+.Die-faces.five, .Die-faces.five.black.reroll {
   transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
 }
-.Die-faces.six {
+.Die-faces.six, .Die-faces.six.black.reroll {
   transform: rotateX(360deg) rotateY(900deg) rotateZ(360deg);
 }
 
-.Die-faces.one.black {
+.Die-faces.one.black, .Die-faces.one.reroll {
   transform: rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);
 }
-.Die-faces.two.black {
+.Die-faces.two.black, .Die-faces.two.reroll {
   transform: rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);
 }
-.Die-faces.three.black {
+.Die-faces.three.black, .Die-faces.three.reroll {
   transform: rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);
 }
-.Die-faces.four.black {
+.Die-faces.four.black, .Die-faces.four.reroll {
   transform: rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);
 }
-.Die-faces.five.black {
+.Die-faces.five.black, .Die-faces.five.reroll {
   transform: rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);
 }
-.Die-faces.six.black {
+.Die-faces.six.black, .Die-faces.six.reroll {
   transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);
 }
 

@@ -22,7 +22,6 @@ import {
 import { setShowGameOverDialog } from "./store/settingsSlice";
 import {
   Color,
-  GameBoardState,
   GameResult,
   MovementDirection,
   Player,
@@ -32,9 +31,10 @@ import Bar from "./Bar";
 import BoardPoint from "./BoardPoint";
 import Dice from "./Dice";
 import Home from "./Home";
-import { addAnimation, clearAnimation } from "./store/animationsSlice";
+import { addAnimation } from "./store/animationsSlice";
 import { calculateTranslationOffsets } from "./store/animations";
 import BeginGameButton from "./BeginGameButton";
+import OpeningDiceRoll from "./OpeningDiceRoll";
 
 type GameBoardProps = {
   currentPlayer: Player;
@@ -108,7 +108,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   const bottomRightPoints = [];
 
   const boardPointClickHandler = (pointClicked: number | "BAR" | "HOME") => {
-    if (gameState != GameState.PlayerMoving) {
+    if (gameState !== GameState.PlayerMoving) {
       return true;
     }
 
@@ -351,7 +351,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
   );
 
   let beginGameButton =
-    gameState == GameState.GameWaitingToBegin ? (
+    gameState === GameState.GameWaitingToBegin ? (
       <BeginGameButton
         beginGameHandler={() => {
           dispatch(setState({ newState: GameState.CoinFlip }));
@@ -359,8 +359,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       />
     ) : null;
 
-  let diceComponent =
-    gameState == GameState.GameWaitingToBegin ? null : (
+  let diceComponent = null;
+  if (gameState === GameState.CoinFlip) {
+    diceComponent = <OpeningDiceRoll />;
+  } else if (gameState === GameState.GameWaitingToBegin) {
+    diceComponent = null;
+  } else {
+    diceComponent = (
       <Dice
         currentPlayerColor={
           currentPlayer === Player.One ? playerOneColor : playerTwoColor
@@ -380,6 +385,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         submitButtonHandler={submitButtonHandler}
       />
     );
+  }
 
   return (
     <div className="Game-board-wrapper">
