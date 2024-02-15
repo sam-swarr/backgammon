@@ -135,6 +135,17 @@
   }
 }
 
+.Information-text-wrapper {
+  margin-left: 5.5%;
+  margin-right: 5.5%;
+  width: 89%;
+  height: 4vh;
+}
+
+.Information-text {
+  color: #b8b8b8;
+}
+
 .Game-board-half {
   background-color:rgb(45, 105, 155);
   display: flex;
@@ -653,3 +664,4 @@
 .Die-pip.nine {
   grid-area: 3/3;
 }
+

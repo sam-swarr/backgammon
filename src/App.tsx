@@ -10,6 +10,7 @@ import MainMenu from "./MainMenu";
 import SettingsMenuButton from "./SettingsMenuButton";
 import SettingsMenu from "./SettingsMenu";
 import GameOverDialog from "./GameOverDialog";
+import InformationText from "./InformationText";
 
 type AppProps = {};
 
@@ -25,7 +26,7 @@ const App: FunctionComponent<AppProps> = () => {
     contents = <MainMenu />;
   } else {
     contents = (
-      <div>
+      <div className={"Game-area-wrapper"}>
         <GameBoard
           currentPlayer={currentPlayer}
           playerOneColor={settings.playerOneColor}
@@ -34,6 +35,7 @@ const App: FunctionComponent<AppProps> = () => {
           }
           playerMovementDirection={settings.movementDirection}
         />
+        <InformationText />
       </div>
     );
   }
