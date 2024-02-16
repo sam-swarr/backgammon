@@ -1,13 +1,16 @@
 import { FunctionComponent } from "react";
 
-import { GameState, setState } from "./store/gameStateSlice";
-import { useAppDispatch } from "./store/hooks";
 import { createLobby } from "./Firebase";
+import { useNavigate } from "react-router-dom";
 
 type MainMenuProps = {};
 
 const MainMenu: FunctionComponent<MainMenuProps> = () => {
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const createLocalGame = function () {
+    navigate("/local");
+  };
 
   const createOnlineLobby = async function () {
     console.log("CREATING ONLINE LOBBY");
@@ -20,9 +23,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
       <div className={"Menu-button-wrapper"}>
         <button
           className={"Local-multiplayer-button"}
-          onClick={() => {
-            dispatch(setState({ newState: GameState.GameWaitingToBegin }));
-          }}
+          onClick={createLocalGame}
         >
           Local Multiplayer
         </button>

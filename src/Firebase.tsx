@@ -71,7 +71,7 @@ export async function createLobby(): Promise<string> {
         uid: (await getCurrentUser()).uid,
       },
     ],
-    gameState: GameState.NotStarted,
+    gameState: GameState.GameWaitingToBegin,
   });
 
   console.log("Document written with ID: ", docRef.id);

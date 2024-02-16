@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export enum GameState {
-  NotStarted = "NOT_STARTED",
   GameWaitingToBegin = "GAME_WAITING_TO_BEGIN",
   CoinFlip = "COIN_FLIP",
   PlayerRolling = "PLAYER_ROLLING",
@@ -18,7 +17,7 @@ type SetGameStatePayload = {
 
 export const gameStateSlice = createSlice({
   name: "currentPlayerState",
-  initialState: GameState.NotStarted,
+  initialState: GameState.GameWaitingToBegin,
   reducers: {
     setState: (
       _state,

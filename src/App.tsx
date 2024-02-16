@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import cx from "classnames";
 import "./App.css";
 
-import { GameState } from "./store/gameStateSlice";
 import { useAppSelector } from "./store/hooks";
 import { Color } from "./Types";
 import GameBoard from "./GameBoard";
@@ -11,45 +10,47 @@ import SettingsMenuButton from "./SettingsMenuButton";
 import SettingsMenu from "./SettingsMenu";
 import GameOverDialog from "./GameOverDialog";
 import InformationText from "./InformationText";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 type AppProps = {};
 
 const App: FunctionComponent<AppProps> = () => {
-  const [currentPlayer, gameState, settings] = useAppSelector((state) => [
+  const [currentPlayer, settings] = useAppSelector((state) => [
     state.currentPlayer,
-    state.gameState,
     state.settings,
   ]);
 
-  let contents = null;
-  if (gameState === GameState.NotStarted) {
-    contents = <MainMenu />;
-  } else {
-    contents = (
-      <div className={"Game-area-wrapper"}>
-        <GameBoard
-          currentPlayer={currentPlayer}
-          playerOneColor={settings.playerOneColor}
-          playerTwoColor={
-            settings.playerOneColor === Color.White ? Color.Black : Color.White
-          }
-          playerMovementDirection={settings.movementDirection}
-        />
-        <InformationText />
-      </div>
-    );
-  }
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <MainMenu />,
+    },
+    {
+      path: "/local",
+      element: (
+        <div className={"Game-area-wrapper"}>
+          <GameBoard
+            currentPlayer={currentPlayer}
+            playerOneColor={settings.playerOneColor}
+            playerTwoColor={
+              settings.playerOneColor === Color.White
+                ? Color.Black
+                : Color.White
+            }
+            playerMovementDirection={settings.movementDirection}
+          />
+          <InformationText />
+        </div>
+      ),
+    },
+  ]);
 
   return (
-    <div
-      className={cx("App-wrapper", {
-        mainmenu: gameState === GameState.NotStarted,
-      })}
-    >
+    <div className={cx("App-wrapper")}>
       <SettingsMenuButton />
       <SettingsMenu />
       <GameOverDialog />
-      {contents}
+      <RouterProvider router={router} />
     </div>
   );
 };
