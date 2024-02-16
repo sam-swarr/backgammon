@@ -2,11 +2,17 @@ import { FunctionComponent } from "react";
 
 import { GameState, setState } from "./store/gameStateSlice";
 import { useAppDispatch } from "./store/hooks";
+import { createLobby } from "./Firebase";
 
 type MainMenuProps = {};
 
 const MainMenu: FunctionComponent<MainMenuProps> = () => {
   const dispatch = useAppDispatch();
+
+  const createOnlineLobby = async function () {
+    console.log("CREATING ONLINE LOBBY");
+    await createLobby();
+  };
 
   return (
     <div className={"Main-menu-wrapper"}>
@@ -22,9 +28,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
         </button>
         <button
           className={"Online-multiplayer-button"}
-          onClick={() => {
-            console.log("CLICK");
-          }}
+          onClick={createOnlineLobby}
         >
           Online Multiplayer
         </button>
