@@ -58,13 +58,15 @@ const OpeningDiceRoll: FunctionComponent = () => {
         <Die
           dieValue={currOpeningRoll[0]}
           dieSpent={false}
-          color={Color.White}
+          color={settings.playerOneColor}
           forceReroll={forceReroll}
         />
         <Die
           dieValue={currOpeningRoll[1]}
           dieSpent={false}
-          color={Color.Black}
+          color={
+            settings.playerOneColor === Color.White ? Color.Black : Color.White
+          }
           forceReroll={forceReroll}
         />
         <div className={"Dice-row-spacer"} />
@@ -79,13 +81,7 @@ function dispatchStartGameActions(
   dispatch: Function
 ) {
   let startingPlayer: Player =
-    openingRoll[0] > openingRoll[1]
-      ? playerOneColor === Color.White
-        ? Player.One
-        : Player.Two
-      : playerOneColor === Color.White
-      ? Player.Two
-      : Player.One;
+    openingRoll[0] > openingRoll[1] ? Player.One : Player.Two;
   dispatch(setCurrentPlayer(startingPlayer));
   dispatch(setDice(openingRoll));
   dispatch(setState({ newState: GameState.PlayerMoving }));
