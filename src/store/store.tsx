@@ -1,13 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
 
-import animationsReducer from './animationsSlice'
-import currentPlayerReducer from './currentPlayerSlice'
-import diceReducer from './diceSlice'
-import gameBoardReducer from './gameBoardSlice'
-import gameStateReducer from './gameStateSlice'
-import highlightedMovesReducer from './highlightedMovesSlice'
-import provisionalMovesReducer from './provisionalMovesSlice'
-import settingsReducer from './settingsSlice'
+import animationsReducer from "./animationsSlice";
+import currentPlayerReducer from "./currentPlayerSlice";
+import diceReducer from "./diceSlice";
+import gameBoardReducer from "./gameBoardSlice";
+import gameStateReducer from "./gameStateSlice";
+import highlightedMovesReducer from "./highlightedMovesSlice";
+import provisionalMovesReducer from "./provisionalMovesSlice";
+import settingsReducer from "./settingsSlice";
+import playersSliceReducer from "./playersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,10 +18,11 @@ export const store = configureStore({
     provisionalMoves: provisionalMovesReducer,
     dice: diceReducer,
     currentPlayer: currentPlayerReducer,
+    players: playersSliceReducer,
     settings: settingsReducer,
     animations: animationsReducer,
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

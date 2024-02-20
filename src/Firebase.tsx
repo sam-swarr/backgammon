@@ -2,12 +2,14 @@ import { Auth, User, getAuth, signInAnonymously } from "firebase/auth";
 
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
+  DocumentReference,
   Firestore,
   addDoc,
   collection,
   getFirestore,
 } from "firebase/firestore";
 import { GameState } from "./store/gameStateSlice";
+import { PlayersData } from "./store/playersSlice";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBEAjHStQSJVxt6gxABDueJ4JdSPEjlHXE",
@@ -59,25 +61,41 @@ export async function getCurrentUser(): Promise<User> {
   return userCredential.user;
 }
 
-export async function createLobby(): Promise<string> {
+export type FirestoreGameData = {
+  gameState: GameState;
+  players: PlayersData;
+  roomCode: string;
+};
+
+type CreateLobbyResult = {
+  roomCode: string;
+  docRef: DocumentReference;
+};
+
+export async function createLobby(): Promise<CreateLobbyResult> {
   initialize();
 
   const roomCode = createRoomCode();
 
   const docRef = await addDoc(collection(db, "lobbies"), {
     roomCode: roomCode,
-    players: [
-      {
+    players: {
+      playerOne: {
         uid: (await getCurrentUser()).uid,
+        username: "Sam",
       },
-    ],
+      playerTwo: null,
+    },
     gameState: GameState.GameWaitingToBegin,
   });
 
   console.log("Document written with ID: ", docRef.id);
   console.log("Created room: " + roomCode);
 
-  return roomCode;
+  return {
+    roomCode,
+    docRef,
+  };
 }
 
 // Add a new document with a generated id.
