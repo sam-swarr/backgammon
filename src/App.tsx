@@ -11,6 +11,9 @@ import SettingsMenu from "./SettingsMenu";
 import GameOverDialog from "./GameOverDialog";
 import InformationText from "./InformationText";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import NetworkedGameBoard, {
+  loader as NetworkedGameBoardLoader,
+} from "./NetworkedGameBoard";
 
 type AppProps = {};
 
@@ -42,6 +45,11 @@ const App: FunctionComponent<AppProps> = () => {
           <InformationText />
         </div>
       ),
+    },
+    {
+      path: "/:roomCode",
+      element: <NetworkedGameBoard />,
+      loader: NetworkedGameBoardLoader,
     },
   ]);
 
