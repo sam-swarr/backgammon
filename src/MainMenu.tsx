@@ -1,11 +1,9 @@
 import { FunctionComponent } from "react";
 
-import { FirestoreGameData, createLobby } from "./Firebase";
+import { createLobby } from "./Firebase";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
-import { onSnapshot } from "firebase/firestore";
-import { setPlayersState } from "./store/playersSlice";
-import { setState } from "./store/gameStateSlice";
+import { GameState, setState } from "./store/gameStateSlice";
 
 type MainMenuProps = {};
 
@@ -14,19 +12,12 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
   const dispatch = useAppDispatch();
 
   const createLocalGame = function () {
+    dispatch(setState(GameState.WaitingToBegin));
     navigate("/local");
   };
 
   const createOnlineLobby = async function () {
     const createLobbyResult = await createLobby();
-
-    // TODO: where is best place to unsub?
-    const unsub = onSnapshot(createLobbyResult.docRef, (doc) => {
-      let data = doc.data() as FirestoreGameData;
-      dispatch(setState(data.gameState));
-      dispatch(setPlayersState(data.players));
-    });
-
     navigate("/" + createLobbyResult.roomCode);
   };
 

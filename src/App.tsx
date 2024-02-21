@@ -11,9 +11,9 @@ import SettingsMenu from "./SettingsMenu";
 import GameOverDialog from "./GameOverDialog";
 import InformationText from "./InformationText";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import NetworkedGameBoard, {
-  loader as NetworkedGameBoardLoader,
-} from "./NetworkedGameBoard";
+import NetworkedGameRoom, {
+  loader as NetworkedGameRoomLoader,
+} from "./NetworkedGameRoom";
 
 type AppProps = {};
 
@@ -48,8 +48,8 @@ const App: FunctionComponent<AppProps> = () => {
     },
     {
       path: "/:roomCode",
-      element: <NetworkedGameBoard />,
-      loader: NetworkedGameBoardLoader,
+      element: <NetworkedGameRoom />,
+      loader: NetworkedGameRoomLoader,
     },
   ]);
 

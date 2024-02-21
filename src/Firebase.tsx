@@ -6,10 +6,17 @@ import {
   Firestore,
   addDoc,
   collection,
+  getDocs,
   getFirestore,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
 } from "firebase/firestore";
 import { GameState } from "./store/gameStateSlice";
-import { PlayersData } from "./store/playersSlice";
+import { PlayersData, PlayersDataPayload } from "./store/playersSlice";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBEAjHStQSJVxt6gxABDueJ4JdSPEjlHXE",
@@ -50,7 +57,7 @@ export function getDB(): Firestore {
   return db;
 }
 
-export async function getCurrentUser(): Promise<User> {
+export async function signIn(): Promise<User> {
   initialize();
 
   if (auth.currentUser != null) {
@@ -61,9 +68,19 @@ export async function getCurrentUser(): Promise<User> {
   return userCredential.user;
 }
 
+export function getCurrentUser(): User {
+  initialize();
+
+  if (auth.currentUser != null) {
+    return auth.currentUser;
+  }
+
+  throw Error("Trying to access current user without signing in.");
+}
+
 export type FirestoreGameData = {
   gameState: GameState;
-  players: PlayersData;
+  players: PlayersDataPayload;
   roomCode: string;
 };
 
@@ -81,12 +98,13 @@ export async function createLobby(): Promise<CreateLobbyResult> {
     roomCode: roomCode,
     players: {
       playerOne: {
-        uid: (await getCurrentUser()).uid,
+        uid: (await signIn()).uid,
         username: "Sam",
       },
       playerTwo: null,
     },
     gameState: GameState.WaitingForPlayers,
+    timeCreated: serverTimestamp(),
   });
 
   console.log("Document written with ID: ", docRef.id);
@@ -98,4 +116,46 @@ export async function createLobby(): Promise<CreateLobbyResult> {
   };
 }
 
-// Add a new document with a generated id.
+export async function findLobby(
+  roomCode: string
+): Promise<DocumentReference | null> {
+  initialize();
+
+  const lobbiesRef = collection(db, "lobbies");
+  const q = query(
+    lobbiesRef,
+    where("roomCode", "==", roomCode),
+    orderBy("timeCreated", "desc"),
+    limit(1)
+  );
+
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    return null;
+  }
+
+  return querySnapshot.docs[0].ref;
+}
+
+export async function joinLobbyAsPlayerTwo(docRef: DocumentReference) {
+  return await setDoc(
+    docRef,
+    {
+      players: {
+        playerTwo: {
+          uid: getCurrentUser().uid,
+          username: "Opponent",
+        },
+      },
+    },
+    { merge: true }
+  );
+}
+
+export function hasJoinedLobby(playersData: PlayersDataPayload): boolean {
+  let uid = getCurrentUser().uid;
+  return (
+    (playersData.playerOne != null && playersData.playerOne.uid === uid) ||
+    (playersData.playerTwo != null && playersData.playerTwo.uid === uid)
+  );
+}

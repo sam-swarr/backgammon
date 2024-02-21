@@ -14,7 +14,7 @@ export enum GameState {
 
 export const gameStateSlice = createSlice({
   name: "currentPlayerState",
-  initialState: GameState.WaitingToBegin,
+  initialState: GameState.WaitingForPlayers,
   reducers: {
     setState: (_state, action: { type: string; payload: GameState }) => {
       return action.payload;
