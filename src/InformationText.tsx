@@ -12,7 +12,7 @@ const InformationText: FunctionComponent = () => {
   let text = "";
 
   switch (gameState) {
-    case GameState.GameWaitingToBegin:
+    case GameState.WaitingToBegin:
       text = "Welcome to Backgammon!";
       break;
     case GameState.PlayerRolling:

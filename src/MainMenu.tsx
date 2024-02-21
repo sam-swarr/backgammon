@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
 import { onSnapshot } from "firebase/firestore";
 import { setPlayersState } from "./store/playersSlice";
+import { setState } from "./store/gameStateSlice";
 
 type MainMenuProps = {};
 
@@ -22,6 +23,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
     // TODO: where is best place to unsub?
     const unsub = onSnapshot(createLobbyResult.docRef, (doc) => {
       let data = doc.data() as FirestoreGameData;
+      dispatch(setState(data.gameState));
       dispatch(setPlayersState(data.players));
     });
 

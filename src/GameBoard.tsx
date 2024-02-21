@@ -84,17 +84,17 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       break;
 
     case GameResult.PlayerWon:
-      dispatch(setState({ newState: GameState.GameOver }));
+      dispatch(setState(GameState.GameOver));
       dispatch(setShowGameOverDialog(true));
       break;
 
     case GameResult.PlayerWonGammon:
-      dispatch(setState({ newState: GameState.GameOverGammon }));
+      dispatch(setState(GameState.GameOverGammon));
       dispatch(setShowGameOverDialog(true));
       break;
 
     case GameResult.PlayerWonBackgammon:
-      dispatch(setState({ newState: GameState.GameOverBackgammon }));
+      dispatch(setState(GameState.GameOverBackgammon));
       dispatch(setShowGameOverDialog(true));
       break;
 
@@ -350,19 +350,13 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     />
   );
 
-  let beginGameButton =
-    gameState === GameState.GameWaitingToBegin ? (
-      <BeginGameButton
-        beginGameHandler={() => {
-          dispatch(setState({ newState: GameState.CoinFlip }));
-        }}
-      />
-    ) : null;
-
   let diceComponent = null;
   if (gameState === GameState.CoinFlip) {
     diceComponent = <OpeningDiceRoll />;
-  } else if (gameState === GameState.GameWaitingToBegin) {
+  } else if (
+    gameState === GameState.WaitingToBegin ||
+    gameState === GameState.WaitingForPlayers
+  ) {
     diceComponent = null;
   } else {
     diceComponent = (
@@ -409,7 +403,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         highlightedMoves={highlightedMoves}
       />
       <div className="Game-board-half">
-        {beginGameButton}
+        <BeginGameButton
+          beginGameHandler={() => {
+            dispatch(setState(GameState.CoinFlip));
+          }}
+        />
         {diceComponent}
         <div className="Game-board-quadrant top">{topRightPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>

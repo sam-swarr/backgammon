@@ -38,14 +38,12 @@ const OpeningDiceRoll: FunctionComponent = () => {
               setTimeout(() => {
                 dispatchStartGameActions(
                   initialRolls[initialRolls.length - 1],
-                  settings.playerOneColor,
                   dispatch
                 );
               }, 1500);
             } else {
               dispatchStartGameActions(
                 initialRolls[initialRolls.length - 1],
-                settings.playerOneColor,
                 dispatch
               );
             }
@@ -75,16 +73,12 @@ const OpeningDiceRoll: FunctionComponent = () => {
   );
 };
 
-function dispatchStartGameActions(
-  openingRoll: number[],
-  playerOneColor: Color,
-  dispatch: Function
-) {
+function dispatchStartGameActions(openingRoll: number[], dispatch: Function) {
   let startingPlayer: Player =
     openingRoll[0] > openingRoll[1] ? Player.One : Player.Two;
   dispatch(setCurrentPlayer(startingPlayer));
   dispatch(setDice(openingRoll));
-  dispatch(setState({ newState: GameState.PlayerMoving }));
+  dispatch(setState(GameState.PlayerMoving));
 }
 
 export default OpeningDiceRoll;

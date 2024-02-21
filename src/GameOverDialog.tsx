@@ -24,7 +24,7 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
   const closeDialog = () => dispatch(setShowGameOverDialog(false));
   const backToMenu = () => {
     dispatch(setShowGameOverDialog(false));
-    dispatch(setState({ newState: GameState.GameWaitingToBegin }));
+    dispatch(setState(GameState.WaitingToBegin));
     dispatch(resetDice());
     dispatch(resetGameBoard());
     dispatch(resetCurrentPlayer());

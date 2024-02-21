@@ -86,7 +86,7 @@ export async function createLobby(): Promise<CreateLobbyResult> {
       },
       playerTwo: null,
     },
-    gameState: GameState.GameWaitingToBegin,
+    gameState: GameState.WaitingForPlayers,
   });
 
   console.log("Document written with ID: ", docRef.id);
