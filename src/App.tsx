@@ -12,6 +12,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NetworkedGameRoom, {
   loader as NetworkedGameRoomLoader,
 } from "./NetworkedGameRoom";
+import { ActionsContext, LocalGameActions } from "./ActionsContext";
 
 type AppProps = {};
 
@@ -24,10 +25,12 @@ const App: FunctionComponent<AppProps> = () => {
     {
       path: "/local",
       element: (
-        <div className={"Game-area-wrapper"}>
-          <GameBoard />
-          <InformationText />
-        </div>
+        <ActionsContext.Provider value={new LocalGameActions()}>
+          <div className={"Game-area-wrapper"}>
+            <GameBoard />
+            <InformationText />
+          </div>
+        </ActionsContext.Provider>
       ),
     },
     {

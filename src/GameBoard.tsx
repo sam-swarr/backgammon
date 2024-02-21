@@ -401,11 +401,7 @@ const GameBoard: FunctionComponent = () => {
         highlightedMoves={highlightedMoves}
       />
       <div className="Game-board-half">
-        <BeginGameButton
-          beginGameHandler={() => {
-            dispatch(setState(GameState.CoinFlip));
-          }}
-        />
+        <BeginGameButton />
         {diceComponent}
         <div className="Game-board-quadrant top">{topRightPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>

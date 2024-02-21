@@ -1,15 +1,12 @@
-import { FunctionComponent } from "react";
-import { useAppSelector } from "./store/hooks";
-import { GameState } from "./store/gameStateSlice";
+import { FunctionComponent, useContext } from "react";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { GameState, setState } from "./store/gameStateSlice";
+import { ActionsContext } from "./ActionsContext";
 
-type BeginGameButtonProps = {
-  beginGameHandler: Function;
-};
-
-const BeginGameButton: FunctionComponent<BeginGameButtonProps> = ({
-  beginGameHandler,
-}: BeginGameButtonProps) => {
+const BeginGameButton: FunctionComponent = () => {
   const gameState = useAppSelector((state) => state.gameState);
+  const actions = useContext(ActionsContext);
+
   if (gameState === GameState.WaitingForPlayers) {
     return (
       <div className={"Begin-game-button-wrapper"}>
@@ -22,7 +19,7 @@ const BeginGameButton: FunctionComponent<BeginGameButtonProps> = ({
         <button
           className={"Begin-game-button"}
           onClick={() => {
-            beginGameHandler();
+            actions.setGameState(GameState.CoinFlip);
           }}
         >
           Begin Game

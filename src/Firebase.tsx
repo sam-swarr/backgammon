@@ -159,3 +159,16 @@ export function hasJoinedLobby(playersData: PlayersDataPayload): boolean {
     (playersData.playerTwo != null && playersData.playerTwo.uid === uid)
   );
 }
+
+export async function writeNewGameStateToDB(
+  docRef: DocumentReference,
+  newGameState: GameState
+) {
+  return await setDoc(
+    docRef,
+    {
+      gameState: newGameState,
+    },
+    { merge: true }
+  );
+}
