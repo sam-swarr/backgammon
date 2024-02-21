@@ -2,8 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 
 import { useLoaderData } from "react-router-dom";
 import InformationText from "./InformationText";
-import { Color } from "./Types";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { useAppDispatch } from "./store/hooks";
 import GameBoard from "./GameBoard";
 import {
   FirestoreGameData,
@@ -28,8 +27,6 @@ export function loader({ params }: any): LoaderData {
 const NetworkedGameRoom: FunctionComponent = () => {
   const { roomCode } = useLoaderData() as LoaderData;
   const dispatch = useAppDispatch();
-
-  const [players] = useAppSelector((state) => [state.players]);
 
   useEffect(() => {
     const connectToLobby = async () => {
@@ -62,20 +59,12 @@ const NetworkedGameRoom: FunctionComponent = () => {
     connectToLobby();
   }, [roomCode]);
 
-  return null;
-  // return (
-  //   <div className={"Game-area-wrapper"}>
-  //     <GameBoard
-  //       currentPlayer={currentPlayer}
-  //       playerOneColor={settings.playerOneColor}
-  //       playerTwoColor={
-  //         settings.playerOneColor === Color.White ? Color.Black : Color.White
-  //       }
-  //       playerMovementDirection={settings.movementDirection}
-  //     />
-  //     <InformationText />
-  //   </div>
-  // );
+  return (
+    <div className={"Game-area-wrapper"}>
+      <GameBoard />
+      <InformationText />
+    </div>
+  );
 };
 
 export default NetworkedGameRoom;

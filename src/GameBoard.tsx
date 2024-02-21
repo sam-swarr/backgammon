@@ -36,20 +36,10 @@ import { calculateTranslationOffsets } from "./store/animations";
 import BeginGameButton from "./BeginGameButton";
 import OpeningDiceRoll from "./OpeningDiceRoll";
 
-type GameBoardProps = {
-  currentPlayer: Player;
-  playerOneColor: Color;
-  playerTwoColor: Color;
-  playerMovementDirection: MovementDirection;
-};
-
-const GameBoard: FunctionComponent<GameBoardProps> = ({
-  currentPlayer,
-  playerOneColor,
-  playerTwoColor,
-  playerMovementDirection,
-}: GameBoardProps) => {
+const GameBoard: FunctionComponent = () => {
   const [
+    currentPlayer,
+    settings,
     dice,
     originalGameBoardState,
     gameState,
@@ -57,6 +47,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     provisionalMoves,
     animations,
   ] = useAppSelector((state) => [
+    state.currentPlayer,
+    state.settings,
     state.dice,
     state.gameBoard,
     state.gameState,
@@ -64,6 +56,12 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     state.provisionalMoves,
     state.animations,
   ]);
+
+  const playerOneColor = settings.playerOneColor;
+  const playerTwoColor =
+    settings.playerOneColor === Color.White ? Color.Black : Color.White;
+  const playerMovementDirection = settings.movementDirection;
+
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
