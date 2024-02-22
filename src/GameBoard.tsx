@@ -40,7 +40,7 @@ const GameBoard: FunctionComponent = () => {
   const [
     currentPlayer,
     settings,
-    dice,
+    diceData,
     originalGameBoardState,
     gameState,
     highlightedMoves,
@@ -65,7 +65,10 @@ const GameBoard: FunctionComponent = () => {
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
-  const availableDice = getAvailableDice(dice, provisionalMoves);
+  const availableDice = getAvailableDice(
+    diceData.currentRoll,
+    provisionalMoves
+  );
 
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
     return applyMoveToGameBoardState(
@@ -363,12 +366,12 @@ const GameBoard: FunctionComponent = () => {
           currentPlayer === Player.One ? playerOneColor : playerTwoColor
         }
         availableDice={availableDice}
-        diceValues={dice}
+        diceValues={diceData.currentRoll}
         canSubmit={
           !disableSubmitButton &&
           areProvisionalMovesSubmittable(
             originalGameBoardState,
-            dice,
+            diceData.currentRoll,
             currentPlayer,
             provisionalMoves
           )

@@ -19,9 +19,10 @@ import { setPlayersState } from "./store/playersSlice";
 import {
   Actions,
   ActionsContext,
-  LocalGameActions,
   NetworkedGameActions,
 } from "./ActionsContext";
+import { setDiceState } from "./store/diceSlice";
+import { setCurrentPlayer } from "./store/currentPlayerSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -46,10 +47,14 @@ const NetworkedGameRoom: FunctionComponent = () => {
       } else {
         setGameActions(new NetworkedGameActions(docRef));
         onSnapshot(docRef, (doc) => {
+          // Dispatch all relevant updates to the redux store
           let data = doc.data() as FirestoreGameData;
           dispatch(setState(data.gameState));
           dispatch(setPlayersState(data.players));
+          dispatch(setCurrentPlayer(data.currentPlayer));
+          dispatch(setDiceState(data.dice));
 
+          // Handle case where 2nd player is just joining for the first time
           if (!hasJoinedLobby(data.players)) {
             if (data.players.playerTwo != null) {
               console.error(

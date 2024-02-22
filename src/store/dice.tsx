@@ -1,4 +1,5 @@
 import { ValidMove } from "../Types";
+import { InitialDiceRolls } from "./diceSlice";
 
 export function getAvailableDice(
   dice: number[],
@@ -24,8 +25,8 @@ export function rollDiceImpl(): number[] {
     : [dieOne, dieTwo];
 }
 
-export function performInitialRolls(): number[][] {
-  const rolls: number[][] = [];
+export function performInitialRolls(): InitialDiceRolls {
+  let rolls: number[][] = [];
 
   let currRoll = null;
   do {
@@ -35,5 +36,13 @@ export function performInitialRolls(): number[][] {
 
   // NOTE: The plan is to only support automatic doubling *once*
   // so we can throw out extra doubles rolls if there are more than one.
-  return rolls.slice(-2);
+  rolls = rolls.slice(-2);
+
+  // Firestore cannot store directly nested arrays, so instead
+  // initial rolls will be stored as object with 0-based index
+  let result: InitialDiceRolls = {};
+  for (let i = 0; i < rolls.length; i++) {
+    result[i] = rolls[i];
+  }
+  return result;
 }

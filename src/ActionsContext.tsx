@@ -4,7 +4,11 @@ import { DocumentReference } from "firebase/firestore";
 import { writeNewGameStateToDB } from "./Firebase";
 
 export class Actions {
-  setGameState(_gameState: GameState): void {
+  beginCoinFlip(): void {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  beginFirstTurn(): void {
     console.error("Unexpected use of default ActionsContext.");
   }
 }
@@ -17,8 +21,12 @@ export class LocalGameActions extends Actions {
     this.dispatchFn = dispatchFn;
   }
 
-  setGameState(gameState: GameState): void {
-    this.dispatchFn(setState(gameState));
+  beginCoinFlip(): void {
+    this.dispatchFn(setState(GameState.CoinFlip));
+  }
+
+  beginFirstTurn(): void {
+    this.dispatchFn(setState(GameState.PlayerMoving));
   }
 }
 
@@ -30,8 +38,12 @@ export class NetworkedGameActions extends Actions {
     this.docRef = docRef;
   }
 
-  setGameState(gameState: GameState): void {
-    writeNewGameStateToDB(this.docRef, gameState);
+  beginCoinFlip(): void {
+    writeNewGameStateToDB(this.docRef, GameState.CoinFlip);
+  }
+
+  beginFirstTurn(): void {
+    writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
   }
 }
 

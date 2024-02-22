@@ -2,6 +2,7 @@ import { FunctionComponent, useContext } from "react";
 import { useAppSelector } from "./store/hooks";
 import { GameState } from "./store/gameStateSlice";
 import { ActionsContext } from "./ActionsContext";
+import { isHostClient } from "./Utils";
 
 const BeginGameButton: FunctionComponent = () => {
   const [gameState, players] = useAppSelector((state) => [
@@ -17,13 +18,13 @@ const BeginGameButton: FunctionComponent = () => {
       </div>
     );
   } else if (gameState === GameState.WaitingToBegin) {
-    if (players.isHost) {
+    if (isHostClient(players, actions)) {
       return (
         <div className={"Begin-game-button-wrapper"}>
           <button
             className={"Begin-game-button"}
             onClick={() => {
-              actions.setGameState(GameState.CoinFlip);
+              actions.beginCoinFlip();
             }}
           >
             Begin Game

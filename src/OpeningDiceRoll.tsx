@@ -1,23 +1,24 @@
-import { FunctionComponent, useRef, useState } from "react";
+import { FunctionComponent, useContext, useRef, useState } from "react";
 
-import { Color, Player } from "./Types";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { Color } from "./Types";
+import { useAppSelector } from "./store/hooks";
 import Die from "./Die";
-import { GameState, setState } from "./store/gameStateSlice";
-import { performInitialRolls } from "./store/dice";
-import { setDice } from "./store/diceSlice";
 import { CSSTransition } from "react-transition-group";
-import { setCurrentPlayer } from "./store/currentPlayerSlice";
+import { ActionsContext } from "./ActionsContext";
+import { isHostClient } from "./Utils";
 
 const OpeningDiceRoll: FunctionComponent = () => {
-  const dispatch = useAppDispatch();
-  const [settings] = useAppSelector((state) => [state.settings]);
+  const actions = useContext(ActionsContext);
+  const [dice, settings, players] = useAppSelector((state) => [
+    state.dice,
+    state.settings,
+    state.players,
+  ]);
 
-  const [initialRolls] = useState(performInitialRolls());
   const [initialRollCounter, setInitialRollCounter] = useState(0);
   const [forceReroll, setForceReroll] = useState(false);
 
-  let currOpeningRoll = initialRolls[initialRollCounter];
+  let currOpeningRoll = dice.initialRolls[initialRollCounter];
   const nodeRef = useRef(null);
 
   return (
@@ -35,17 +36,15 @@ const OpeningDiceRoll: FunctionComponent = () => {
               // TODO: send automatic double dispatch
               setInitialRollCounter(initialRollCounter + 1);
               setForceReroll(false);
-              setTimeout(() => {
-                dispatchStartGameActions(
-                  initialRolls[initialRolls.length - 1],
-                  dispatch
-                );
-              }, 1500);
+              if (isHostClient(players, actions)) {
+                setTimeout(() => {
+                  actions.beginFirstTurn();
+                }, 1500);
+              }
             } else {
-              dispatchStartGameActions(
-                initialRolls[initialRolls.length - 1],
-                dispatch
-              );
+              if (isHostClient(players, actions)) {
+                actions.beginFirstTurn();
+              }
             }
           }, 1500);
         }, 0);
@@ -72,13 +71,5 @@ const OpeningDiceRoll: FunctionComponent = () => {
     </CSSTransition>
   );
 };
-
-function dispatchStartGameActions(openingRoll: number[], dispatch: Function) {
-  let startingPlayer: Player =
-    openingRoll[0] > openingRoll[1] ? Player.One : Player.Two;
-  dispatch(setCurrentPlayer(startingPlayer));
-  dispatch(setDice(openingRoll));
-  dispatch(setState(GameState.PlayerMoving));
-}
 
 export default OpeningDiceRoll;

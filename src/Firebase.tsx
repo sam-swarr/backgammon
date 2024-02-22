@@ -16,7 +16,10 @@ import {
   where,
 } from "firebase/firestore";
 import { GameState } from "./store/gameStateSlice";
-import { PlayersData, PlayersDataPayload } from "./store/playersSlice";
+import { PlayersDataPayload } from "./store/playersSlice";
+import { performInitialRolls } from "./store/dice";
+import { DiceData } from "./store/diceSlice";
+import { Player } from "./Types";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBEAjHStQSJVxt6gxABDueJ4JdSPEjlHXE",
@@ -81,6 +84,8 @@ export function getCurrentUser(): User {
 export type FirestoreGameData = {
   gameState: GameState;
   players: PlayersDataPayload;
+  currentPlayer: Player;
+  dice: DiceData;
   roomCode: string;
 };
 
@@ -93,6 +98,8 @@ export async function createLobby(): Promise<CreateLobbyResult> {
   initialize();
 
   const roomCode = createRoomCode();
+  const initialRolls = performInitialRolls();
+  const startingRoll = initialRolls[Object.keys(initialRolls).length - 1];
 
   const docRef = await addDoc(collection(db, "lobbies"), {
     roomCode: roomCode,
@@ -102,6 +109,11 @@ export async function createLobby(): Promise<CreateLobbyResult> {
         username: "Sam",
       },
       playerTwo: null,
+    },
+    currentPlayer: startingRoll[0] > startingRoll[1] ? Player.One : Player.Two,
+    dice: {
+      initialRolls: initialRolls,
+      currentRoll: startingRoll,
     },
     gameState: GameState.WaitingForPlayers,
     timeCreated: serverTimestamp(),
