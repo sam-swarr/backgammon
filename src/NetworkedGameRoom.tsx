@@ -73,7 +73,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
       }
     };
     connectToLobby();
-  }, [roomCode]);
+  }, [roomCode, dispatch]);
 
   if (gameActions == null) {
     return null;

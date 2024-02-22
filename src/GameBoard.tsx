@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useContext, useState } from "react";
 
 import { endTurn } from "./store/currentPlayerSlice";
 import { getAvailableDice } from "./store/dice";
@@ -35,6 +35,8 @@ import { addAnimation } from "./store/animationsSlice";
 import { calculateTranslationOffsets } from "./store/animations";
 import BeginGameButton from "./BeginGameButton";
 import OpeningDiceRoll from "./OpeningDiceRoll";
+import { isCurrentPlayer } from "./Utils";
+import { ActionsContext } from "./ActionsContext";
 
 const GameBoard: FunctionComponent = () => {
   const [
@@ -46,6 +48,7 @@ const GameBoard: FunctionComponent = () => {
     highlightedMoves,
     provisionalMoves,
     animations,
+    players,
   ] = useAppSelector((state) => [
     state.currentPlayer,
     state.settings,
@@ -55,7 +58,9 @@ const GameBoard: FunctionComponent = () => {
     state.highlightedMoves.moves,
     state.provisionalMoves,
     state.animations,
+    state.players,
   ]);
+  const actions = useContext(ActionsContext);
 
   const playerOneColor = settings.playerOneColor;
   const playerTwoColor =
@@ -108,8 +113,15 @@ const GameBoard: FunctionComponent = () => {
   const topRightPoints = [];
   const bottomRightPoints = [];
 
-  const boardPointClickHandler = (pointClicked: number | "BAR" | "HOME") => {
-    if (gameState !== GameState.PlayerMoving) {
+  const boardPointClickHandler = (
+    pointClicked: number | "BAR" | "HOME"
+  ): boolean => {
+    // Disable click handler if it's not a player's turn or if the client is not
+    // the current player.
+    if (
+      gameState !== GameState.PlayerMoving ||
+      !isCurrentPlayer(players, currentPlayer, actions)
+    ) {
       return true;
     }
 
