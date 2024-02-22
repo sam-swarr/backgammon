@@ -13,10 +13,12 @@ import NetworkedGameRoom, {
   loader as NetworkedGameRoomLoader,
 } from "./NetworkedGameRoom";
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
+import { useAppDispatch } from "./store/hooks";
 
 type AppProps = {};
 
 const App: FunctionComponent<AppProps> = () => {
+  const dispatch = useAppDispatch();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -25,7 +27,7 @@ const App: FunctionComponent<AppProps> = () => {
     {
       path: "/local",
       element: (
-        <ActionsContext.Provider value={new LocalGameActions()}>
+        <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
           <div className={"Game-area-wrapper"}>
             <GameBoard />
             <InformationText />

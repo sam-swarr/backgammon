@@ -1,10 +1,13 @@
 import { FunctionComponent, useContext } from "react";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { GameState, setState } from "./store/gameStateSlice";
+import { useAppSelector } from "./store/hooks";
+import { GameState } from "./store/gameStateSlice";
 import { ActionsContext } from "./ActionsContext";
 
 const BeginGameButton: FunctionComponent = () => {
-  const gameState = useAppSelector((state) => state.gameState);
+  const [gameState, players] = useAppSelector((state) => [
+    state.gameState,
+    state.players,
+  ]);
   const actions = useContext(ActionsContext);
 
   if (gameState === GameState.WaitingForPlayers) {
@@ -14,18 +17,26 @@ const BeginGameButton: FunctionComponent = () => {
       </div>
     );
   } else if (gameState === GameState.WaitingToBegin) {
-    return (
-      <div className={"Begin-game-button-wrapper"}>
-        <button
-          className={"Begin-game-button"}
-          onClick={() => {
-            actions.setGameState(GameState.CoinFlip);
-          }}
-        >
-          Begin Game
-        </button>
-      </div>
-    );
+    if (players.isHost) {
+      return (
+        <div className={"Begin-game-button-wrapper"}>
+          <button
+            className={"Begin-game-button"}
+            onClick={() => {
+              actions.setGameState(GameState.CoinFlip);
+            }}
+          >
+            Begin Game
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div className={"Begin-game-button-wrapper"}>
+          Waiting For Host To Begin Game...
+        </div>
+      );
+    }
   } else {
     return null;
   }

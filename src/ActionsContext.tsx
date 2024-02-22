@@ -1,6 +1,7 @@
 import { createContext } from "react";
-import { GameState } from "./store/gameStateSlice";
+import { GameState, setState } from "./store/gameStateSlice";
 import { DocumentReference } from "firebase/firestore";
+import { writeNewGameStateToDB } from "./Firebase";
 
 export class Actions {
   setGameState(_gameState: GameState): void {
@@ -9,8 +10,15 @@ export class Actions {
 }
 
 export class LocalGameActions extends Actions {
+  dispatchFn: Function;
+
+  constructor(dispatchFn: Function) {
+    super();
+    this.dispatchFn = dispatchFn;
+  }
+
   setGameState(gameState: GameState): void {
-    console.log("LOCAL SET GAME STATE CALLED");
+    this.dispatchFn(setState(gameState));
   }
 }
 
@@ -23,9 +31,7 @@ export class NetworkedGameActions extends Actions {
   }
 
   setGameState(gameState: GameState): void {
-    console.log("NETWORKED SET GAME STATE CALLED");
-    console.log(this.docRef);
-    // TODO: continue here
+    writeNewGameStateToDB(this.docRef, gameState);
   }
 }
 
