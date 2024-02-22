@@ -1,32 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-import {STARTING_BOARD_STATE} from '../Constants';
-import { AppliableMove, GameBoardState, GameResult, Player, ValidMove } from '../Types';
-
-type ApplyMovesState = {
-  moves: ValidMove[],
-  currentPlayer: Player,
-};
+import { STARTING_BOARD_STATE } from "../Constants";
+import { AppliableMove, GameBoardState, GameResult, Player } from "../Types";
 
 export const gameBoardSlice = createSlice({
-  name: 'gameBoardState',
+  name: "gameBoardState",
   initialState: STARTING_BOARD_STATE,
   reducers: {
-    applyMoves: (state, action: { type: string, payload: ApplyMovesState }) => {
-      return action.payload.moves.reduce((prevBoardState, currMove) => {
-        return applyMoveToGameBoardState(
-          prevBoardState,
-          currMove.move,
-          action.payload.currentPlayer,
-        );
-      }, state);
+    setGameBoardState: (
+      _,
+      action: { type: string; payload: GameBoardState }
+    ) => {
+      return action.payload;
     },
     reset: () => STARTING_BOARD_STATE,
   },
-})
+});
 
 export function deepCloneGameBoardState(
-  gameBoardState: GameBoardState,
+  gameBoardState: GameBoardState
 ): GameBoardState {
   const pointsState = [];
   for (let i = 0; i <= 23; i++) {
@@ -43,14 +35,14 @@ export function deepCloneGameBoardState(
     },
     homeState: {
       ...gameBoardState.homeState,
-    }
-  }
+    },
+  };
 }
 
 export function applyMoveToGameBoardState(
   gameBoardState: GameBoardState,
   move: AppliableMove,
-  currentPlayer: Player,
+  currentPlayer: Player
 ): GameBoardState {
   const opponent = currentPlayer === Player.One ? Player.Two : Player.One;
   const result = deepCloneGameBoardState(gameBoardState);
@@ -69,7 +61,9 @@ export function applyMoveToGameBoardState(
   } else {
     const destPoint = result.pointsState[move.to];
     if (destPoint[opponent] > 1) {
-      console.error("Trying to apply invalid move. Destination occupied by 2+ opposing checkers");
+      console.error(
+        "Trying to apply invalid move. Destination occupied by 2+ opposing checkers"
+      );
       console.error(gameBoardState);
       console.error(move);
     }
@@ -84,7 +78,7 @@ export function applyMoveToGameBoardState(
 }
 export function didPlayerWin(
   gameBoardState: GameBoardState,
-  currentPlayer: Player,
+  currentPlayer: Player
 ): GameResult {
   // Check for any checkers on bar or points.
   if (
@@ -128,6 +122,6 @@ export function didPlayerWin(
 }
 
 // Action creators are generated for each case reducer function
-export const { applyMoves, reset } = gameBoardSlice.actions
+export const { setGameBoardState, reset } = gameBoardSlice.actions;
 
-export default gameBoardSlice.reducer
+export default gameBoardSlice.reducer;

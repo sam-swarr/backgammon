@@ -17,9 +17,10 @@ import {
 } from "firebase/firestore";
 import { GameState } from "./store/gameStateSlice";
 import { PlayersDataPayload } from "./store/playersSlice";
-import { performInitialRolls } from "./store/dice";
+import { performInitialRolls, rollDiceImpl } from "./store/dice";
 import { DiceData } from "./store/diceSlice";
-import { Player } from "./Types";
+import { GameBoardState, Player } from "./Types";
+import { STARTING_BOARD_STATE } from "./Constants";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBEAjHStQSJVxt6gxABDueJ4JdSPEjlHXE",
@@ -82,6 +83,7 @@ export function getCurrentUser(): User {
 }
 
 export type FirestoreGameData = {
+  gameBoard: GameBoardState;
   gameState: GameState;
   players: PlayersDataPayload;
   currentPlayer: Player;
@@ -103,6 +105,8 @@ export async function createLobby(): Promise<CreateLobbyResult> {
 
   const docRef = await addDoc(collection(db, "lobbies"), {
     roomCode: roomCode,
+    gameBoard: STARTING_BOARD_STATE,
+    gameState: GameState.WaitingForPlayers,
     players: {
       playerOne: {
         uid: (await signIn()).uid,
@@ -115,7 +119,6 @@ export async function createLobby(): Promise<CreateLobbyResult> {
       initialRolls: initialRolls,
       currentRoll: startingRoll,
     },
-    gameState: GameState.WaitingForPlayers,
     timeCreated: serverTimestamp(),
   });
 
@@ -180,6 +183,24 @@ export async function writeNewGameStateToDB(
     docRef,
     {
       gameState: newGameState,
+    },
+    { merge: true }
+  );
+}
+
+export async function writeEndTurnToDB(
+  docRef: DocumentReference,
+  newGameBoardState: GameBoardState,
+  newCurrentPlayer: Player
+) {
+  return await setDoc(
+    docRef,
+    {
+      gameBoard: newGameBoardState,
+      currentPlayer: newCurrentPlayer,
+      dice: {
+        currentRoll: rollDiceImpl(),
+      },
     },
     { merge: true }
   );

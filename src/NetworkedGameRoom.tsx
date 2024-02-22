@@ -23,6 +23,7 @@ import {
 } from "./ActionsContext";
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
+import { setGameBoardState } from "./store/gameBoardSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -45,10 +46,11 @@ const NetworkedGameRoom: FunctionComponent = () => {
         console.error("No lobby found with code: " + roomCode);
         // TODO: show error screen
       } else {
-        setGameActions(new NetworkedGameActions(docRef));
+        setGameActions(new NetworkedGameActions(dispatch, docRef));
         onSnapshot(docRef, (doc) => {
           // Dispatch all relevant updates to the redux store
           let data = doc.data() as FirestoreGameData;
+          dispatch(setGameBoardState(data.gameBoard));
           dispatch(setState(data.gameState));
           dispatch(setPlayersState(data.players));
           dispatch(setCurrentPlayer(data.currentPlayer));

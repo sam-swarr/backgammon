@@ -1,10 +1,7 @@
 import { FunctionComponent, useContext, useState } from "react";
 
-import { endTurn } from "./store/currentPlayerSlice";
 import { getAvailableDice } from "./store/dice";
-import { rollDice } from "./store/diceSlice";
 import {
-  applyMoves,
   applyMoveToGameBoardState,
   didPlayerWin,
 } from "./store/gameBoardSlice";
@@ -15,10 +12,7 @@ import {
 } from "./store/highlightedMovesSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { areProvisionalMovesSubmittable, getMoveIfValid } from "./store/moves";
-import {
-  appendProvisionalMove,
-  clearProvisionalMoves,
-} from "./store/provisionalMovesSlice";
+import { appendProvisionalMove } from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
 import {
   Color,
@@ -209,16 +203,10 @@ const GameBoard: FunctionComponent = () => {
     setTimeout(() => {
       setDisableSubmitButton(false);
     }, 1300);
-    dispatch(
-      applyMoves({
-        moves: provisionalMoves,
-        currentPlayer: currentPlayer,
-      })
+    actions.submitMoves(
+      gameBoardState,
+      currentPlayer === Player.One ? Player.Two : Player.One
     );
-    dispatch(clearProvisionalMoves());
-    dispatch(clearHighlightedMoves());
-    dispatch(endTurn());
-    dispatch(rollDice());
   };
 
   const pointsState = gameBoardState.pointsState;

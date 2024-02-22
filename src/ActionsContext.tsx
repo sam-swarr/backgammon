@@ -1,7 +1,13 @@
 import { createContext } from "react";
 import { GameState, setState } from "./store/gameStateSlice";
 import { DocumentReference } from "firebase/firestore";
-import { writeNewGameStateToDB } from "./Firebase";
+import { writeEndTurnToDB, writeNewGameStateToDB } from "./Firebase";
+import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
+import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
+import { setCurrentPlayer } from "./store/currentPlayerSlice";
+import { rollDice } from "./store/diceSlice";
+import { setGameBoardState } from "./store/gameBoardSlice";
+import { GameBoardState, Player } from "./Types";
 
 export class Actions {
   beginCoinFlip(): void {
@@ -9,6 +15,13 @@ export class Actions {
   }
 
   beginFirstTurn(): void {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  submitMoves(
+    _newGameBoardState: GameBoardState,
+    _newCurrentPlayer: Player
+  ): void {
     console.error("Unexpected use of default ActionsContext.");
   }
 }
@@ -28,13 +41,26 @@ export class LocalGameActions extends Actions {
   beginFirstTurn(): void {
     this.dispatchFn(setState(GameState.PlayerMoving));
   }
+
+  submitMoves(
+    newGameBoardState: GameBoardState,
+    newCurrentPlayer: Player
+  ): void {
+    this.dispatchFn(clearProvisionalMoves());
+    this.dispatchFn(clearHighlightedMoves());
+    this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
+    this.dispatchFn(rollDice());
+  }
 }
 
 export class NetworkedGameActions extends Actions {
+  dispatchFn: Function;
   docRef: DocumentReference;
 
-  constructor(docRef: DocumentReference) {
+  constructor(dispatchFn: Function, docRef: DocumentReference) {
     super();
+    this.dispatchFn = dispatchFn;
     this.docRef = docRef;
   }
 
@@ -44,6 +70,15 @@ export class NetworkedGameActions extends Actions {
 
   beginFirstTurn(): void {
     writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
+  }
+
+  submitMoves(
+    newGameBoardState: GameBoardState,
+    newCurrentPlayer: Player
+  ): void {
+    this.dispatchFn(clearProvisionalMoves());
+    this.dispatchFn(clearHighlightedMoves());
+    writeEndTurnToDB(this.docRef, newGameBoardState, newCurrentPlayer);
   }
 }
 
