@@ -1,15 +1,15 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from "react";
 
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
-import { removeLastProvisionalMove } from './store/provisionalMovesSlice';
-import { addAnimation } from './store/animationsSlice';
-import { GameBoardState, Player } from './Types';
-import { calculateTranslationOffsets } from './store/animations';
-import { applyMoveToGameBoardState } from './store/gameBoardSlice';
+import { removeLastProvisionalMove } from "./store/provisionalMovesSlice";
+import { addAnimation } from "./store/animationsSlice";
+import { GameBoardState, Player } from "./Types";
+import { calculateTranslationOffsets } from "./store/animations";
+import { applyMoveToGameBoardState } from "./store/gameBoardSlice";
 
 type UndoMoveButtonProps = {
-  provisionalGameBoardState: GameBoardState,
+  provisionalGameBoardState: GameBoardState;
 };
 
 const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
@@ -17,15 +17,9 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
 }: UndoMoveButtonProps) => {
   const [disableUndoButton, setDisableUndoButton] = useState(false);
 
-  const [
-    provisionalMoves,
-    currentPlayer,
-    settings,
-  ] = useAppSelector((state) => [
-    state.provisionalMoves,
-    state.currentPlayer,
-    state.settings,
-  ]);
+  const [provisionalMoves, currentPlayer, settings] = useAppSelector(
+    (state) => [state.provisionalMoves, state.currentPlayer, state.settings]
+  );
   const dispatch = useAppDispatch();
 
   return (
@@ -48,45 +42,10 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
               // If we're undoing a hit, also add an animation for the checker that
               // was captured.
               if (provisionalMoves[i].isHit) {
-                const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
-                dispatch(addAnimation({
-                  location: provisionalMoves[i].move.to,
-                  animation: calculateTranslationOffsets(
-                    boardState,
-                    {
-                      from: "BAR",
-                      to: provisionalMoves[i].move.to,
-                    },
-                    otherPlayer,
-                    settings.movementDirection,
-                  ),
-                }));
-              }
-              dispatch(addAnimation({
-                location: inverseMove.to,
-                animation: calculateTranslationOffsets(
-                  boardState,
-                  inverseMove,
-                  currentPlayer,
-                  settings.movementDirection,
-                ),
-              }));
-              dispatch(removeLastProvisionalMove());
-              boardState = applyMoveToGameBoardState(
-                boardState,
-                inverseMove,
-                currentPlayer,
-              )
-              if (i === 0) {
-                setDisableUndoButton(false);
-              }
-            } else {
-              setTimeout(() => {
-                // If we're undoing a hit, also add an animation for the checker that
-                // was captured.
-                if (provisionalMoves[i].isHit) {
-                  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
-                  dispatch(addAnimation({
+                const otherPlayer =
+                  currentPlayer === Player.One ? Player.Two : Player.One;
+                dispatch(
+                  addAnimation({
                     location: provisionalMoves[i].move.to,
                     animation: calculateTranslationOffsets(
                       boardState,
@@ -95,25 +54,70 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
                         to: provisionalMoves[i].move.to,
                       },
                       otherPlayer,
-                      settings.movementDirection,
+                      settings.movementDirection
                     ),
-                  }));
-                }
-                dispatch(addAnimation({
+                  })
+                );
+              }
+              dispatch(
+                addAnimation({
                   location: inverseMove.to,
                   animation: calculateTranslationOffsets(
                     boardState,
                     inverseMove,
                     currentPlayer,
-                    settings.movementDirection,
+                    settings.movementDirection
                   ),
-                }));
+                })
+              );
+              dispatch(removeLastProvisionalMove());
+              boardState = applyMoveToGameBoardState(
+                boardState,
+                inverseMove,
+                currentPlayer
+              );
+              if (i === 0) {
+                setDisableUndoButton(false);
+              }
+            } else {
+              setTimeout(() => {
+                // If we're undoing a hit, also add an animation for the checker that
+                // was captured.
+                if (provisionalMoves[i].isHit) {
+                  const otherPlayer =
+                    currentPlayer === Player.One ? Player.Two : Player.One;
+                  dispatch(
+                    addAnimation({
+                      location: provisionalMoves[i].move.to,
+                      animation: calculateTranslationOffsets(
+                        boardState,
+                        {
+                          from: "BAR",
+                          to: provisionalMoves[i].move.to,
+                        },
+                        otherPlayer,
+                        settings.movementDirection
+                      ),
+                    })
+                  );
+                }
+                dispatch(
+                  addAnimation({
+                    location: inverseMove.to,
+                    animation: calculateTranslationOffsets(
+                      boardState,
+                      inverseMove,
+                      currentPlayer,
+                      settings.movementDirection
+                    ),
+                  })
+                );
                 dispatch(removeLastProvisionalMove());
                 boardState = applyMoveToGameBoardState(
                   boardState,
                   inverseMove,
-                  currentPlayer,
-                )
+                  currentPlayer
+                );
                 if (i === 0) {
                   setDisableUndoButton(false);
                 }
@@ -121,9 +125,10 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
             }
           }
           dispatch(clearHighlightedMoves());
-        }} />
+        }}
+      />
     </div>
   );
-}
+};
 
 export default UndoMoveButton;
