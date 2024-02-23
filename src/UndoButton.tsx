@@ -7,6 +7,7 @@ import { addAnimation } from "./store/animationsSlice";
 import { GameBoardState, Player } from "./Types";
 import { calculateTranslationOffsets } from "./store/animations";
 import { applyMoveToGameBoardState } from "./store/gameBoardSlice";
+import { CHECKER_ANIMATION_TIME_MS } from "./Constants";
 
 type UndoMoveButtonProps = {
   provisionalGameBoardState: GameBoardState;
@@ -121,7 +122,7 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
                 if (i === 0) {
                   setDisableUndoButton(false);
                 }
-              }, (provisionalMoves.length - 1 - i) * 300);
+              }, (provisionalMoves.length - 1 - i) * CHECKER_ANIMATION_TIME_MS);
             }
           }
           dispatch(clearHighlightedMoves());
