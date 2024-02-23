@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useContext, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
@@ -8,6 +8,7 @@ import { GameBoardState, Player } from "./Types";
 import { calculateTranslationOffsets } from "./store/animations";
 import { applyMoveToGameBoardState } from "./store/gameBoardSlice";
 import { CHECKER_ANIMATION_TIME_MS } from "./Constants";
+import { ActionsContext } from "./ActionsContext";
 
 type UndoMoveButtonProps = {
   provisionalGameBoardState: GameBoardState;
@@ -17,6 +18,7 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
   provisionalGameBoardState,
 }: UndoMoveButtonProps) => {
   const [disableUndoButton, setDisableUndoButton] = useState(false);
+  const actions = useContext(ActionsContext);
 
   const [provisionalMoves, currentPlayer, settings] = useAppSelector(
     (state) => [state.provisionalMoves, state.currentPlayer, state.settings]
@@ -30,7 +32,9 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
         hidden={provisionalMoves.length <= 0 || disableUndoButton}
         onClick={() => {
           setDisableUndoButton(true);
+          actions.clearNetworkedAnimationPayloads();
           let boardState = provisionalGameBoardState;
+
           // Setup animations to show the undoing of provisional moves.
           // Each provisional move is undone one at a time, with enough
           // delay between each to let the animation play.

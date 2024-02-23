@@ -9,6 +9,7 @@ import highlightedMovesReducer from "./highlightedMovesSlice";
 import provisionalMovesReducer from "./provisionalMovesSlice";
 import settingsReducer from "./settingsSlice";
 import playersSliceReducer from "./playersSlice";
+import networkedAnimationsReducer from "./networkedAnimationsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     players: playersSliceReducer,
     settings: settingsReducer,
     animations: animationsReducer,
+    networkedAnimations: networkedAnimationsReducer,
   },
 });
 

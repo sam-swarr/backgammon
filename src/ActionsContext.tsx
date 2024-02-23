@@ -8,6 +8,11 @@ import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { rollDice } from "./store/diceSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
 import { GameBoardState, Player } from "./Types";
+import { AddAnimationPayload } from "./store/animationsSlice";
+import {
+  addNetworkedAnimationPayload,
+  clearNetworkedAnimationPayloads,
+} from "./store/networkedAnimationsSlice";
 
 export class Actions {
   beginCoinFlip(): void {
@@ -22,6 +27,14 @@ export class Actions {
     _newGameBoardState: GameBoardState,
     _newCurrentPlayer: Player
   ): void {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  addNetworkedAnimationPayload(_payload: AddAnimationPayload) {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  clearNetworkedAnimationPayloads() {
     console.error("Unexpected use of default ActionsContext.");
   }
 }
@@ -52,6 +65,11 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
     this.dispatchFn(rollDice());
   }
+
+  // No need to do anything for a local game
+  addNetworkedAnimationPayload(_payload: AddAnimationPayload) {}
+  // No need to do anything for a local game
+  clearNetworkedAnimationPayloads() {}
 }
 
 export class NetworkedGameActions extends Actions {
@@ -78,7 +96,16 @@ export class NetworkedGameActions extends Actions {
   ): void {
     this.dispatchFn(clearProvisionalMoves());
     this.dispatchFn(clearHighlightedMoves());
+    this.dispatchFn(clearNetworkedAnimationPayloads());
     writeEndTurnToDB(this.docRef, newGameBoardState, newCurrentPlayer);
+  }
+
+  addNetworkedAnimationPayload(payload: AddAnimationPayload) {
+    this.dispatchFn(addNetworkedAnimationPayload(payload));
+  }
+
+  clearNetworkedAnimationPayloads() {
+    this.dispatchFn(clearNetworkedAnimationPayloads());
   }
 }
 

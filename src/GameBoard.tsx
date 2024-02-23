@@ -25,7 +25,7 @@ import Bar from "./Bar";
 import BoardPoint from "./BoardPoint";
 import Dice from "./Dice";
 import Home from "./Home";
-import { addAnimation } from "./store/animationsSlice";
+import { AddAnimationPayload, addAnimation } from "./store/animationsSlice";
 import { calculateTranslationOffsets } from "./store/animations";
 import BeginGameButton from "./BeginGameButton";
 import OpeningDiceRoll from "./OpeningDiceRoll";
@@ -134,35 +134,35 @@ const GameBoard: FunctionComponent = () => {
         }
       }
 
-      dispatch(
-        addAnimation({
-          location: moveToApply.move.to,
-          animation: calculateTranslationOffsets(
-            gameBoardState,
-            moveToApply.move,
-            currentPlayer,
-            playerMovementDirection
-          ),
-        })
-      );
+      let animationPayload: AddAnimationPayload = {
+        location: moveToApply.move.to,
+        animation: calculateTranslationOffsets(
+          gameBoardState,
+          moveToApply.move,
+          currentPlayer,
+          playerMovementDirection
+        ),
+      };
+      dispatch(addAnimation(animationPayload));
+      actions.addNetworkedAnimationPayload(animationPayload);
 
       if (moveToApply.isHit) {
         const otherPlayer =
           currentPlayer === Player.One ? Player.Two : Player.One;
-        dispatch(
-          addAnimation({
-            location: "BAR",
-            animation: calculateTranslationOffsets(
-              gameBoardState,
-              {
-                from: moveToApply.move.to,
-                to: "BAR",
-              },
-              otherPlayer,
-              playerMovementDirection
-            ),
-          })
-        );
+        let animationPayload: AddAnimationPayload = {
+          location: "BAR",
+          animation: calculateTranslationOffsets(
+            gameBoardState,
+            {
+              from: moveToApply.move.to,
+              to: "BAR",
+            },
+            otherPlayer,
+            playerMovementDirection
+          ),
+        };
+        dispatch(addAnimation(animationPayload));
+        actions.addNetworkedAnimationPayload(animationPayload);
       }
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
