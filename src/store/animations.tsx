@@ -1,4 +1,10 @@
-import { AppliableMove, GameBoardState, MovementDirection, Player, ValidMove } from "../Types";
+import {
+  AppliableMove,
+  GameBoardState,
+  MovementDirection,
+  Player,
+  ValidMove,
+} from "../Types";
 import { Animation, TranslationOffset } from "./animationsSlice";
 import { getPointStateAtIndex } from "./moves";
 
@@ -14,8 +20,8 @@ const BOARD_HALF_WIDTH = 32;
 export function calculateTranslationOffsets(
   gameBoardState: GameBoardState,
   move: AppliableMove,
-  currentPlayer: Player,
-  playerMovementDirection: MovementDirection,
+  checkerOwner: Player,
+  playerMovementDirection: MovementDirection
 ): Animation {
   const fromPoint = move.from;
   const toPoint = move.to;
@@ -24,12 +30,24 @@ export function calculateTranslationOffsets(
     const fromX = calculateDistanceOnXAxisCCW(fromPoint);
     const toX = calculateDistanceOnXAxisCCW(toPoint);
 
-    const fromNumberOfCheckers = getPointStateAtIndex(gameBoardState, fromPoint)[currentPlayer];
-    const fromY = calculateDistanceOnYAxis(fromPoint, fromNumberOfCheckers, currentPlayer);
+    const fromNumberOfCheckers = getPointStateAtIndex(
+      gameBoardState,
+      fromPoint
+    )[checkerOwner];
+    const fromY = calculateDistanceOnYAxis(
+      fromPoint,
+      fromNumberOfCheckers,
+      checkerOwner
+    );
 
     // Add one since the checker hasn't logically been moved yet.
-    const toNumberOfCheckers = getPointStateAtIndex(gameBoardState, toPoint)[currentPlayer] + 1;
-    const toY = calculateDistanceOnYAxis(toPoint, toNumberOfCheckers, currentPlayer);
+    const toNumberOfCheckers =
+      getPointStateAtIndex(gameBoardState, toPoint)[checkerOwner] + 1;
+    const toY = calculateDistanceOnYAxis(
+      toPoint,
+      toNumberOfCheckers,
+      checkerOwner
+    );
 
     return {
       translation: {
@@ -37,7 +55,7 @@ export function calculateTranslationOffsets(
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
-      owner: currentPlayer,
+      owner: checkerOwner,
     };
   }
   // MovementDirection.Clockwise
@@ -45,12 +63,24 @@ export function calculateTranslationOffsets(
     const fromX = calculateDistanceOnXAxisCW(fromPoint);
     const toX = calculateDistanceOnXAxisCW(toPoint);
 
-    const fromNumberOfCheckers = getPointStateAtIndex(gameBoardState, fromPoint)[currentPlayer];
-    const fromY = calculateDistanceOnYAxis(fromPoint, fromNumberOfCheckers, currentPlayer);
+    const fromNumberOfCheckers = getPointStateAtIndex(
+      gameBoardState,
+      fromPoint
+    )[checkerOwner];
+    const fromY = calculateDistanceOnYAxis(
+      fromPoint,
+      fromNumberOfCheckers,
+      checkerOwner
+    );
 
     // Add one since the checker hasn't logically been moved yet.
-    const toNumberOfCheckers = getPointStateAtIndex(gameBoardState, toPoint)[currentPlayer] + 1;
-    const toY = calculateDistanceOnYAxis(toPoint, toNumberOfCheckers, currentPlayer);
+    const toNumberOfCheckers =
+      getPointStateAtIndex(gameBoardState, toPoint)[checkerOwner] + 1;
+    const toY = calculateDistanceOnYAxis(
+      toPoint,
+      toNumberOfCheckers,
+      checkerOwner
+    );
 
     return {
       translation: {
@@ -58,14 +88,12 @@ export function calculateTranslationOffsets(
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
-      owner: currentPlayer,
+      owner: checkerOwner,
     };
   }
 }
 
-function calculateDistanceOnXAxisCCW(
-  point: number | "BAR" | "HOME",
-): number {
+function calculateDistanceOnXAxisCCW(point: number | "BAR" | "HOME"): number {
   if (point === "BAR") {
     return BOARD_HALF_WIDTH + BAR_WIDTH + 1;
   } else if (point === "HOME") {
@@ -83,9 +111,7 @@ function calculateDistanceOnXAxisCCW(
   }
 }
 
-function calculateDistanceOnXAxisCW(
-  point: number | "BAR" | "HOME",
-): number {
+function calculateDistanceOnXAxisCW(point: number | "BAR" | "HOME"): number {
   if (point === "BAR") {
     return HOME_WIDTH + BOARD_HALF_WIDTH;
   } else if (point === "HOME") {
@@ -106,18 +132,18 @@ function calculateDistanceOnXAxisCW(
 function calculateDistanceOnYAxis(
   point: number | "BAR" | "HOME",
   numCheckers: number,
-  currentPlayer: Player,
+  checkerOwner: Player
 ): number {
   if (point === "BAR") {
-    if (currentPlayer === Player.One) {
+    if (checkerOwner === Player.One) {
       // Player One's bar checkers are stacked on top half of bar from middle upward.
-      return BAR_HALF_HEIGHT - (numCheckers * CHECKER_HEIGHT);
+      return BAR_HALF_HEIGHT - numCheckers * CHECKER_HEIGHT;
     } else {
       // Player Two's bar checkers are stacked on bottom half of bar from middle downward.
-      return BAR_HALF_HEIGHT + BAR_SPACER + ((numCheckers - 1) * CHECKER_HEIGHT);
+      return BAR_HALF_HEIGHT + BAR_SPACER + (numCheckers - 1) * CHECKER_HEIGHT;
     }
   } else if (point === "HOME") {
-    if (currentPlayer === Player.One) {
+    if (checkerOwner === Player.One) {
       // Player One's home checkers are stacked on bottom half of home from bottom edge upward.
       return BOARD_HEIGHT - CHECKER_HEIGHT;
     } else {
@@ -130,11 +156,13 @@ function calculateDistanceOnYAxis(
       return CHECKER_HEIGHT * (numCheckers - 1);
     } else {
       // These points are on the bottom of the screen. Checkers are stacked from the bottom edge up.
-      return BOARD_HEIGHT - (CHECKER_HEIGHT * numCheckers);
+      return BOARD_HEIGHT - CHECKER_HEIGHT * numCheckers;
     }
   }
 }
 
-export function getTranslationOffsetStyleString(offset: TranslationOffset): string {
+export function getTranslationOffsetStyleString(
+  offset: TranslationOffset
+): string {
   return "translate(" + offset.translateX + "vw, " + offset.translateY + "vw)";
 }

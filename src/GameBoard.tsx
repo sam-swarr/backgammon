@@ -43,6 +43,7 @@ const GameBoard: FunctionComponent = () => {
     provisionalMoves,
     animations,
     players,
+    networkedAnimations,
   ] = useAppSelector((state) => [
     state.currentPlayer,
     state.settings,
@@ -53,6 +54,7 @@ const GameBoard: FunctionComponent = () => {
     state.provisionalMoves,
     state.animations,
     state.players,
+    state.networkedAnimations,
   ]);
   const actions = useContext(ActionsContext);
 
@@ -135,38 +137,51 @@ const GameBoard: FunctionComponent = () => {
         }
       }
 
-      let animationPayload: AddAnimationPayload = {
-        location: moveToApply.move.to,
-        animation: calculateTranslationOffsets(
-          gameBoardState,
-          moveToApply.move,
-          currentPlayer,
-          playerMovementDirection
-        ),
-      };
-      dispatch(addAnimation(animationPayload));
+      dispatch(
+        addAnimation({
+          location: moveToApply.move.to,
+          animation: calculateTranslationOffsets(
+            gameBoardState,
+            moveToApply.move,
+            currentPlayer,
+            playerMovementDirection
+          ),
+        })
+      );
       actions.addNetworkedAnimation({
         animateFor: otherPlayer,
-        animationPayload: animationPayload,
+        animationData: {
+          location: moveToApply.move.to,
+          move: moveToApply.move,
+          checkerOwner: currentPlayer,
+        },
       });
 
       if (moveToApply.isHit) {
-        let animationPayload: AddAnimationPayload = {
-          location: "BAR",
-          animation: calculateTranslationOffsets(
-            gameBoardState,
-            {
+        dispatch(
+          addAnimation({
+            location: "BAR",
+            animation: calculateTranslationOffsets(
+              gameBoardState,
+              {
+                from: moveToApply.move.to,
+                to: "BAR",
+              },
+              otherPlayer,
+              playerMovementDirection
+            ),
+          })
+        );
+        actions.addNetworkedAnimation({
+          animateFor: otherPlayer,
+          animationData: {
+            location: "BAR",
+            move: {
               from: moveToApply.move.to,
               to: "BAR",
             },
-            otherPlayer,
-            playerMovementDirection
-          ),
-        };
-        dispatch(addAnimation(animationPayload));
-        actions.addNetworkedAnimation({
-          animateFor: otherPlayer,
-          animationPayload: animationPayload,
+            checkerOwner: otherPlayer,
+          },
         });
       }
       dispatch(appendProvisionalMove(moveToApply));
@@ -210,7 +225,8 @@ const GameBoard: FunctionComponent = () => {
     }, 1300);
     actions.submitMoves(
       gameBoardState,
-      currentPlayer === Player.One ? Player.Two : Player.One
+      currentPlayer === Player.One ? Player.Two : Player.One,
+      networkedAnimations
     );
   };
 

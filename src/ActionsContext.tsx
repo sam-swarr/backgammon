@@ -25,7 +25,8 @@ export class Actions {
 
   submitMoves(
     _newGameBoardState: GameBoardState,
-    _newCurrentPlayer: Player
+    _newCurrentPlayer: Player,
+    _networkedAnimations: AddNetworkedAnimationPayload[]
   ): void {
     console.error("Unexpected use of default ActionsContext.");
   }
@@ -57,7 +58,8 @@ export class LocalGameActions extends Actions {
 
   submitMoves(
     newGameBoardState: GameBoardState,
-    newCurrentPlayer: Player
+    newCurrentPlayer: Player,
+    _networkedAnimations: AddNetworkedAnimationPayload[]
   ): void {
     this.dispatchFn(clearProvisionalMoves());
     this.dispatchFn(clearHighlightedMoves());
@@ -92,12 +94,18 @@ export class NetworkedGameActions extends Actions {
 
   submitMoves(
     newGameBoardState: GameBoardState,
-    newCurrentPlayer: Player
+    newCurrentPlayer: Player,
+    networkedAnimations: AddNetworkedAnimationPayload[]
   ): void {
     this.dispatchFn(clearProvisionalMoves());
     this.dispatchFn(clearHighlightedMoves());
     this.dispatchFn(clearNetworkedAnimations());
-    writeEndTurnToDB(this.docRef, newGameBoardState, newCurrentPlayer);
+    writeEndTurnToDB(
+      this.docRef,
+      newGameBoardState,
+      newCurrentPlayer,
+      networkedAnimations
+    );
   }
 
   addNetworkedAnimation(payload: AddNetworkedAnimationPayload) {

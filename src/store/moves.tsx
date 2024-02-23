@@ -1,10 +1,10 @@
-import { applyMoveToGameBoardState } from './gameBoardSlice';
-import { MOVE_FROM_INDICES } from '../Constants';
-import { GameBoardState, Player, PointState, ValidMove } from '../Types';
+import { applyMoveToGameBoardState } from "./gameBoardSlice";
+import { MOVE_FROM_INDICES } from "../Constants";
+import { GameBoardState, Player, PointState, ValidMove } from "../Types";
 
 export function getPointStateAtIndex(
   gameBoardState: GameBoardState,
-  pointIndex: number | "BAR" | "HOME",
+  pointIndex: number | "BAR" | "HOME"
 ): PointState {
   if (pointIndex === "BAR") {
     return gameBoardState.barState;
@@ -17,7 +17,7 @@ export function getPointStateAtIndex(
 
 export function doesPlayerOccupyBar(
   gameBoardState: GameBoardState,
-  player: Player,
+  player: Player
 ): boolean {
   const barState = getPointStateAtIndex(gameBoardState, "BAR");
   return barState[player] > 0;
@@ -26,12 +26,13 @@ export function doesPlayerOccupyBar(
 export function getIndexAfterMoving(
   fromPoint: number | "BAR",
   dieValue: number,
-  currentPlayer: Player,
+  currentPlayer: Player
 ): number | "HOME" {
   const direction = currentPlayer === Player.One ? -1 : 1;
 
-  const origin = fromPoint === "BAR" ? (currentPlayer === Player.One ? 24 : -1) : fromPoint;
-  const destination = origin + (dieValue * direction);
+  const origin =
+    fromPoint === "BAR" ? (currentPlayer === Player.One ? 24 : -1) : fromPoint;
+  const destination = origin + dieValue * direction;
 
   if (currentPlayer === Player.One) {
     return destination < 0 ? "HOME" : destination;
@@ -44,12 +45,12 @@ export enum CanOccupyResult {
   No = "NO",
   Yes = "YES",
   Hit = "HIT",
-};
+}
 
 export function canPlayerOccupyPoint(
   gameBoardState: GameBoardState,
   toPoint: number | "HOME",
-  currentPlayer: Player,
+  currentPlayer: Player
 ): CanOccupyResult {
   if (toPoint === "HOME") {
     return CanOccupyResult.Yes;
@@ -67,7 +68,7 @@ export function canPlayerOccupyPoint(
 
 export function hasAllCheckersInHomeBoard(
   gameBoardState: GameBoardState,
-  currentPlayer: Player,
+  currentPlayer: Player
 ): boolean {
   if (getPointStateAtIndex(gameBoardState, "BAR")[currentPlayer] > 0) {
     return false;
@@ -90,26 +91,21 @@ export function hasAllCheckersInHomeBoard(
 
 export function getDistanceFromHome(
   fromPoint: number | "BAR",
-  currentPlayer: Player,
+  currentPlayer: Player
 ): number {
   if (fromPoint === "BAR") {
     return 25;
   }
-  return currentPlayer === Player.One ?
-    fromPoint + 1 :
-    24 - fromPoint;
+  return currentPlayer === Player.One ? fromPoint + 1 : 24 - fromPoint;
 }
 
 export function getMoveIfValid(
   gameBoardState: GameBoardState,
   fromPoint: number | "BAR",
   dieValue: number,
-  currentPlayer: Player,
+  currentPlayer: Player
 ): ValidMove | null {
-  const fromPointState = getPointStateAtIndex(
-    gameBoardState,
-    fromPoint,
-  );
+  const fromPointState = getPointStateAtIndex(gameBoardState, fromPoint);
 
   // Move is invalid if player does not actually occupy the fromPoint.
   if (fromPointState[currentPlayer] === 0) {
@@ -117,15 +113,14 @@ export function getMoveIfValid(
   }
 
   // Move is invalid if player occupies the BAR and does not enter.
-  if (doesPlayerOccupyBar(gameBoardState, currentPlayer) && fromPoint !== "BAR") {
+  if (
+    doesPlayerOccupyBar(gameBoardState, currentPlayer) &&
+    fromPoint !== "BAR"
+  ) {
     return null;
   }
 
-  const toPointIndex = getIndexAfterMoving(
-    fromPoint,
-    dieValue,
-    currentPlayer,
-  );
+  const toPointIndex = getIndexAfterMoving(fromPoint, dieValue, currentPlayer);
 
   // If the move would bear the checker off the board.
   if (toPointIndex === "HOME" && fromPoint !== "BAR") {
@@ -144,7 +139,7 @@ export function getMoveIfValid(
           }
         }
       } else {
-        for (let i = fromPoint -1; i >= 18; i--) {
+        for (let i = fromPoint - 1; i >= 18; i--) {
           if (getPointStateAtIndex(gameBoardState, i)[Player.Two] > 0) {
             return null;
           }
@@ -158,8 +153,8 @@ export function getMoveIfValid(
   const canOccupy = canPlayerOccupyPoint(
     gameBoardState,
     toPointIndex,
-    currentPlayer,
-  )
+    currentPlayer
+  );
   if (canOccupy === CanOccupyResult.Yes || canOccupy === CanOccupyResult.Hit) {
     return {
       move: {
@@ -168,26 +163,21 @@ export function getMoveIfValid(
       },
       dieUsed: dieValue,
       isHit: canOccupy === CanOccupyResult.Hit,
+      checkerOwner: currentPlayer,
     };
   }
 
   return null;
-};
+}
 
 export function getAllPossibleMoveSets(
   gameBoardState: GameBoardState,
   dieRolls: number[],
-  currentPlayer: Player,
+  currentPlayer: Player
 ): ValidMove[][] {
   let result: ValidMove[][] = [];
   result = result.concat(
-    getAllPossibleMoveSetsImpl(
-      gameBoardState,
-      dieRolls,
-      0,
-      currentPlayer,
-      [],
-    )
+    getAllPossibleMoveSetsImpl(gameBoardState, dieRolls, 0, currentPlayer, [])
   );
 
   // If there are exactly 2 die rolls, this means the dice
@@ -201,7 +191,7 @@ export function getAllPossibleMoveSets(
         reversedDieRolls,
         0,
         currentPlayer,
-        [],
+        []
       )
     );
   }
@@ -219,7 +209,7 @@ export function getAllPossibleMoveSetsImpl(
   const allPossibleMoves = getAllPossibleMovesForGivenDieRoll(
     gameBoardState,
     dieRolls[dieIndex],
-    currentPlayer,
+    currentPlayer
   );
 
   // Base Case: if there are no further moves, return the moveSet up to this point.
@@ -230,15 +220,15 @@ export function getAllPossibleMoveSetsImpl(
   // Base Case: if this was the last die to use, append each possible move from this
   // state to the moveSet so far, and return.
   if (dieIndex === dieRolls.length - 1) {
-    return allPossibleMoves.map(move => [...moveSet, move]);
+    return allPossibleMoves.map((move) => [...moveSet, move]);
   }
 
   let result: ValidMove[][] = [];
-  allPossibleMoves.forEach(move => {
+  allPossibleMoves.forEach((move) => {
     const newGameBoardState = applyMoveToGameBoardState(
       gameBoardState,
       move.move,
-      currentPlayer,
+      currentPlayer
     );
     result = result.concat(
       getAllPossibleMoveSetsImpl(
@@ -246,7 +236,7 @@ export function getAllPossibleMoveSetsImpl(
         dieRolls,
         dieIndex + 1,
         currentPlayer,
-        [...moveSet, move],
+        [...moveSet, move]
       )
     );
   });
@@ -257,15 +247,15 @@ export function getAllPossibleMoveSetsImpl(
 export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,
-  currentPlayer: Player,
+  currentPlayer: Player
 ): ValidMove[] {
   const moves: ValidMove[] = [];
-  MOVE_FROM_INDICES.forEach(from => {
+  MOVE_FROM_INDICES.forEach((from) => {
     const possibleMove = getMoveIfValid(
       gameBoardState,
       from,
       dieRoll,
-      currentPlayer,
+      currentPlayer
     );
     if (possibleMove !== null) {
       moves.push(possibleMove);
@@ -279,17 +269,20 @@ export function areProvisionalMovesSubmittable(
   gameBoardState: GameBoardState,
   dieRolls: number[],
   currentPlayer: Player,
-  provisionalMoves: ValidMove[],
+  provisionalMoves: ValidMove[]
 ): boolean {
   const allPossibleMoveSets: ValidMove[][] = getAllPossibleMoveSets(
     gameBoardState,
     dieRolls,
-    currentPlayer,
+    currentPlayer
   );
 
   const maxNumberOfMoves = allPossibleMoveSets.reduce(
-    (maxNumberOfMoves, currMoveSet) => currMoveSet.length > maxNumberOfMoves ? currMoveSet.length : maxNumberOfMoves,
-    0,
+    (maxNumberOfMoves, currMoveSet) =>
+      currMoveSet.length > maxNumberOfMoves
+        ? currMoveSet.length
+        : maxNumberOfMoves,
+    0
   );
 
   // The player did not use the max number of dice possible.
@@ -297,14 +290,18 @@ export function areProvisionalMovesSubmittable(
     return false;
   }
 
-  const moveSetsWithMaxNumberOfMoves = allPossibleMoveSets.filter((moveSet) => moveSet.length === maxNumberOfMoves);
+  const moveSetsWithMaxNumberOfMoves = allPossibleMoveSets.filter(
+    (moveSet) => moveSet.length === maxNumberOfMoves
+  );
 
   const maxPossibleDieValueUsed = moveSetsWithMaxNumberOfMoves.reduce(
     (prevMaxDieValueUsed, currMoveSet) => {
       const currMaxDieValueUsed: number = maxDieValueUsedInMoveSet(currMoveSet);
-      return currMaxDieValueUsed > prevMaxDieValueUsed ? currMaxDieValueUsed : prevMaxDieValueUsed;
+      return currMaxDieValueUsed > prevMaxDieValueUsed
+        ? currMaxDieValueUsed
+        : prevMaxDieValueUsed;
     },
-    0,
+    0
   );
   const maxProvisionalDieValueUsed = maxDieValueUsedInMoveSet(provisionalMoves);
 
@@ -312,11 +309,10 @@ export function areProvisionalMovesSubmittable(
   return maxProvisionalDieValueUsed === maxPossibleDieValueUsed;
 }
 
-export function maxDieValueUsedInMoveSet(
-  moveSet: ValidMove[],
-): number {
+export function maxDieValueUsedInMoveSet(moveSet: ValidMove[]): number {
   return moveSet.reduce(
-    (maxDieValueUsed, move) => move.dieUsed > maxDieValueUsed ? move.dieUsed : maxDieValueUsed,
-    0,
+    (maxDieValueUsed, move) =>
+      move.dieUsed > maxDieValueUsed ? move.dieUsed : maxDieValueUsed,
+    0
   );
 }

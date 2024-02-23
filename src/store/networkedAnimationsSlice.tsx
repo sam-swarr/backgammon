@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { AddAnimationPayload } from "./animationsSlice";
-import { Player } from "../Types";
+import { AppliableMove, Player } from "../Types";
 
 export type AddNetworkedAnimationPayload = {
   // whose client should show the animation
   animateFor: Player;
-  // the animation that client should add
-  animationPayload: AddAnimationPayload;
+  // data to generate the animation that the remote client should add
+  animationData: {
+    location: number | "HOME" | "BAR";
+    move: AppliableMove;
+    checkerOwner: Player;
+  };
 };
 
 const initialState: AddNetworkedAnimationPayload[] = [];

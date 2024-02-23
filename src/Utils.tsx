@@ -1,7 +1,7 @@
 import { Actions, LocalGameActions } from "./ActionsContext";
 import { getCurrentUser } from "./Firebase";
 import { Player } from "./Types";
-import { PlayersData } from "./store/playersSlice";
+import { PlayersData, PlayersDataPayload } from "./store/playersSlice";
 
 /**
  * Certain actions or pieces of UI should only be performed or shown to
@@ -46,4 +46,22 @@ export function isCurrentPlayer(
     (players.playerOne.uid === uid && currentPlayer === Player.One) ||
     (players.playerTwo.uid === uid && currentPlayer === Player.Two)
   );
+}
+
+/**
+ * @param players the `players` slice of the store
+ * @returns the Player value corresponding to the current client
+ */
+export function getClientPlayer(players: PlayersDataPayload): Player {
+  if (players.playerOne == null || players.playerTwo == null) {
+    throw new Error("Player data unexpectedly null.");
+  }
+
+  let uid = getCurrentUser().uid;
+  if (players.playerOne.uid === uid) {
+    return Player.One;
+  } else if (players.playerTwo.uid === uid) {
+    return Player.Two;
+  }
+  throw new Error("Unable to find player uid in player data.");
 }

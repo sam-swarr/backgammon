@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 
 import { useLoaderData } from "react-router-dom";
 import InformationText from "./InformationText";
-import { useAppDispatch } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import GameBoard from "./GameBoard";
 import {
   FirestoreGameData,
@@ -24,6 +24,9 @@ import {
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
+import { getClientPlayer } from "./Utils";
+import { addAnimation } from "./store/animationsSlice";
+import { calculateTranslationOffsets } from "./store/animations";
 
 type LoaderData = {
   roomCode: string;
@@ -35,6 +38,7 @@ export function loader({ params }: any): LoaderData {
 
 const NetworkedGameRoom: FunctionComponent = () => {
   const { roomCode } = useLoaderData() as LoaderData;
+  const [settings] = useAppSelector((state) => [state.settings]);
   const dispatch = useAppDispatch();
   const [gameActions, setGameActions] = useState<Actions | null>(null);
 
@@ -55,6 +59,26 @@ const NetworkedGameRoom: FunctionComponent = () => {
           dispatch(setPlayersState(data.players));
           dispatch(setCurrentPlayer(data.currentPlayer));
           dispatch(setDiceState(data.dice));
+          data.networkedAnimations
+            .filter(
+              (animationPayload) =>
+                animationPayload.animateFor === getClientPlayer(data.players)
+            )
+            .forEach((animationPayload) => {
+              let animationData = animationPayload.animationData;
+              let a = {
+                location: animationData.location,
+                animation: calculateTranslationOffsets(
+                  data.gameBoard,
+                  animationData.move,
+                  animationData.checkerOwner,
+                  settings.movementDirection
+                ),
+              };
+              console.log("RECEIVED ANIMATION");
+              console.log(a);
+              dispatch(addAnimation(a));
+            });
 
           // Handle case where 2nd player is just joining for the first time
           if (!hasJoinedLobby(data.players)) {
