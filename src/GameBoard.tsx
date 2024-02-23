@@ -56,6 +56,7 @@ const GameBoard: FunctionComponent = () => {
   ]);
   const actions = useContext(ActionsContext);
 
+  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
   const playerOneColor = settings.playerOneColor;
   const playerTwoColor =
     settings.playerOneColor === Color.White ? Color.Black : Color.White;
@@ -144,11 +145,12 @@ const GameBoard: FunctionComponent = () => {
         ),
       };
       dispatch(addAnimation(animationPayload));
-      actions.addNetworkedAnimationPayload(animationPayload);
+      actions.addNetworkedAnimation({
+        animateFor: otherPlayer,
+        animationPayload: animationPayload,
+      });
 
       if (moveToApply.isHit) {
-        const otherPlayer =
-          currentPlayer === Player.One ? Player.Two : Player.One;
         let animationPayload: AddAnimationPayload = {
           location: "BAR",
           animation: calculateTranslationOffsets(
@@ -162,7 +164,10 @@ const GameBoard: FunctionComponent = () => {
           ),
         };
         dispatch(addAnimation(animationPayload));
-        actions.addNetworkedAnimationPayload(animationPayload);
+        actions.addNetworkedAnimation({
+          animateFor: otherPlayer,
+          animationPayload: animationPayload,
+        });
       }
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());

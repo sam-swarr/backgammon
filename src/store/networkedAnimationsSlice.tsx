@@ -1,26 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { AddAnimationPayload, Animation } from "./animationsSlice";
+import type { AddAnimationPayload } from "./animationsSlice";
+import { Player } from "../Types";
 
-const initialState: AddAnimationPayload[] = [];
+export type AddNetworkedAnimationPayload = {
+  // whose client should show the animation
+  animateFor: Player;
+  // the animation that client should add
+  animationPayload: AddAnimationPayload;
+};
+
+const initialState: AddNetworkedAnimationPayload[] = [];
 
 export const networkedAnimationsSlice = createSlice({
   name: "networkedAnimationsState",
   initialState: initialState,
   reducers: {
-    addNetworkedAnimationPayload: (
+    addNetworkedAnimation: (
       state,
-      action: { type: string; payload: AddAnimationPayload }
+      action: { type: string; payload: AddNetworkedAnimationPayload }
     ) => {
       state.push(action.payload);
       return state;
     },
-    clearNetworkedAnimationPayloads: () => {
+    clearNetworkedAnimations: () => {
       return initialState;
     },
   },
 });
 
-export const { addNetworkedAnimationPayload, clearNetworkedAnimationPayloads } =
+export const { addNetworkedAnimation, clearNetworkedAnimations } =
   networkedAnimationsSlice.actions;
 
 export default networkedAnimationsSlice.reducer;

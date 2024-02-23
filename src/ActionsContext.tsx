@@ -8,10 +8,10 @@ import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { rollDice } from "./store/diceSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
 import { GameBoardState, Player } from "./Types";
-import { AddAnimationPayload } from "./store/animationsSlice";
 import {
-  addNetworkedAnimationPayload,
-  clearNetworkedAnimationPayloads,
+  AddNetworkedAnimationPayload,
+  addNetworkedAnimation,
+  clearNetworkedAnimations,
 } from "./store/networkedAnimationsSlice";
 
 export class Actions {
@@ -30,11 +30,11 @@ export class Actions {
     console.error("Unexpected use of default ActionsContext.");
   }
 
-  addNetworkedAnimationPayload(_payload: AddAnimationPayload) {
+  addNetworkedAnimation(_payload: AddNetworkedAnimationPayload) {
     console.error("Unexpected use of default ActionsContext.");
   }
 
-  clearNetworkedAnimationPayloads() {
+  clearNetworkedAnimations() {
     console.error("Unexpected use of default ActionsContext.");
   }
 }
@@ -67,9 +67,9 @@ export class LocalGameActions extends Actions {
   }
 
   // No need to do anything for a local game
-  addNetworkedAnimationPayload(_payload: AddAnimationPayload) {}
+  addNetworkedAnimation(_payload: AddNetworkedAnimationPayload) {}
   // No need to do anything for a local game
-  clearNetworkedAnimationPayloads() {}
+  clearNetworkedAnimations() {}
 }
 
 export class NetworkedGameActions extends Actions {
@@ -96,16 +96,16 @@ export class NetworkedGameActions extends Actions {
   ): void {
     this.dispatchFn(clearProvisionalMoves());
     this.dispatchFn(clearHighlightedMoves());
-    this.dispatchFn(clearNetworkedAnimationPayloads());
+    this.dispatchFn(clearNetworkedAnimations());
     writeEndTurnToDB(this.docRef, newGameBoardState, newCurrentPlayer);
   }
 
-  addNetworkedAnimationPayload(payload: AddAnimationPayload) {
-    this.dispatchFn(addNetworkedAnimationPayload(payload));
+  addNetworkedAnimation(payload: AddNetworkedAnimationPayload) {
+    this.dispatchFn(addNetworkedAnimation(payload));
   }
 
-  clearNetworkedAnimationPayloads() {
-    this.dispatchFn(clearNetworkedAnimationPayloads());
+  clearNetworkedAnimations() {
+    this.dispatchFn(clearNetworkedAnimations());
   }
 }
 

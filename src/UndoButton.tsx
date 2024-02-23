@@ -32,7 +32,7 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
         hidden={provisionalMoves.length <= 0 || disableUndoButton}
         onClick={() => {
           setDisableUndoButton(true);
-          actions.clearNetworkedAnimationPayloads();
+          actions.clearNetworkedAnimations();
           let boardState = provisionalGameBoardState;
 
           // Setup animations to show the undoing of provisional moves.
