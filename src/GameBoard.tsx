@@ -12,7 +12,10 @@ import {
 } from "./store/highlightedMovesSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { areProvisionalMovesSubmittable, getMoveIfValid } from "./store/moves";
-import { appendProvisionalMove } from "./store/provisionalMovesSlice";
+import {
+  appendProvisionalMove,
+  removeLastProvisionalMove,
+} from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
 import {
   Color,
@@ -25,8 +28,7 @@ import Bar from "./Bar";
 import BoardPoint from "./BoardPoint";
 import Dice from "./Dice";
 import Home from "./Home";
-import { AddAnimationPayload, addAnimation } from "./store/animationsSlice";
-import { calculateTranslationOffsets } from "./store/animations";
+import { Animation, createAnimationData } from "./Animations";
 import BeginGameButton from "./BeginGameButton";
 import OpeningDiceRoll from "./OpeningDiceRoll";
 import { isCurrentPlayer } from "./Utils";
@@ -41,7 +43,6 @@ const GameBoard: FunctionComponent = () => {
     gameState,
     highlightedMoves,
     provisionalMoves,
-    animations,
     players,
     networkedAnimations,
   ] = useAppSelector((state) => [
@@ -52,7 +53,6 @@ const GameBoard: FunctionComponent = () => {
     state.gameState,
     state.highlightedMoves.moves,
     state.provisionalMoves,
-    state.animations,
     state.players,
     state.networkedAnimations,
   ]);
@@ -66,6 +66,48 @@ const GameBoard: FunctionComponent = () => {
 
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
+
+  /*
+   * Animation Callbacks
+   */
+  const [animationQueue, setAnimationQueue] = useState(
+    Array<Array<Animation>>()
+  );
+  const addAnimationsToQueue = (animations: Animation[][]) => {
+    let newQueue = [...animationQueue, ...animations];
+    setAnimationQueue(newQueue);
+  };
+
+  const removeAnimationFromQueue = (id: number) => {
+    let newCurrAnimations: Animation[] = [];
+    let oldCurrAnimations = animationQueue[0];
+    for (let a of oldCurrAnimations) {
+      if (a.id !== id) {
+        newCurrAnimations.push(a);
+      } else {
+        if (a.options && a.options.removeProvisionalMoveOnCompletion) {
+          dispatch(removeLastProvisionalMove());
+        }
+      }
+    }
+
+    if (newCurrAnimations.length === oldCurrAnimations.length) {
+      console.error(
+        "Animation state error. Trying to remove animation " +
+          id +
+          " but it is not present."
+      );
+    }
+
+    let newAnimationQueue: Animation[][] =
+      newCurrAnimations.length > 0
+        ? [newCurrAnimations, ...animationQueue.slice(1)]
+        : animationQueue.slice(1);
+
+    setAnimationQueue(newAnimationQueue);
+  };
+
+  const currAnimations = animationQueue.length > 0 ? animationQueue[0] : [];
 
   const availableDice = getAvailableDice(
     diceData.currentRoll,
@@ -137,16 +179,15 @@ const GameBoard: FunctionComponent = () => {
         }
       }
 
-      dispatch(
-        addAnimation({
-          location: moveToApply.move.to,
-          animation: calculateTranslationOffsets(
-            gameBoardState,
-            moveToApply.move,
-            currentPlayer,
-            playerMovementDirection
-          ),
-        })
+      let animationsToQueue: Animation[] = [];
+      animationsToQueue.push(
+        createAnimationData(
+          gameBoardState,
+          moveToApply.move,
+          moveToApply.move.to,
+          currentPlayer,
+          playerMovementDirection
+        )
       );
       actions.addNetworkedAnimation({
         animateFor: otherPlayer,
@@ -158,19 +199,17 @@ const GameBoard: FunctionComponent = () => {
       });
 
       if (moveToApply.isHit) {
-        dispatch(
-          addAnimation({
-            location: "BAR",
-            animation: calculateTranslationOffsets(
-              gameBoardState,
-              {
-                from: moveToApply.move.to,
-                to: "BAR",
-              },
-              otherPlayer,
-              playerMovementDirection
-            ),
-          })
+        animationsToQueue.push(
+          createAnimationData(
+            gameBoardState,
+            {
+              from: moveToApply.move.to,
+              to: "BAR",
+            },
+            "BAR",
+            otherPlayer,
+            playerMovementDirection
+          )
         );
         actions.addNetworkedAnimation({
           animateFor: otherPlayer,
@@ -184,6 +223,7 @@ const GameBoard: FunctionComponent = () => {
           },
         });
       }
+      addAnimationsToQueue([animationsToQueue]);
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
       return true;
@@ -243,7 +283,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -258,7 +299,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -273,7 +315,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -288,7 +331,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -304,7 +348,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -319,7 +364,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -334,7 +380,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -349,7 +396,8 @@ const GameBoard: FunctionComponent = () => {
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
           pointNumber={i}
-          animations={animations.points[i]}
+          currAnimations={currAnimations}
+          removeAnimationFunction={removeAnimationFromQueue}
         />
       );
     }
@@ -363,12 +411,8 @@ const GameBoard: FunctionComponent = () => {
       currentPlayer={currentPlayer}
       playerOneColor={playerOneColor}
       playerTwoColor={playerTwoColor}
-      playerOneAnimations={animations.HOME.filter(
-        (animation) => animation.owner === Player.One
-      )}
-      playerTwoAnimations={animations.HOME.filter(
-        (animation) => animation.owner === Player.Two
-      )}
+      currAnimations={currAnimations}
+      removeAnimationFunction={removeAnimationFromQueue}
     />
   );
 
@@ -399,6 +443,7 @@ const GameBoard: FunctionComponent = () => {
         }
         provisionalGameBoardState={gameBoardState}
         submitButtonHandler={submitButtonHandler}
+        addAnimationsToQueueFunction={addAnimationsToQueue}
       />
     );
   }
@@ -416,12 +461,8 @@ const GameBoard: FunctionComponent = () => {
         currentPlayer={currentPlayer}
         playerOneColor={playerOneColor}
         playerTwoColor={playerTwoColor}
-        playerOneAnimations={animations.BAR.filter(
-          (animation) => animation.owner === Player.One
-        )}
-        playerTwoAnimations={animations.BAR.filter(
-          (animation) => animation.owner === Player.Two
-        )}
+        currAnimations={currAnimations}
+        removeAnimationFunction={removeAnimationFromQueue}
         highlightedMoves={highlightedMoves}
       />
       <div className="Game-board-half">

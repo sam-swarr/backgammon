@@ -3,10 +3,9 @@ import {
   GameBoardState,
   MovementDirection,
   Player,
-  ValidMove,
-} from "../Types";
-import { Animation, TranslationOffset } from "./animationsSlice";
-import { getPointStateAtIndex } from "./moves";
+} from "./Types";
+import { genAnimationID } from "./Utils";
+import { getPointStateAtIndex } from "./store/moves";
 
 const POINT_WIDTH = 5.333;
 const BAR_WIDTH = 3.2;
@@ -17,11 +16,31 @@ const CHECKER_HEIGHT = 2.667;
 const BOARD_HEIGHT = 36.92;
 const BOARD_HALF_WIDTH = 32;
 
-export function calculateTranslationOffsets(
+export type TranslationOffset = {
+  translateX: number;
+  translateY: number;
+};
+
+export type AnimationOptions = {
+  removeProvisionalMoveOnCompletion?: boolean;
+};
+
+export type Animation = {
+  id: number;
+  location: number | "HOME" | "BAR";
+  checkerOwner: Player;
+  checkerNumber: number;
+  translation: TranslationOffset;
+  options: AnimationOptions;
+};
+
+export function createAnimationData(
   gameBoardState: GameBoardState,
   move: AppliableMove,
+  location: number | "HOME" | "BAR",
   checkerOwner: Player,
-  playerMovementDirection: MovementDirection
+  playerMovementDirection: MovementDirection,
+  options?: AnimationOptions
 ): Animation {
   const fromPoint = move.from;
   const toPoint = move.to;
@@ -50,12 +69,15 @@ export function calculateTranslationOffsets(
     );
 
     return {
+      id: genAnimationID(),
+      location,
       translation: {
         translateX: fromX - toX,
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
-      owner: checkerOwner,
+      checkerOwner,
+      options: options != null ? options : {},
     };
   }
   // MovementDirection.Clockwise
@@ -83,12 +105,15 @@ export function calculateTranslationOffsets(
     );
 
     return {
+      id: genAnimationID(),
+      location,
       translation: {
         translateX: fromX - toX,
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
-      owner: checkerOwner,
+      checkerOwner,
+      options: options != null ? options : {},
     };
   }
 }

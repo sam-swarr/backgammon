@@ -197,6 +197,3 @@ export const MOVE_FROM_INDICES: Array<"BAR" | number> = [
   22,
   23,
 ];
-
-// Keep this value in sync with the .Checker `transition` CSS value
-export const CHECKER_ANIMATION_TIME_MS = 300;

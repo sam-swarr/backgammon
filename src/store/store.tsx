@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import animationsReducer from "./animationsSlice";
 import currentPlayerReducer from "./currentPlayerSlice";
 import diceReducer from "./diceSlice";
 import gameBoardReducer from "./gameBoardSlice";
@@ -21,7 +20,6 @@ export const store = configureStore({
     currentPlayer: currentPlayerReducer,
     players: playersSliceReducer,
     settings: settingsReducer,
-    animations: animationsReducer,
     networkedAnimations: networkedAnimationsReducer,
   },
 });

@@ -1,29 +1,32 @@
-import { getAvailableDice } from '../dice';
+import { Player } from "../../Types";
+import { getAvailableDice } from "../dice";
 
-test('getAvailableDice works for doubles', () => {
+test("getAvailableDice works for doubles", () => {
   const dice = [2, 2, 2, 2];
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 3,
         },
         dieUsed: 2,
-      }
-    ]
-  )).toEqual([2, 2, 2]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([2, 2, 2]);
 
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 3,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -31,19 +34,22 @@ test('getAvailableDice works for doubles', () => {
           to: 6,
         },
         dieUsed: 2,
-      }
-    ]
-  )).toEqual([2, 2]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([2, 2]);
 
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 3,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -51,6 +57,8 @@ test('getAvailableDice works for doubles', () => {
           to: 6,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -58,19 +66,22 @@ test('getAvailableDice works for doubles', () => {
           to: 8,
         },
         dieUsed: 2,
-      }
-    ]
-  )).toEqual([2]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([2]);
 
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 3,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -78,6 +89,8 @@ test('getAvailableDice works for doubles', () => {
           to: 6,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -85,6 +98,8 @@ test('getAvailableDice works for doubles', () => {
           to: 8,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -92,54 +107,56 @@ test('getAvailableDice works for doubles', () => {
           to: 10,
         },
         dieUsed: 2,
-      }
-    ]
-  )).toEqual([]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([]);
 });
 
-test('getAvailableDice works for non-doubles', () => {
+test("getAvailableDice works for non-doubles", () => {
   const dice = [2, 4];
 
-  expect(getAvailableDice(
-    dice,
-    [],
-  )).toEqual([2, 4]);
+  expect(getAvailableDice(dice, [])).toEqual([2, 4]);
 
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 3,
         },
         dieUsed: 2,
-      }
-    ]
-  )).toEqual([4]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([4]);
 
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 5,
         },
         dieUsed: 4,
-      }
-    ]
-  )).toEqual([2]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([2]);
 
-  expect(getAvailableDice(
-    dice,
-    [
+  expect(
+    getAvailableDice(dice, [
       {
         move: {
           from: 1,
           to: 3,
         },
         dieUsed: 2,
+        checkerOwner: Player.One,
+        isHit: false,
       },
       {
         move: {
@@ -147,7 +164,9 @@ test('getAvailableDice works for non-doubles', () => {
           to: 5,
         },
         dieUsed: 4,
-      }
-    ]
-  )).toEqual([]);
+        checkerOwner: Player.One,
+        isHit: false,
+      },
+    ])
+  ).toEqual([]);
 });

@@ -1,24 +1,20 @@
 import React, { FunctionComponent } from "react";
 import { Transition } from "react-transition-group";
-import { getTranslationOffsetStyleString } from "./store/animations";
-import { Animation, clearAnimation } from "./store/animationsSlice";
-import { useAppDispatch } from "./store/hooks";
+import { Animation, getTranslationOffsetStyleString } from "./Animations";
 
 import { Color } from "./Types";
-import { CHECKER_ANIMATION_TIME_MS } from "./Constants";
 
 type CheckerProps = {
   animation: Animation | undefined | null;
   color: Color;
-  location: number | "HOME" | "BAR";
+  removeAnimationFunction: (id: number) => void;
 };
 
 const Checker: FunctionComponent<CheckerProps> = ({
   color,
   animation,
-  location,
+  removeAnimationFunction,
 }: CheckerProps) => {
-  const dispatch = useAppDispatch();
   const colorClass = color === Color.White ? "white" : "black";
   const ref = React.useRef(null);
 
@@ -34,32 +30,20 @@ const Checker: FunctionComponent<CheckerProps> = ({
     };
 
     return (
-      <Transition
-        in={true}
-        appear={true}
-        nodeRef={ref}
-        timeout={0}
-        onEntered={() => {
-          setTimeout(
-            () =>
-              dispatch(
-                clearAnimation({
-                  owner: animation.owner,
-                  checkerNumber: animation.checkerNumber,
-                  location,
-                })
-              ),
-            CHECKER_ANIMATION_TIME_MS
+      <Transition in={true} appear={true} nodeRef={ref} timeout={0}>
+        {(state) => {
+          let d = (
+            <div
+              className={"Checker " + colorClass}
+              ref={ref}
+              style={transitionStyles[state]}
+              onTransitionEnd={() => {
+                removeAnimationFunction(animation.id);
+              }}
+            />
           );
+          return d;
         }}
-      >
-        {(state) => (
-          <div
-            className={"Checker " + colorClass}
-            ref={ref}
-            style={transitionStyles[state]}
-          />
-        )}
       </Transition>
     );
   }

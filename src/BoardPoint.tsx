@@ -1,19 +1,20 @@
 import { FunctionComponent, useState } from "react";
 import cx from "classnames";
 
-import Checker from './Checker';
-import {Color, ValidMove, Player, PointState} from './Types';
-import { Animation } from "./store/animationsSlice";
+import Checker from "./Checker";
+import { Color, ValidMove, Player, PointState } from "./Types";
+import { Animation } from "./Animations";
 
 type BoardPointProps = {
-  pointState: PointState,
-  location: "TOP" | "BOTTOM",
-  playerOneColor: Color,
-  playerTwoColor: Color,
-  pointNumber: number,
-  clickHandler: (fromPoint: number | "BAR") => boolean,
-  highlightedMoves: ValidMove[],
-  animations: Animation[],
+  pointState: PointState;
+  location: "TOP" | "BOTTOM";
+  playerOneColor: Color;
+  playerTwoColor: Color;
+  pointNumber: number;
+  clickHandler: (fromPoint: number | "BAR") => boolean;
+  highlightedMoves: ValidMove[];
+  currAnimations: Animation[];
+  removeAnimationFunction: (id: number) => void;
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -24,7 +25,8 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   pointNumber,
   clickHandler,
   highlightedMoves,
-  animations,
+  currAnimations,
+  removeAnimationFunction,
 }: BoardPointProps) => {
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
@@ -32,35 +34,55 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   }
   const [showNoMoveHighlight, setShowNoMoveHighlight] = useState(false);
 
-  const occupyingPlayer = pointState[Player.One] > pointState[Player.Two] ? Player.One : Player.Two;
-  const checkerCount = pointState[Player.One] > pointState[Player.Two] ? pointState[Player.One] : pointState[Player.Two];
+  const occupyingPlayer =
+    pointState[Player.One] > pointState[Player.Two] ? Player.One : Player.Two;
+  const checkerCount =
+    pointState[Player.One] > pointState[Player.Two]
+      ? pointState[Player.One]
+      : pointState[Player.Two];
 
   const checkers = [];
   for (let i = 0; i < checkerCount; i++) {
-    const color = occupyingPlayer === Player.One ?
-      playerOneColor : playerTwoColor;
+    const color =
+      occupyingPlayer === Player.One ? playerOneColor : playerTwoColor;
 
-    const animationForCurrentChecker = animations.find((animation) => animation.checkerNumber === i + 1);
+    let anim = currAnimations.find((a) => {
+      return a.location === pointNumber && a.checkerNumber === i + 1;
+    });
+
     checkers.push(
-      <Checker key={i} color={color} animation={animationForCurrentChecker} location={pointNumber} />
+      <Checker
+        key={i}
+        color={color}
+        animation={anim}
+        removeAnimationFunction={removeAnimationFunction}
+      />
     );
   }
 
   const topOrBottomClass = {
-    "top": location === "TOP",
-    "bottom": location === "BOTTOM",
+    top: location === "TOP",
+    bottom: location === "BOTTOM",
   };
 
   let highlight = null;
-  const isHighlightedFromPoint = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.from === pointNumber);
-  const isHighlightedToPoint = highlightedMoves.some((highlightedMove: ValidMove) => highlightedMove.move.to === pointNumber);
+  const isHighlightedFromPoint = highlightedMoves.some(
+    (highlightedMove: ValidMove) => highlightedMove.move.from === pointNumber
+  );
+  const isHighlightedToPoint = highlightedMoves.some(
+    (highlightedMove: ValidMove) => highlightedMove.move.to === pointNumber
+  );
   if (isHighlightedFromPoint || isHighlightedToPoint || showNoMoveHighlight) {
-    highlight = <div className={cx("Point-wrapper-highlight", {
-      ...topOrBottomClass,
-      "from": isHighlightedFromPoint,
-      "to": isHighlightedToPoint,
-      "noMove": showNoMoveHighlight,
-    })}/>;
+    highlight = (
+      <div
+        className={cx("Point-wrapper-highlight", {
+          ...topOrBottomClass,
+          from: isHighlightedFromPoint,
+          to: isHighlightedToPoint,
+          noMove: showNoMoveHighlight,
+        })}
+      />
+    );
   }
 
   return (
@@ -70,20 +92,23 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
         const result = clickHandler(pointNumber);
         if (!result) {
           setShowNoMoveHighlight(true);
-          setTimeout(() => { setShowNoMoveHighlight(false); }, 1000);
+          setTimeout(() => {
+            setShowNoMoveHighlight(false);
+          }, 1000);
         }
-      }}>
-      <div className={cx("Checkers-wrapper", topOrBottomClass)}>
-        {checkers}
-      </div>
+      }}
+    >
+      <div className={cx("Checkers-wrapper", topOrBottomClass)}>{checkers}</div>
       {highlight}
-      <div className={cx("Point-triangle", {
-        ...topOrBottomClass,
-        "even": pointNumber % 2 === 0,
-        "odd": pointNumber % 2 !== 0,
-        })}/>
+      <div
+        className={cx("Point-triangle", {
+          ...topOrBottomClass,
+          even: pointNumber % 2 === 0,
+          odd: pointNumber % 2 !== 0,
+        })}
+      />
     </div>
   );
-}
+};
 
 export default BoardPoint;

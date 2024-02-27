@@ -65,3 +65,8 @@ export function getClientPlayer(players: PlayersDataPayload): Player {
   }
   throw new Error("Unable to find player uid in player data.");
 }
+
+let currID = 1;
+export function genAnimationID(): number {
+  return currID++ % Number.MAX_SAFE_INTEGER;
+}
