@@ -4,6 +4,7 @@ import { createLobby } from "./Firebase";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
 import { GameState, setState } from "./store/gameStateSlice";
+import { resetStoreForLocalGame } from "./Utils";
 
 type MainMenuProps = {};
 
@@ -12,7 +13,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
   const dispatch = useAppDispatch();
 
   const createLocalGame = function () {
-    dispatch(setState(GameState.WaitingToBegin));
+    resetStoreForLocalGame(dispatch);
     navigate("/local");
   };
 

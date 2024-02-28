@@ -1,7 +1,20 @@
 import { Actions, LocalGameActions } from "./ActionsContext";
 import { getCurrentUser } from "./Firebase";
 import { Player } from "./Types";
+import { GameState, setState } from "./store/gameStateSlice";
 import { PlayersData, PlayersDataPayload } from "./store/playersSlice";
+import {
+  setShowGameOverDialog,
+  setShowSettingsMenu,
+} from "./store/settingsSlice";
+import { reset as resetGameBoard } from "./store/gameBoardSlice";
+import { reset as resetPlayerState } from "./store/playersSlice";
+import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
+import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
+import { performInitialRolls } from "./store/dice";
+import { setDiceState } from "./store/diceSlice";
+import { setCurrentPlayer } from "./store/currentPlayerSlice";
+import { clearNetworkedAnimations } from "./store/networkedAnimationsSlice";
 
 /**
  * Certain actions or pieces of UI should only be performed or shown to
@@ -69,4 +82,28 @@ export function getClientPlayer(players: PlayersDataPayload): Player {
 let currID = 1;
 export function genAnimationID(): number {
   return currID++ % Number.MAX_SAFE_INTEGER;
+}
+
+export function resetStoreForLocalGame(dispatchFn: Function): void {
+  const newRolls = performInitialRolls();
+  const newDiceState = {
+    initialRolls: newRolls,
+    currentRoll: newRolls[Object.keys(newRolls).length - 1],
+  };
+  dispatchFn(setShowGameOverDialog(false));
+  dispatchFn(setShowSettingsMenu(false));
+  dispatchFn(setState(GameState.WaitingToBegin));
+  dispatchFn(setDiceState(newDiceState));
+  dispatchFn(resetGameBoard());
+  dispatchFn(
+    setCurrentPlayer(
+      newDiceState.currentRoll[0] > newDiceState.currentRoll[1]
+        ? Player.One
+        : Player.Two
+    )
+  );
+  dispatchFn(resetPlayerState());
+  dispatchFn(clearProvisionalMoves());
+  dispatchFn(clearHighlightedMoves());
+  dispatchFn(clearNetworkedAnimations());
 }

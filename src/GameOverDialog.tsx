@@ -5,12 +5,8 @@ import Modal from "react-bootstrap/Modal";
 import { Player } from "./Types";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { setShowGameOverDialog } from "./store/settingsSlice";
-import { GameState, setState } from "./store/gameStateSlice";
-import { reset as resetCurrentPlayer } from "./store/currentPlayerSlice";
-import { reset as resetDice } from "./store/diceSlice";
-import { reset as resetGameBoard } from "./store/gameBoardSlice";
-import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
-import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
+import { GameState } from "./store/gameStateSlice";
+import { resetStoreForLocalGame } from "./Utils";
 
 type GameOverDialogProps = {};
 
@@ -23,13 +19,7 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = () => {
   const dispatch = useAppDispatch();
   const closeDialog = () => dispatch(setShowGameOverDialog(false));
   const backToMenu = () => {
-    dispatch(setShowGameOverDialog(false));
-    dispatch(setState(GameState.WaitingForPlayers));
-    dispatch(resetDice());
-    dispatch(resetGameBoard());
-    dispatch(resetCurrentPlayer());
-    dispatch(clearProvisionalMoves());
-    dispatch(clearHighlightedMoves());
+    resetStoreForLocalGame(dispatch);
   };
 
   const winnerText = currentPlayer === Player.One ? "Player One" : "Player Two";

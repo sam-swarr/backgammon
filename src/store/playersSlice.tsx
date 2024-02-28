@@ -42,10 +42,11 @@ export const playersSlice = createSlice({
         isHost,
       };
     },
+    reset: () => initialState,
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setPlayersState } = playersSlice.actions;
+export const { setPlayersState, reset } = playersSlice.actions;
 
 export default playersSlice.reducer;
