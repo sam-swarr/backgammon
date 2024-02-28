@@ -23,6 +23,7 @@ export type TranslationOffset = {
 
 export type AnimationOptions = {
   removeProvisionalMoveOnCompletion?: boolean;
+  reenableUndoButtonOnCompletion?: boolean;
 };
 
 export type Animation = {

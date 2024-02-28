@@ -20,13 +20,6 @@ export const diceSlice = createSlice({
     currentRoll: initialRolls[Object.keys(initialRolls).length - 1],
   },
   reducers: {
-    reset: () => {
-      const rolls = performInitialRolls();
-      return {
-        initialRolls: rolls,
-        currentRoll: rolls[Object.keys(rolls).length - 1],
-      };
-    },
     rollDice: (state) => {
       return {
         initialRolls: state.initialRolls,
@@ -40,6 +33,6 @@ export const diceSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset, rollDice, setDiceState } = diceSlice.actions;
+export const { rollDice, setDiceState } = diceSlice.actions;
 
 export default diceSlice.reducer;

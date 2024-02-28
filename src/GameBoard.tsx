@@ -66,6 +66,7 @@ const GameBoard: FunctionComponent = () => {
 
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
+  const [disableUndoButton, setDisableUndoButton] = useState(false);
 
   /*
    * Animation Callbacks
@@ -85,8 +86,13 @@ const GameBoard: FunctionComponent = () => {
       if (a.id !== id) {
         newCurrAnimations.push(a);
       } else {
-        if (a.options && a.options.removeProvisionalMoveOnCompletion) {
-          dispatch(removeLastProvisionalMove());
+        if (a.options) {
+          if (a.options.removeProvisionalMoveOnCompletion) {
+            dispatch(removeLastProvisionalMove());
+          }
+          if (a.options.reenableUndoButtonOnCompletion) {
+            setDisableUndoButton(false);
+          }
         }
       }
     }
@@ -444,6 +450,8 @@ const GameBoard: FunctionComponent = () => {
         provisionalGameBoardState={gameBoardState}
         submitButtonHandler={submitButtonHandler}
         addAnimationsToQueueFunction={addAnimationsToQueue}
+        disableUndoButton={disableUndoButton}
+        setDisableUndoButton={setDisableUndoButton}
       />
     );
   }

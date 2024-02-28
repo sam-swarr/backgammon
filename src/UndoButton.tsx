@@ -11,13 +11,16 @@ import { ActionsContext } from "./ActionsContext";
 type UndoMoveButtonProps = {
   provisionalGameBoardState: GameBoardState;
   addAnimationsToQueueFunction: Function;
+  disableUndoButton: boolean;
+  setDisableUndoButton: (disable: boolean) => void;
 };
 
 const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
   provisionalGameBoardState,
   addAnimationsToQueueFunction,
+  disableUndoButton,
+  setDisableUndoButton,
 }: UndoMoveButtonProps) => {
-  const [disableUndoButton, setDisableUndoButton] = useState(false);
   const actions = useContext(ActionsContext);
 
   const [provisionalMoves, currentPlayer, settings] = useAppSelector(
@@ -31,10 +34,7 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
         className={"Undo-button"}
         hidden={provisionalMoves.length <= 0 || disableUndoButton}
         onClick={() => {
-          // TODO: figure out disableundobutton behavior to work with new system
-          // might need to add flag to animation options and last animation in
-          // undo sequence sets flag that tells gameboard to re-enable button
-          // setDisableUndoButton(true);
+          setDisableUndoButton(true);
           actions.clearNetworkedAnimations();
           let boardState = provisionalGameBoardState;
 
@@ -73,8 +73,12 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
                 settings.movementDirection,
                 {
                   // don't need to remove any more provisional moves for the last
-                  // move in the undo chain, since we're back at the original state
+                  // animation in the undo chain, since we're back at the original
+                  // board state at this point
                   removeProvisionalMoveOnCompletion: i !== 0,
+                  // after the last animation, indicate that we should reenable the
+                  // undo button
+                  reenableUndoButtonOnCompletion: i === 0,
                 }
               )
             );

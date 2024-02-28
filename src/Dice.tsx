@@ -13,6 +13,8 @@ type DiceProps = {
   provisionalGameBoardState: GameBoardState;
   submitButtonHandler: Function;
   addAnimationsToQueueFunction: Function;
+  disableUndoButton: boolean;
+  setDisableUndoButton: (disable: boolean) => void;
 };
 
 const Dice: FunctionComponent<DiceProps> = ({
@@ -23,6 +25,8 @@ const Dice: FunctionComponent<DiceProps> = ({
   provisionalGameBoardState,
   submitButtonHandler,
   addAnimationsToQueueFunction,
+  disableUndoButton,
+  setDisableUndoButton,
 }: DiceProps) => {
   let dieOneSpent = false;
   let dieTwoSpent = false;
@@ -51,6 +55,8 @@ const Dice: FunctionComponent<DiceProps> = ({
       <UndoMoveButton
         provisionalGameBoardState={provisionalGameBoardState}
         addAnimationsToQueueFunction={addAnimationsToQueueFunction}
+        disableUndoButton={disableUndoButton}
+        setDisableUndoButton={setDisableUndoButton}
       />
       <Die
         dieValue={diceValues[0]}
