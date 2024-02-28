@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useState } from "react";
+import { FunctionComponent, useContext, useEffect, useState } from "react";
 
 import { getAvailableDice } from "./store/dice";
 import {
@@ -128,30 +128,34 @@ const GameBoard: FunctionComponent = () => {
     );
   }, originalGameBoardState);
 
-  // Check for game win here after applying provisional moves.
-  const gameResult = didPlayerWin(gameBoardState, currentPlayer);
-  switch (gameResult) {
-    case GameResult.NotOver:
-      break;
+  // Define useEffect function to check for game win, which will run immediately after
+  // render (since we can't be dispatching state updates while in the render path).
+  // We define it here so it'll capture the board state after applying provisional moves.
+  useEffect(() => {
+    const gameResult = didPlayerWin(gameBoardState, currentPlayer);
+    switch (gameResult) {
+      case GameResult.NotOver:
+        break;
 
-    case GameResult.PlayerWon:
-      dispatch(setState(GameState.GameOver));
-      dispatch(setShowGameOverDialog(true));
-      break;
+      case GameResult.PlayerWon:
+        dispatch(setState(GameState.GameOver));
+        dispatch(setShowGameOverDialog(true));
+        break;
 
-    case GameResult.PlayerWonGammon:
-      dispatch(setState(GameState.GameOverGammon));
-      dispatch(setShowGameOverDialog(true));
-      break;
+      case GameResult.PlayerWonGammon:
+        dispatch(setState(GameState.GameOverGammon));
+        dispatch(setShowGameOverDialog(true));
+        break;
 
-    case GameResult.PlayerWonBackgammon:
-      dispatch(setState(GameState.GameOverBackgammon));
-      dispatch(setShowGameOverDialog(true));
-      break;
+      case GameResult.PlayerWonBackgammon:
+        dispatch(setState(GameState.GameOverBackgammon));
+        dispatch(setShowGameOverDialog(true));
+        break;
 
-    default:
-      console.error("Unhandled GameResult: " + gameResult);
-  }
+      default:
+        console.error("Unhandled GameResult: " + gameResult);
+    }
+  }, [gameBoardState, currentPlayer]);
 
   const topLeftPoints = [];
   const bottomLeftPoints = [];
