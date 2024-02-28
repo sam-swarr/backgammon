@@ -52,7 +52,12 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
 
     checkers.push(
       <Checker
-        key={i}
+        // It's important to include the color here in the key. If not, when a checker hits another checker,
+        // the checker doing the hit is essentially replacing the hit checker in the dom. Without including
+        // the color in the key, React recycles the same element to render, which causes a bug in the checker
+        // animations since the component never unmounts/remounts so the CSSTransition component doesn't properly
+        // invoke the onEnter callbacks again.
+        key={i + color}
         color={color}
         animation={anim}
         removeAnimationFunction={removeAnimationFunction}

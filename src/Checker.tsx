@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Transition } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import { Animation, getTranslationOffsetStyleString } from "./Animations";
 
 import { Color } from "./Types";
@@ -18,37 +18,40 @@ const Checker: FunctionComponent<CheckerProps> = ({
   const colorClass = color === Color.White ? "white" : "black";
   const ref = React.useRef(null);
 
+  let enteringState = { transform: "none" };
   if (animation != null) {
-    const transitionStyles = {
-      entering: {
-        transform: getTranslationOffsetStyleString(animation.translation),
-      },
-      entered: { transform: "none" },
-      exiting: {},
-      exited: {},
-      unmounted: {},
+    enteringState = {
+      transform: getTranslationOffsetStyleString(animation.translation),
     };
-
-    return (
-      <Transition in={true} appear={true} nodeRef={ref} timeout={0}>
-        {(state) => {
-          let d = (
-            <div
-              className={"Checker " + colorClass}
-              ref={ref}
-              style={transitionStyles[state]}
-              onTransitionEnd={() => {
-                removeAnimationFunction(animation.id);
-              }}
-            />
-          );
-          return d;
-        }}
-      </Transition>
-    );
   }
 
-  return <div className={"Checker " + colorClass} />;
+  const transitionStyles = {
+    entering: enteringState,
+    entered: { transform: "none" },
+    exiting: {},
+    exited: {},
+    unmounted: {},
+  };
+
+  return (
+    <CSSTransition in={true} appear={true} nodeRef={ref} timeout={0}>
+      {(state) => {
+        let d = (
+          <div
+            className={"Checker " + colorClass}
+            ref={ref}
+            style={transitionStyles[state]}
+            onTransitionEnd={() => {
+              if (animation != null) {
+                removeAnimationFunction(animation.id);
+              }
+            }}
+          />
+        );
+        return d;
+      }}
+    </CSSTransition>
+  );
 };
 
 export default Checker;
