@@ -1,4 +1,4 @@
-import { Player } from "../../Types";
+import { HitStatus, Player } from "../../Types";
 import { getAvailableDice } from "../dice";
 
 test("getAvailableDice works for doubles", () => {
@@ -6,13 +6,11 @@ test("getAvailableDice works for doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 3,
-        },
+        from: 1,
+        to: 3,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([2, 2, 2]);
@@ -20,22 +18,18 @@ test("getAvailableDice works for doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 3,
-        },
+        from: 1,
+        to: 3,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 4,
-          to: 6,
-        },
+        from: 4,
+        to: 6,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([2, 2]);
@@ -43,31 +37,25 @@ test("getAvailableDice works for doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 3,
-        },
+        from: 1,
+        to: 3,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 4,
-          to: 6,
-        },
+        from: 4,
+        to: 6,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 6,
-          to: 8,
-        },
+        from: 6,
+        to: 8,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([2]);
@@ -75,40 +63,32 @@ test("getAvailableDice works for doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 3,
-        },
+        from: 1,
+        to: 3,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 4,
-          to: 6,
-        },
+        from: 4,
+        to: 6,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 6,
-          to: 8,
-        },
+        from: 6,
+        to: 8,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 8,
-          to: 10,
-        },
+        from: 8,
+        to: 10,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([]);
@@ -122,13 +102,11 @@ test("getAvailableDice works for non-doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 3,
-        },
+        from: 1,
+        to: 3,
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([4]);
@@ -136,13 +114,11 @@ test("getAvailableDice works for non-doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 5,
-        },
+        from: 1,
+        to: 5,
         dieUsed: 4,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([2]);
@@ -150,22 +126,19 @@ test("getAvailableDice works for non-doubles", () => {
   expect(
     getAvailableDice(dice, [
       {
-        move: {
-          from: 1,
-          to: 3,
-        },
+        from: 1,
+        to: 3,
+
         dieUsed: 2,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
       {
-        move: {
-          from: 1,
-          to: 5,
-        },
+        from: 1,
+        to: 5,
         dieUsed: 4,
         checkerOwner: Player.One,
-        isHit: false,
+        hitStatus: HitStatus.NoHit,
       },
     ])
   ).toEqual([]);

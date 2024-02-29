@@ -4,7 +4,7 @@ import {
   didPlayerWin,
 } from "../gameBoardSlice";
 import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from "../../Constants";
-import { GameBoardState, GameResult, Player } from "../../Types";
+import { GameBoardState, GameResult, HitStatus, Player } from "../../Types";
 
 const areBoardStatesEquivalent = function (
   boardA: GameBoardState,
@@ -80,7 +80,13 @@ test("applyMoveToGameBoardState handles entering from the bar", () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    { from: "BAR", to: 22 },
+    {
+      from: "BAR",
+      to: 22,
+      dieUsed: 2,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.One,
+    },
     Player.One
   );
 
@@ -97,7 +103,13 @@ test("applyMoveToGameBoardState handles bearing off", () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    { from: 5, to: "HOME" },
+    {
+      from: 5,
+      to: "HOME",
+      dieUsed: 6,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.One,
+    },
     Player.One
   );
 
@@ -114,7 +126,13 @@ test("applyMoveToGameBoardState handles moving", () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    { from: 5, to: 4 },
+    {
+      from: 5,
+      to: 4,
+      dieUsed: 1,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.One,
+    },
     Player.One
   );
 
@@ -133,7 +151,13 @@ test("applyMoveToGameBoardState handles hitting a blot", () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    { from: 22, to: 23 },
+    {
+      from: 22,
+      to: 23,
+      dieUsed: 1,
+      hitStatus: HitStatus.IsHit,
+      checkerOwner: Player.Two,
+    },
     Player.Two
   );
 
@@ -151,7 +175,13 @@ test("applyMoveToGameBoardState handles hitting a blot 2", () => {
 
   const RESULT = applyMoveToGameBoardState(
     TEST_BOARD,
-    { from: 12, to: 10 },
+    {
+      from: 12,
+      to: 10,
+      dieUsed: 2,
+      hitStatus: HitStatus.IsHit,
+      checkerOwner: Player.One,
+    },
     Player.One
   );
 

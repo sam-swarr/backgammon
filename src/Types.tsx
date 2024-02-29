@@ -24,19 +24,21 @@ export type PointState = {
   [Player.Two]: number;
 };
 
-export type ValidMove = {
-  move: {
-    from: number | "BAR";
-    to: number | "HOME";
-  };
-  dieUsed: number;
-  isHit: boolean;
-  checkerOwner: Player;
-};
+export enum HitStatus {
+  // This move performed a hit.
+  IsHit = "IS_HIT",
+  // This move undoes a hit.
+  UndoesHit = "UNDOES_HIT",
+  // No checkers were hit or unhit in this move.
+  NoHit = "NO_HIT",
+}
 
-export type AppliableMove = {
+export type Move = {
   from: number | "BAR" | "HOME";
   to: number | "BAR" | "HOME";
+  dieUsed: number;
+  hitStatus: HitStatus;
+  checkerOwner: Player;
 };
 
 export enum GameResult {

@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-import { ValidMove } from '../Types';
+import { Move } from "../Types";
 
 type HighlightedMovesState = {
-  lastPointClicked: number | "BAR",
-  moves: ValidMove[],
+  lastPointClicked: number | "BAR";
+  moves: Move[];
 };
 
 const initialState: HighlightedMovesState = {
@@ -13,10 +13,13 @@ const initialState: HighlightedMovesState = {
 };
 
 export const highlightedMovesSlice = createSlice({
-  name: 'highlightedMovesState',
+  name: "highlightedMovesState",
   initialState: initialState,
   reducers: {
-    setHighlightedMoves: (state, action: { type: string, payload: HighlightedMovesState } ) => {
+    setHighlightedMoves: (
+      state,
+      action: { type: string; payload: HighlightedMovesState }
+    ) => {
       if (action.payload.lastPointClicked === state.lastPointClicked) {
         return initialState;
       }
@@ -24,11 +27,12 @@ export const highlightedMovesSlice = createSlice({
     },
     clearHighlightedMoves: (_state) => {
       return initialState;
-    }
+    },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { setHighlightedMoves, clearHighlightedMoves } = highlightedMovesSlice.actions
+export const { setHighlightedMoves, clearHighlightedMoves } =
+  highlightedMovesSlice.actions;
 
-export default highlightedMovesSlice.reducer
+export default highlightedMovesSlice.reducer;

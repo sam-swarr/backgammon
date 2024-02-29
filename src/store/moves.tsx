@@ -1,6 +1,6 @@
 import { applyMoveToGameBoardState } from "./gameBoardSlice";
 import { MOVE_FROM_INDICES } from "../Constants";
-import { GameBoardState, Player, PointState, ValidMove } from "../Types";
+import { GameBoardState, HitStatus, Move, Player, PointState } from "../Types";
 
 export function getPointStateAtIndex(
   gameBoardState: GameBoardState,
@@ -104,7 +104,7 @@ export function getMoveIfValid(
   fromPoint: number | "BAR",
   dieValue: number,
   currentPlayer: Player
-): ValidMove | null {
+): Move | null {
   const fromPointState = getPointStateAtIndex(gameBoardState, fromPoint);
 
   // Move is invalid if player does not actually occupy the fromPoint.
@@ -156,13 +156,13 @@ export function getMoveIfValid(
     currentPlayer
   );
   if (canOccupy === CanOccupyResult.Yes || canOccupy === CanOccupyResult.Hit) {
+    const hitStatus =
+      canOccupy === CanOccupyResult.Hit ? HitStatus.IsHit : HitStatus.NoHit;
     return {
-      move: {
-        from: fromPoint,
-        to: toPointIndex,
-      },
+      from: fromPoint,
+      to: toPointIndex,
       dieUsed: dieValue,
-      isHit: canOccupy === CanOccupyResult.Hit,
+      hitStatus,
       checkerOwner: currentPlayer,
     };
   }
@@ -174,8 +174,8 @@ export function getAllPossibleMoveSets(
   gameBoardState: GameBoardState,
   dieRolls: number[],
   currentPlayer: Player
-): ValidMove[][] {
-  let result: ValidMove[][] = [];
+): Move[][] {
+  let result: Move[][] = [];
   result = result.concat(
     getAllPossibleMoveSetsImpl(gameBoardState, dieRolls, 0, currentPlayer, [])
   );
@@ -204,8 +204,8 @@ export function getAllPossibleMoveSetsImpl(
   dieRolls: number[],
   dieIndex: number,
   currentPlayer: Player,
-  moveSet: Array<ValidMove>
-): ValidMove[][] {
+  moveSet: Array<Move>
+): Move[][] {
   const allPossibleMoves = getAllPossibleMovesForGivenDieRoll(
     gameBoardState,
     dieRolls[dieIndex],
@@ -223,11 +223,11 @@ export function getAllPossibleMoveSetsImpl(
     return allPossibleMoves.map((move) => [...moveSet, move]);
   }
 
-  let result: ValidMove[][] = [];
+  let result: Move[][] = [];
   allPossibleMoves.forEach((move) => {
     const newGameBoardState = applyMoveToGameBoardState(
       gameBoardState,
-      move.move,
+      move,
       currentPlayer
     );
     result = result.concat(
@@ -248,8 +248,8 @@ export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,
   currentPlayer: Player
-): ValidMove[] {
-  const moves: ValidMove[] = [];
+): Move[] {
+  const moves: Move[] = [];
   MOVE_FROM_INDICES.forEach((from) => {
     const possibleMove = getMoveIfValid(
       gameBoardState,
@@ -269,9 +269,9 @@ export function areProvisionalMovesSubmittable(
   gameBoardState: GameBoardState,
   dieRolls: number[],
   currentPlayer: Player,
-  provisionalMoves: ValidMove[]
+  provisionalMoves: Move[]
 ): boolean {
-  const allPossibleMoveSets: ValidMove[][] = getAllPossibleMoveSets(
+  const allPossibleMoveSets: Move[][] = getAllPossibleMoveSets(
     gameBoardState,
     dieRolls,
     currentPlayer
@@ -309,7 +309,7 @@ export function areProvisionalMovesSubmittable(
   return maxProvisionalDieValueUsed === maxPossibleDieValueUsed;
 }
 
-export function maxDieValueUsedInMoveSet(moveSet: ValidMove[]): number {
+export function maxDieValueUsedInMoveSet(moveSet: Move[]): number {
   return moveSet.reduce(
     (maxDieValueUsed, move) =>
       move.dieUsed > maxDieValueUsed ? move.dieUsed : maxDieValueUsed,

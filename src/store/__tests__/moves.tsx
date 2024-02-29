@@ -13,7 +13,7 @@ import {
   maxDieValueUsedInMoveSet,
 } from "../moves";
 import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from "../../Constants";
-import { Player } from "../../Types";
+import { HitStatus, Player } from "../../Types";
 
 test("getPointStateAtIndex works", () => {
   expect(getPointStateAtIndex(STARTING_BOARD_STATE, 0)).toEqual({
@@ -473,11 +473,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 2,
-    move: {
-      from: 3,
-      to: 1,
-    },
-    isHit: false,
+    from: 3,
+    to: 1,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
   expect(
@@ -489,11 +487,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 2,
-    move: {
-      from: 4,
-      to: 2,
-    },
-    isHit: false,
+    from: 4,
+    to: 2,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 
@@ -507,11 +503,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 4,
-    move: {
-      from: 3,
-      to: "HOME",
-    },
-    isHit: false,
+    from: 3,
+    to: "HOME",
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 
@@ -535,11 +529,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 5,
-    move: {
-      from: 4,
-      to: "HOME",
-    },
-    isHit: false,
+    from: 4,
+    to: "HOME",
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 
@@ -553,11 +545,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 1,
-    move: {
-      from: 0,
-      to: "HOME",
-    },
-    isHit: false,
+    from: 0,
+    to: "HOME",
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
   // This is also a valid move since player is not obligated to bear off.
@@ -570,11 +560,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 1,
-    move: {
-      from: 3,
-      to: 2,
-    },
-    isHit: false,
+    from: 3,
+    to: 2,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
   // This is also a valid move since player is not obligated to bear off.
@@ -587,11 +575,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.One", () => {
     )
   ).toEqual({
     dieUsed: 1,
-    move: {
-      from: 4,
-      to: 3,
-    },
-    isHit: false,
+    from: 4,
+    to: 3,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 });
@@ -620,11 +606,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 2,
-    move: {
-      from: 20,
-      to: 22,
-    },
-    isHit: false,
+    from: 20,
+    to: 22,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
   expect(
@@ -636,11 +620,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 2,
-    move: {
-      from: 19,
-      to: 21,
-    },
-    isHit: false,
+    from: 19,
+    to: 21,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 
@@ -654,11 +636,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 4,
-    move: {
-      from: 20,
-      to: "HOME",
-    },
-    isHit: false,
+    from: 20,
+    to: "HOME",
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 
@@ -682,11 +662,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 5,
-    move: {
-      from: 19,
-      to: "HOME",
-    },
-    isHit: false,
+    from: 19,
+    to: "HOME",
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 
@@ -700,11 +678,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 1,
-    move: {
-      from: 23,
-      to: "HOME",
-    },
-    isHit: false,
+    from: 23,
+    to: "HOME",
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
   // This is also a valid move since player is not obligated to bear off.
@@ -717,11 +693,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 1,
-    move: {
-      from: 20,
-      to: 21,
-    },
-    isHit: false,
+    from: 20,
+    to: 21,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
   // This is also a valid move since player is not obligated to bear off.
@@ -734,11 +708,9 @@ test("getMoveIfValid properly handles bearing off rules for Player.Two", () => {
     )
   ).toEqual({
     dieUsed: 1,
-    move: {
-      from: 19,
-      to: 20,
-    },
-    isHit: false,
+    from: 19,
+    to: 20,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 });
@@ -772,11 +744,9 @@ test("getMoveIfValid returns valid Move for Player.One if destination point is o
     )
   ).toEqual({
     dieUsed: 2,
-    move: {
-      from: 17,
-      to: 15,
-    },
-    isHit: true,
+    from: 17,
+    to: 15,
+    hitStatus: HitStatus.IsHit,
     checkerOwner: Player.One,
   });
 
@@ -790,11 +760,9 @@ test("getMoveIfValid returns valid Move for Player.One if destination point is o
     )
   ).toEqual({
     dieUsed: 3,
-    move: {
-      from: 17,
-      to: 14,
-    },
-    isHit: false,
+    from: 17,
+    to: 14,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 
@@ -808,11 +776,9 @@ test("getMoveIfValid returns valid Move for Player.One if destination point is o
     )
   ).toEqual({
     dieUsed: 4,
-    move: {
-      from: 17,
-      to: 13,
-    },
-    isHit: false,
+    from: 17,
+    to: 13,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 
@@ -826,11 +792,9 @@ test("getMoveIfValid returns valid Move for Player.One if destination point is o
     )
   ).toEqual({
     dieUsed: 5,
-    move: {
-      from: 17,
-      to: 12,
-    },
-    isHit: false,
+    from: 17,
+    to: 12,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.One,
   });
 });
@@ -864,11 +828,9 @@ test("getMoveIfValid returns valid Move for Player.Two if destination point is o
     )
   ).toEqual({
     dieUsed: 2,
-    move: {
-      from: 12,
-      to: 14,
-    },
-    isHit: true,
+    from: 12,
+    to: 14,
+    hitStatus: HitStatus.IsHit,
     checkerOwner: Player.Two,
   });
 
@@ -882,11 +844,9 @@ test("getMoveIfValid returns valid Move for Player.Two if destination point is o
     )
   ).toEqual({
     dieUsed: 3,
-    move: {
-      from: 12,
-      to: 15,
-    },
-    isHit: false,
+    from: 12,
+    to: 15,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 
@@ -900,11 +860,9 @@ test("getMoveIfValid returns valid Move for Player.Two if destination point is o
     )
   ).toEqual({
     dieUsed: 4,
-    move: {
-      from: 12,
-      to: 16,
-    },
-    isHit: false,
+    from: 12,
+    to: 16,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 
@@ -918,11 +876,9 @@ test("getMoveIfValid returns valid Move for Player.Two if destination point is o
     )
   ).toEqual({
     dieUsed: 5,
-    move: {
-      from: 12,
-      to: 17,
-    },
-    isHit: false,
+    from: 12,
+    to: 17,
+    hitStatus: HitStatus.NoHit,
     checkerOwner: Player.Two,
   });
 });
@@ -937,20 +893,23 @@ test("getAllPossibleMovesForGivenDieRoll works", () => {
   ).toEqual([
     {
       dieUsed: 1,
-      move: { from: 5, to: 4 },
-      isHit: false,
+      from: 5,
+      to: 4,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
     {
       dieUsed: 1,
-      move: { from: 7, to: 6 },
-      isHit: false,
+      from: 7,
+      to: 6,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
     {
       dieUsed: 1,
-      move: { from: 23, to: 22 },
-      isHit: false,
+      from: 23,
+      to: 22,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
   ]);
@@ -960,20 +919,23 @@ test("getAllPossibleMovesForGivenDieRoll works", () => {
   ).toEqual([
     {
       dieUsed: 1,
-      move: { from: 0, to: 1 },
-      isHit: false,
+      from: 0,
+      to: 1,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
     {
       dieUsed: 1,
-      move: { from: 16, to: 17 },
-      isHit: false,
+      from: 16,
+      to: 17,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
     {
       dieUsed: 1,
-      move: { from: 18, to: 19 },
-      isHit: false,
+      from: 18,
+      to: 19,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
   ]);
@@ -983,26 +945,30 @@ test("getAllPossibleMovesForGivenDieRoll works", () => {
   ).toEqual([
     {
       dieUsed: 2,
-      move: { from: 5, to: 3 },
-      isHit: false,
+      from: 5,
+      to: 3,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
     {
       dieUsed: 2,
-      move: { from: 7, to: 5 },
-      isHit: false,
+      from: 7,
+      to: 5,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
     {
       dieUsed: 2,
-      move: { from: 12, to: 10 },
-      isHit: false,
+      from: 12,
+      to: 10,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
     {
       dieUsed: 2,
-      move: { from: 23, to: 21 },
-      isHit: false,
+      from: 23,
+      to: 21,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.One,
     },
   ]);
@@ -1012,26 +978,30 @@ test("getAllPossibleMovesForGivenDieRoll works", () => {
   ).toEqual([
     {
       dieUsed: 2,
-      move: { from: 0, to: 2 },
-      isHit: false,
+      from: 0,
+      to: 2,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
     {
       dieUsed: 2,
-      move: { from: 11, to: 13 },
-      isHit: false,
+      from: 11,
+      to: 13,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
     {
       dieUsed: 2,
-      move: { from: 16, to: 18 },
-      isHit: false,
+      from: 16,
+      to: 18,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
     {
       dieUsed: 2,
-      move: { from: 18, to: 20 },
-      isHit: false,
+      from: 18,
+      to: 20,
+      hitStatus: HitStatus.NoHit,
       checkerOwner: Player.Two,
     },
   ]);
@@ -1046,8 +1016,9 @@ test("getAllPossibleMovesForGivenDieRoll works", () => {
     [
       {
         dieUsed: 2,
-        move: { from: "BAR", to: 1 },
-        isHit: false,
+        from: "BAR",
+        to: 1,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ]
@@ -1067,98 +1038,112 @@ test("getAllPossibleMoveSets works", () => {
     [
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 2,
-        move: { from: 19, to: 21 },
-        isHit: false,
+        from: 19,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 2,
-        move: { from: 20, to: 22 },
-        isHit: false,
+        from: 20,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 2,
-        move: { from: 19, to: 21 },
-        isHit: false,
+        from: 19,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 2,
-        move: { from: 19, to: 21 },
-        isHit: false,
+        from: 19,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
@@ -1174,16 +1159,18 @@ test("getAllPossibleMoveSets works when not all dice can be used", () => {
     [
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
@@ -1199,260 +1186,300 @@ test("getAllPossibleMoveSets works with doubles", () => {
     [
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-    ],
-    [
-      {
-        dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-    ],
-    [
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-    ],
-    [
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-    ],
-    [
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
-        checkerOwner: Player.Two,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
     [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
       {
         dieUsed: 1,
-        move: { from: 22, to: 23 },
-        isHit: false,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 22,
+        to: 23,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.Two,
       },
     ],
@@ -1465,20 +1492,23 @@ test("maxDieValueUsedInMoveSet works", () => {
     maxDieValueUsedInMoveSet([
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 3,
-        move: { from: 19, to: 22 },
-        isHit: false,
+        from: 19,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 2,
-        move: { from: 19, to: 21 },
-        isHit: false,
+        from: 19,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1487,14 +1517,16 @@ test("maxDieValueUsedInMoveSet works", () => {
     maxDieValueUsedInMoveSet([
       {
         dieUsed: 5,
-        move: { from: 10, to: 15 },
-        isHit: false,
+        from: 10,
+        to: 15,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 5,
-        move: { from: 12, to: 17 },
-        isHit: false,
+        from: 12,
+        to: 17,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1514,8 +1546,9 @@ test("areProvisionalMovesSubmittable ensures as many dice as possible are used",
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 2], Player.Two, [
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1525,14 +1558,16 @@ test("areProvisionalMovesSubmittable ensures as many dice as possible are used",
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 2], Player.Two, [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1551,8 +1586,9 @@ test("areProvisionalMovesSubmittable ensures as many dice as possible are used (
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 1, 1, 1], Player.Two, [
       {
         dieUsed: 1,
-        move: { from: 22, to: 23 },
-        isHit: false,
+        from: 22,
+        to: 23,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1561,36 +1597,16 @@ test("areProvisionalMovesSubmittable ensures as many dice as possible are used (
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 1, 1, 1], Player.Two, [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 1,
-        move: { from: 22, to: 23 },
-        isHit: false,
-        checkerOwner: Player.One,
-      },
-    ])
-  ).toEqual(false);
-  expect(
-    areProvisionalMovesSubmittable(TEST_BOARD, [1, 1, 1, 1], Player.Two, [
-      {
-        dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
-        checkerOwner: Player.One,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
-        checkerOwner: Player.One,
-      },
-      {
-        dieUsed: 1,
-        move: { from: 22, to: 23 },
-        isHit: false,
+        from: 22,
+        to: 23,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1599,26 +1615,55 @@ test("areProvisionalMovesSubmittable ensures as many dice as possible are used (
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 1, 1, 1], Player.Two, [
       {
         dieUsed: 1,
-        move: { from: 19, to: 20 },
-        isHit: false,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 1,
-        move: { from: 20, to: 21 },
-        isHit: false,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 1,
-        move: { from: 21, to: 22 },
-        isHit: false,
+        from: 22,
+        to: 23,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.One,
+      },
+    ])
+  ).toEqual(false);
+  expect(
+    areProvisionalMovesSubmittable(TEST_BOARD, [1, 1, 1, 1], Player.Two, [
+      {
+        dieUsed: 1,
+        from: 19,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
       {
         dieUsed: 1,
-        move: { from: 22, to: 23 },
-        isHit: false,
+        from: 20,
+        to: 21,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.One,
+      },
+      {
+        dieUsed: 1,
+        from: 21,
+        to: 22,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.One,
+      },
+      {
+        dieUsed: 1,
+        from: 22,
+        to: 23,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1638,8 +1683,9 @@ test("areProvisionalMovesSubmittable ensures max die value is used when not all 
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 2], Player.Two, [
       {
         dieUsed: 1,
-        move: { from: 18, to: 19 },
-        isHit: false,
+        from: 18,
+        to: 19,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1649,8 +1695,9 @@ test("areProvisionalMovesSubmittable ensures max die value is used when not all 
     areProvisionalMovesSubmittable(TEST_BOARD, [1, 2], Player.Two, [
       {
         dieUsed: 2,
-        move: { from: 18, to: 20 },
-        isHit: false,
+        from: 18,
+        to: 20,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])
@@ -1679,8 +1726,9 @@ test("areProvisionalMovesSubmittable handles situations where not all doubles ca
     areProvisionalMovesSubmittable(TEST_BOARD, [6, 6, 6, 6], Player.Two, [
       {
         dieUsed: 6,
-        move: { from: 17, to: 23 },
-        isHit: false,
+        from: 17,
+        to: 23,
+        hitStatus: HitStatus.NoHit,
         checkerOwner: Player.One,
       },
     ])

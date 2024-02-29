@@ -3,7 +3,7 @@ import cx from "classnames";
 
 import Checker from "./Checker";
 import { Animation } from "./Animations";
-import { Color, Player, PointState, ValidMove } from "./Types";
+import { Color, Move, Player, PointState } from "./Types";
 
 type BarProps = {
   barState: PointState;
@@ -13,7 +13,7 @@ type BarProps = {
   playerTwoColor: Color;
   currAnimations: Animation[];
   removeAnimationFunction: (id: number) => void;
-  highlightedMoves: ValidMove[];
+  highlightedMoves: Move[];
 };
 
 const Bar: FunctionComponent<BarProps> = ({
@@ -65,7 +65,7 @@ const Bar: FunctionComponent<BarProps> = ({
   }
 
   const isHighlighted = highlightedMoves.some(
-    (highlightedMove: ValidMove) => highlightedMove.move.from === "BAR"
+    (highlightedMove: Move) => highlightedMove.from === "BAR"
   );
 
   return (

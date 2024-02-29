@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { STARTING_BOARD_STATE } from "../Constants";
-import { AppliableMove, GameBoardState, GameResult, Player } from "../Types";
+import { GameBoardState, GameResult, Move, Player } from "../Types";
 
 export const gameBoardSlice = createSlice({
   name: "gameBoardState",
@@ -41,7 +41,7 @@ export function deepCloneGameBoardState(
 
 export function applyMoveToGameBoardState(
   gameBoardState: GameBoardState,
-  move: AppliableMove,
+  move: Move,
   currentPlayer: Player
 ): GameBoardState {
   const opponent = currentPlayer === Player.One ? Player.Two : Player.One;

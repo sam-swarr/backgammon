@@ -3,7 +3,7 @@ import { FunctionComponent, useContext, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
 import { removeLastProvisionalMove } from "./store/provisionalMovesSlice";
-import { GameBoardState, Player } from "./Types";
+import { GameBoardState, HitStatus, Player } from "./Types";
 import { Animation, createAnimationData } from "./Animations";
 import { applyMoveToGameBoardState } from "./store/gameBoardSlice";
 import { ActionsContext } from "./ActionsContext";
@@ -34,6 +34,8 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
         className={"Undo-button"}
         hidden={provisionalMoves.length <= 0 || disableUndoButton}
         onClick={() => {
+          /*
+
           setDisableUndoButton(true);
           actions.clearNetworkedAnimations();
           let boardState = provisionalGameBoardState;
@@ -48,7 +50,7 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
             };
             // If we're undoing a hit, also add an animation for the checker that
             // was captured.
-            if (provisionalMoves[i].isHit) {
+            if (provisionalMoves[i].hitStatus === HitStatus.IsHit) {
               const otherPlayer =
                 currentPlayer === Player.One ? Player.Two : Player.One;
               animations.push(
@@ -82,6 +84,13 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
                 }
               )
             );
+            // This is not quite accurate since we're only undoing the position of the
+            // current player's checker. If the move being undone was a hit, we haven't
+            // updated the board state to move the hit checker back off the bar. It doesn't
+            // really matter here because these intermediate board states are only being
+            // used to calculate animation offsets and aren't actually displayed. Instead we
+            // currently rely on the provisional moves being popped off the stack to correctly
+            // return the board to the previous states.
             boardState = applyMoveToGameBoardState(
               boardState,
               inverseMove,
@@ -92,6 +101,7 @@ const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
           addAnimationsToQueueFunction(animationsToQueue);
           dispatch(removeLastProvisionalMove());
           dispatch(clearHighlightedMoves());
+          */
         }}
       />
     </div>

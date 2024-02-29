@@ -20,9 +20,10 @@ import { setShowGameOverDialog } from "./store/settingsSlice";
 import {
   Color,
   GameResult,
+  HitStatus,
+  Move,
   MovementDirection,
   Player,
-  ValidMove,
 } from "./Types";
 import Bar from "./Bar";
 import BoardPoint from "./BoardPoint";
@@ -58,7 +59,6 @@ const GameBoard: FunctionComponent = () => {
   ]);
   const actions = useContext(ActionsContext);
 
-  const otherPlayer = currentPlayer === Player.One ? Player.Two : Player.One;
   const playerOneColor = settings.playerOneColor;
   const playerTwoColor =
     settings.playerOneColor === Color.White ? Color.Black : Color.White;
@@ -86,14 +86,14 @@ const GameBoard: FunctionComponent = () => {
       if (a.id !== id) {
         newCurrAnimations.push(a);
       } else {
-        if (a.options) {
-          if (a.options.removeProvisionalMoveOnCompletion) {
-            dispatch(removeLastProvisionalMove());
-          }
-          if (a.options.reenableUndoButtonOnCompletion) {
-            setDisableUndoButton(false);
-          }
-        }
+        // if (a.options) {
+        //   if (a.options.removeProvisionalMoveOnCompletion) {
+        //     dispatch(removeLastProvisionalMove());
+        //   }
+        //   if (a.options.reenableUndoButtonOnCompletion) {
+        //     setDisableUndoButton(false);
+        //   }
+        // }
       }
     }
 
@@ -121,11 +121,7 @@ const GameBoard: FunctionComponent = () => {
   );
 
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
-    return applyMoveToGameBoardState(
-      prevBoardState,
-      currMove.move,
-      currentPlayer
-    );
+    return applyMoveToGameBoardState(prevBoardState, currMove, currentPlayer);
   }, originalGameBoardState);
 
   // Define useEffect function to check for game win, which will run immediately after
@@ -175,9 +171,7 @@ const GameBoard: FunctionComponent = () => {
     }
 
     // Check if player clicked on a highlighted destination.
-    const movesToApply = highlightedMoves.filter(
-      (m) => m.move.to === pointClicked
-    );
+    const movesToApply = highlightedMoves.filter((m) => m.to === pointClicked);
     if (movesToApply.length > 0) {
       // There may be multiple potential moves to apply in the case where
       // both dice can bear a checker off. If this is the case, find the
@@ -189,56 +183,60 @@ const GameBoard: FunctionComponent = () => {
         }
       }
 
-      let animationsToQueue: Animation[] = [];
-      animationsToQueue.push(
-        createAnimationData(
-          gameBoardState,
-          moveToApply.move,
-          moveToApply.move.to,
-          currentPlayer,
-          playerMovementDirection
-        )
+      let animationsToQueue: Animation[] = createAnimationData(
+        gameBoardState,
+        moveToApply,
+        playerMovementDirection
       );
-      actions.addNetworkedAnimation({
-        animateFor: otherPlayer,
-        animationData: {
-          location: moveToApply.move.to,
-          move: moveToApply.move,
-          checkerOwner: currentPlayer,
-        },
-      });
+      // animationsToQueue.push(
+      //   createAnimationData(
+      //     gameBoardState,
+      //     moveToApply.move,
+      //     moveToApply.move.to,
+      //     currentPlayer,
+      //     playerMovementDirection
+      //   )
+      // );
+      // actions.addNetworkedAnimation({
+      //   animateFor: otherPlayer,
+      //   animationData: {
+      //     location: moveToApply.move.to,
+      //     move: moveToApply.move,
+      //     checkerOwner: currentPlayer,
+      //   },
+      // });
 
-      if (moveToApply.isHit) {
-        animationsToQueue.push(
-          createAnimationData(
-            gameBoardState,
-            {
-              from: moveToApply.move.to,
-              to: "BAR",
-            },
-            "BAR",
-            otherPlayer,
-            playerMovementDirection
-          )
-        );
-        actions.addNetworkedAnimation({
-          animateFor: otherPlayer,
-          animationData: {
-            location: "BAR",
-            move: {
-              from: moveToApply.move.to,
-              to: "BAR",
-            },
-            checkerOwner: otherPlayer,
-          },
-        });
-      }
+      // if (moveToApply.hitStatus === HitStatus.IsHit) {
+      //   animationsToQueue.push(
+      //     createAnimationData(
+      //       gameBoardState,
+      //       {
+      //         from: moveToApply.move.to,
+      //         to: "BAR",
+      //       },
+      //       "BAR",
+      //       otherPlayer,
+      //       playerMovementDirection
+      //     )
+      //   );
+      //   // actions.addNetworkedAnimation({
+      //   //   animateFor: otherPlayer,
+      //   //   animationData: {
+      //   //     location: "BAR",
+      //   //     move: {
+      //   //       from: moveToApply.move.to,
+      //   //       to: "BAR",
+      //   //     },
+      //   //     checkerOwner: otherPlayer,
+      //   //   },
+      //   // });
+      // }
       addAnimationsToQueue([animationsToQueue]);
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(clearHighlightedMoves());
       return true;
     } else if (pointClicked !== "HOME") {
-      const possibleMoves: ValidMove[] = [];
+      const possibleMoves: Move[] = [];
       const seenDieValues = new Set();
       for (let i = 0; i < availableDice.length; i++) {
         if (!seenDieValues.has(availableDice[i])) {
@@ -416,7 +414,7 @@ const GameBoard: FunctionComponent = () => {
   const home = (
     <Home
       homeState={gameBoardState.homeState}
-      isHighlighted={highlightedMoves.some((m) => m.move.to === "HOME")}
+      isHighlighted={highlightedMoves.some((m) => m.to === "HOME")}
       clickHandler={boardPointClickHandler}
       currentPlayer={currentPlayer}
       playerOneColor={playerOneColor}

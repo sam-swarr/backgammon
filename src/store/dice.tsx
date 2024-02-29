@@ -1,9 +1,9 @@
-import { ValidMove } from "../Types";
+import { Move } from "../Types";
 import { InitialDiceRolls } from "./diceSlice";
 
 export function getAvailableDice(
   dice: number[],
-  provisionalMoves: ValidMove[]
+  provisionalMoves: Move[]
 ): number[] {
   // If we have doubles, all the dice values are the same so we can
   // just remove a die for each provisional move we have.

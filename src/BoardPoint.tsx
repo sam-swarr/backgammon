@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from "react";
 import cx from "classnames";
 
 import Checker from "./Checker";
-import { Color, ValidMove, Player, PointState } from "./Types";
+import { Color, Move, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
 
 type BoardPointProps = {
@@ -12,7 +12,7 @@ type BoardPointProps = {
   playerTwoColor: Color;
   pointNumber: number;
   clickHandler: (fromPoint: number | "BAR") => boolean;
-  highlightedMoves: ValidMove[];
+  highlightedMoves: Move[];
   currAnimations: Animation[];
   removeAnimationFunction: (id: number) => void;
 };
@@ -72,10 +72,10 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
 
   let highlight = null;
   const isHighlightedFromPoint = highlightedMoves.some(
-    (highlightedMove: ValidMove) => highlightedMove.move.from === pointNumber
+    (highlightedMove: Move) => highlightedMove.from === pointNumber
   );
   const isHighlightedToPoint = highlightedMoves.some(
-    (highlightedMove: ValidMove) => highlightedMove.move.to === pointNumber
+    (highlightedMove: Move) => highlightedMove.to === pointNumber
   );
   if (isHighlightedFromPoint || isHighlightedToPoint || showNoMoveHighlight) {
     highlight = (

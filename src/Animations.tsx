@@ -1,6 +1,7 @@
 import {
-  AppliableMove,
   GameBoardState,
+  HitStatus,
+  Move,
   MovementDirection,
   Player,
 } from "./Types";
@@ -32,20 +33,49 @@ export type Animation = {
   checkerOwner: Player;
   checkerNumber: number;
   translation: TranslationOffset;
-  options: AnimationOptions;
 };
 
 export function createAnimationData(
   gameBoardState: GameBoardState,
-  move: AppliableMove,
-  location: number | "HOME" | "BAR",
-  checkerOwner: Player,
-  playerMovementDirection: MovementDirection,
-  options?: AnimationOptions
-): Animation {
-  const fromPoint = move.from;
-  const toPoint = move.to;
+  move: Move,
+  playerMovementDirection: MovementDirection
+): Animation[] {
+  let result = [];
+  result.push(
+    createAnimationDatum(
+      gameBoardState,
+      move.from,
+      move.to,
+      move.checkerOwner,
+      playerMovementDirection
+    )
+  );
 
+  if (move.hitStatus === HitStatus.IsHit) {
+    const otherPlayer =
+      move.checkerOwner === Player.One ? Player.Two : Player.One;
+
+    result.push(
+      createAnimationDatum(
+        gameBoardState,
+        move.to,
+        "BAR",
+        otherPlayer,
+        playerMovementDirection
+      )
+    );
+  }
+
+  return result;
+}
+
+function createAnimationDatum(
+  gameBoardState: GameBoardState,
+  fromPoint: number | "BAR" | "HOME",
+  toPoint: number | "BAR" | "HOME",
+  checkerOwner: Player,
+  playerMovementDirection: MovementDirection
+): Animation {
   if (playerMovementDirection === MovementDirection.CounterClockwise) {
     const fromX = calculateDistanceOnXAxisCCW(fromPoint);
     const toX = calculateDistanceOnXAxisCCW(toPoint);
@@ -71,14 +101,13 @@ export function createAnimationData(
 
     return {
       id: genAnimationID(),
-      location,
+      location: toPoint,
       translation: {
         translateX: fromX - toX,
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
       checkerOwner,
-      options: options != null ? options : {},
     };
   }
   // MovementDirection.Clockwise
@@ -107,14 +136,13 @@ export function createAnimationData(
 
     return {
       id: genAnimationID(),
-      location,
+      location: toPoint,
       translation: {
         translateX: fromX - toX,
         translateY: fromY - toY,
       },
       checkerNumber: toNumberOfCheckers,
       checkerOwner,
-      options: options != null ? options : {},
     };
   }
 }
