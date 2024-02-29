@@ -225,11 +225,7 @@ export function getAllPossibleMoveSetsImpl(
 
   let result: Move[][] = [];
   allPossibleMoves.forEach((move) => {
-    const newGameBoardState = applyMoveToGameBoardState(
-      gameBoardState,
-      move,
-      currentPlayer
-    );
+    const newGameBoardState = applyMoveToGameBoardState(gameBoardState, move);
     result = result.concat(
       getAllPossibleMoveSetsImpl(
         newGameBoardState,

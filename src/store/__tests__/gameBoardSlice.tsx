@@ -78,17 +78,13 @@ test("applyMoveToGameBoardState handles entering from the bar", () => {
   EXPECTED.barState[Player.One] = 1;
   EXPECTED.pointsState[22][Player.One] = 1;
 
-  const RESULT = applyMoveToGameBoardState(
-    TEST_BOARD,
-    {
-      from: "BAR",
-      to: 22,
-      dieUsed: 2,
-      hitStatus: HitStatus.NoHit,
-      checkerOwner: Player.One,
-    },
-    Player.One
-  );
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: "BAR",
+    to: 22,
+    dieUsed: 2,
+    hitStatus: HitStatus.NoHit,
+    checkerOwner: Player.One,
+  });
 
   expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
 });
@@ -101,17 +97,13 @@ test("applyMoveToGameBoardState handles bearing off", () => {
   EXPECTED.pointsState[5][Player.One] = 1;
   EXPECTED.homeState[Player.One] = 1;
 
-  const RESULT = applyMoveToGameBoardState(
-    TEST_BOARD,
-    {
-      from: 5,
-      to: "HOME",
-      dieUsed: 6,
-      hitStatus: HitStatus.NoHit,
-      checkerOwner: Player.One,
-    },
-    Player.One
-  );
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 5,
+    to: "HOME",
+    dieUsed: 6,
+    hitStatus: HitStatus.NoHit,
+    checkerOwner: Player.One,
+  });
 
   expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
 });
@@ -124,17 +116,13 @@ test("applyMoveToGameBoardState handles moving", () => {
   EXPECTED.pointsState[5][Player.One] = 1;
   EXPECTED.pointsState[4][Player.One] = 1;
 
-  const RESULT = applyMoveToGameBoardState(
-    TEST_BOARD,
-    {
-      from: 5,
-      to: 4,
-      dieUsed: 1,
-      hitStatus: HitStatus.NoHit,
-      checkerOwner: Player.One,
-    },
-    Player.One
-  );
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 5,
+    to: 4,
+    dieUsed: 1,
+    hitStatus: HitStatus.NoHit,
+    checkerOwner: Player.One,
+  });
 
   expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
 });
@@ -149,17 +137,13 @@ test("applyMoveToGameBoardState handles hitting a blot", () => {
   EXPECTED.pointsState[23][Player.Two] = 1;
   EXPECTED.barState[Player.One] = 1;
 
-  const RESULT = applyMoveToGameBoardState(
-    TEST_BOARD,
-    {
-      from: 22,
-      to: 23,
-      dieUsed: 1,
-      hitStatus: HitStatus.IsHit,
-      checkerOwner: Player.Two,
-    },
-    Player.Two
-  );
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 22,
+    to: 23,
+    dieUsed: 1,
+    hitStatus: HitStatus.IsHit,
+    checkerOwner: Player.Two,
+  });
 
   expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
 });
@@ -173,19 +157,92 @@ test("applyMoveToGameBoardState handles hitting a blot 2", () => {
   EXPECTED.pointsState[10][Player.One] = 1;
   EXPECTED.barState[Player.Two] = 1;
 
-  const RESULT = applyMoveToGameBoardState(
-    TEST_BOARD,
-    {
-      from: 12,
-      to: 10,
-      dieUsed: 2,
-      hitStatus: HitStatus.IsHit,
-      checkerOwner: Player.One,
-    },
-    Player.One
-  );
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 12,
+    to: 10,
+    dieUsed: 2,
+    hitStatus: HitStatus.IsHit,
+    checkerOwner: Player.One,
+  });
 
   expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
+});
+
+test("applyMoveToGameBoardState handles undoing a hit", () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[22][Player.Two] = 1;
+  TEST_BOARD.pointsState[23][Player.Two] = 1;
+  TEST_BOARD.barState[Player.One] = 1;
+
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.pointsState[22][Player.Two] = 2;
+  EXPECTED.pointsState[23][Player.One] = 1;
+
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 23,
+    to: 22,
+    dieUsed: 1,
+    hitStatus: HitStatus.UndoesHit,
+    checkerOwner: Player.Two,
+  });
+
+  expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
+});
+
+test("applyMoveToGameBoardState handles undoing a hit 2", () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[10][Player.One] = 1;
+  TEST_BOARD.barState[Player.Two] = 1;
+
+  const EXPECTED = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED.pointsState[12][Player.One] = 1;
+  EXPECTED.pointsState[10][Player.Two] = 1;
+
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 10,
+    to: 12,
+    dieUsed: 2,
+    hitStatus: HitStatus.UndoesHit,
+    checkerOwner: Player.One,
+  });
+
+  expect(areBoardStatesEquivalent(RESULT, EXPECTED)).toEqual(true);
+});
+
+test("applyMoveToGameBoardState handles undoing two hits in a row", () => {
+  const TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[12][Player.One] = 1;
+  TEST_BOARD.barState[Player.Two] = 2;
+
+  const EXPECTED_ONE = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED_ONE.pointsState[12][Player.Two] = 1;
+  EXPECTED_ONE.pointsState[10][Player.One] = 1;
+  EXPECTED_ONE.barState[Player.Two] = 1;
+
+  const RESULT = applyMoveToGameBoardState(TEST_BOARD, {
+    from: 12,
+    to: 10,
+    dieUsed: 2,
+    hitStatus: HitStatus.UndoesHit,
+    checkerOwner: Player.One,
+  });
+
+  expect(areBoardStatesEquivalent(RESULT, EXPECTED_ONE)).toEqual(true);
+
+  const EXPECTED_TWO = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  EXPECTED_TWO.pointsState[12][Player.Two] = 1;
+  EXPECTED_TWO.pointsState[10][Player.Two] = 1;
+  EXPECTED_TWO.pointsState[7][Player.One] = 1;
+
+  const RESULT_2 = applyMoveToGameBoardState(EXPECTED_ONE, {
+    from: 10,
+    to: 7,
+    dieUsed: 3,
+    hitStatus: HitStatus.UndoesHit,
+    checkerOwner: Player.One,
+  });
+
+  expect(areBoardStatesEquivalent(RESULT, EXPECTED_ONE)).toEqual(true);
 });
 
 test("didPlayerWin detects game is not over", () => {

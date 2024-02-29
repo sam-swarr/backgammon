@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { STARTING_BOARD_STATE } from "../Constants";
-import { GameBoardState, GameResult, Move, Player } from "../Types";
+import { GameBoardState, GameResult, HitStatus, Move, Player } from "../Types";
 
 export const gameBoardSlice = createSlice({
   name: "gameBoardState",
@@ -41,41 +41,79 @@ export function deepCloneGameBoardState(
 
 export function applyMoveToGameBoardState(
   gameBoardState: GameBoardState,
-  move: Move,
-  currentPlayer: Player
+  move: Move
 ): GameBoardState {
-  const opponent = currentPlayer === Player.One ? Player.Two : Player.One;
+  let movingPlayer = move.checkerOwner;
+  let nonMovingPlayer =
+    move.checkerOwner === Player.One ? Player.Two : Player.One;
+
   const result = deepCloneGameBoardState(gameBoardState);
+
   if (move.from === "BAR") {
-    result.barState[currentPlayer] -= 1;
+    result.barState[movingPlayer] -= 1;
   } else if (move.from === "HOME") {
-    result.homeState[currentPlayer] -= 1;
+    result.homeState[movingPlayer] -= 1;
   } else {
-    result.pointsState[move.from][currentPlayer] -= 1;
+    const fromPoint = result.pointsState[move.from];
+    fromPoint[movingPlayer] -= 1;
+    if (move.hitStatus === HitStatus.UndoesHit) {
+      if (fromPoint[movingPlayer] !== 0 || fromPoint[nonMovingPlayer] !== 0) {
+        console.error(
+          "Trying to undo a hit but from point is unexpectedly occupied."
+        );
+        console.error(gameBoardState);
+        console.error(move);
+      }
+      if (result.barState[nonMovingPlayer] <= 0) {
+        console.error(
+          "Trying to undo a hit but non-moving player has no checkers on the bar."
+        );
+        console.error(gameBoardState);
+        console.error(move);
+      }
+      result.barState[nonMovingPlayer] -= 1;
+      fromPoint[nonMovingPlayer] += 1;
+    }
   }
 
   if (move.to === "HOME") {
-    result.homeState[currentPlayer] += 1;
+    result.homeState[movingPlayer] += 1;
   } else if (move.to === "BAR") {
-    result.barState[currentPlayer] += 1;
+    result.barState[movingPlayer] += 1;
   } else {
-    const destPoint = result.pointsState[move.to];
-    if (destPoint[opponent] > 1) {
+    const toPoint = result.pointsState[move.to];
+    if (toPoint[nonMovingPlayer] > 1) {
       console.error(
         "Trying to apply invalid move. Destination occupied by 2+ opposing checkers"
       );
       console.error(gameBoardState);
       console.error(move);
     }
-    if (destPoint[opponent] === 1) {
-      result.barState[opponent] += 1;
-      destPoint[opponent] -= 1;
+    if (move.hitStatus === HitStatus.IsHit) {
+      if (toPoint[nonMovingPlayer] !== 1) {
+        console.error(
+          "Trying to apply a hit but destination does not have a single opposing checker."
+        );
+        console.error(gameBoardState);
+        console.error(move);
+      }
+      result.barState[nonMovingPlayer] += 1;
+      toPoint[nonMovingPlayer] -= 1;
+    } else {
+      if (toPoint[nonMovingPlayer] > 0) {
+        console.error(
+          "Trying to apply a non-hit move but destination contains opposing checkers."
+        );
+        console.error(gameBoardState);
+        console.error(move);
+      }
     }
-    destPoint[currentPlayer] += 1;
+    toPoint[movingPlayer] += 1;
   }
 
   return result;
 }
+
 export function didPlayerWin(
   gameBoardState: GameBoardState,
   currentPlayer: Player

@@ -121,7 +121,7 @@ const GameBoard: FunctionComponent = () => {
   );
 
   const gameBoardState = provisionalMoves.reduce((prevBoardState, currMove) => {
-    return applyMoveToGameBoardState(prevBoardState, currMove, currentPlayer);
+    return applyMoveToGameBoardState(prevBoardState, currMove);
   }, originalGameBoardState);
 
   // Define useEffect function to check for game win, which will run immediately after
