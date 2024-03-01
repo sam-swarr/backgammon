@@ -41,6 +41,22 @@ export function createAnimationData(
 ): Animation[] {
   let move = animatableMove.move;
   let result = [];
+
+  if (move.hitStatus === HitStatus.UndoesHit) {
+    const otherPlayer =
+      move.checkerOwner === Player.One ? Player.Two : Player.One;
+    result.push(
+      createAnimationDatum(
+        gameBoardState,
+        "BAR",
+        move.from,
+        animatableMove.animationID,
+        otherPlayer,
+        playerMovementDirection
+      )
+    );
+  }
+
   result.push(
     createAnimationDatum(
       gameBoardState,

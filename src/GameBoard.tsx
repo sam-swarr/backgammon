@@ -63,7 +63,6 @@ const GameBoard: FunctionComponent = () => {
 
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
-  const [disableUndoButton, setDisableUndoButton] = useState(false);
   const [currAnimations, setCurrAnimations] = useState(new Array<Animation>());
 
   const currAnimatableMove =
@@ -387,10 +386,7 @@ const GameBoard: FunctionComponent = () => {
             provisionalMoves
           )
         }
-        provisionalGameBoardState={gameBoardState}
         submitButtonHandler={submitButtonHandler}
-        disableUndoButton={disableUndoButton}
-        setDisableUndoButton={setDisableUndoButton}
       />
     );
   }

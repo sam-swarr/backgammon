@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 
-import { Color, GameBoardState } from "./Types";
+import { Color } from "./Types";
 import Die from "./Die";
 import SubmitMoveButton from "./SubmitMoveButton";
 import UndoMoveButton from "./UndoButton";
@@ -10,10 +10,7 @@ type DiceProps = {
   diceValues: number[];
   availableDice: number[];
   canSubmit: boolean;
-  provisionalGameBoardState: GameBoardState;
   submitButtonHandler: Function;
-  disableUndoButton: boolean;
-  setDisableUndoButton: (disable: boolean) => void;
 };
 
 const Dice: FunctionComponent<DiceProps> = ({
@@ -21,10 +18,7 @@ const Dice: FunctionComponent<DiceProps> = ({
   diceValues,
   availableDice,
   canSubmit,
-  provisionalGameBoardState,
   submitButtonHandler,
-  disableUndoButton,
-  setDisableUndoButton,
 }: DiceProps) => {
   let dieOneSpent = false;
   let dieTwoSpent = false;
@@ -50,11 +44,7 @@ const Dice: FunctionComponent<DiceProps> = ({
 
   return (
     <div className={"Dice"}>
-      <UndoMoveButton
-        provisionalGameBoardState={provisionalGameBoardState}
-        disableUndoButton={disableUndoButton}
-        setDisableUndoButton={setDisableUndoButton}
-      />
+      <UndoMoveButton />
       <Die
         dieValue={diceValues[0]}
         dieSpent={dieOneSpent}
