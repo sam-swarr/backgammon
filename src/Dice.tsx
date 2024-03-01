@@ -12,7 +12,6 @@ type DiceProps = {
   canSubmit: boolean;
   provisionalGameBoardState: GameBoardState;
   submitButtonHandler: Function;
-  addAnimationsToQueueFunction: Function;
   disableUndoButton: boolean;
   setDisableUndoButton: (disable: boolean) => void;
 };
@@ -24,7 +23,6 @@ const Dice: FunctionComponent<DiceProps> = ({
   canSubmit,
   provisionalGameBoardState,
   submitButtonHandler,
-  addAnimationsToQueueFunction,
   disableUndoButton,
   setDisableUndoButton,
 }: DiceProps) => {
@@ -54,7 +52,6 @@ const Dice: FunctionComponent<DiceProps> = ({
     <div className={"Dice"}>
       <UndoMoveButton
         provisionalGameBoardState={provisionalGameBoardState}
-        addAnimationsToQueueFunction={addAnimationsToQueueFunction}
         disableUndoButton={disableUndoButton}
         setDisableUndoButton={setDisableUndoButton}
       />

@@ -12,7 +12,7 @@ type BarProps = {
   playerOneColor: Color;
   playerTwoColor: Color;
   currAnimations: Animation[];
-  removeAnimationFunction: (id: number) => void;
+  onAnimationComplete: (id: number) => void;
   highlightedMoves: Move[];
 };
 
@@ -23,7 +23,7 @@ const Bar: FunctionComponent<BarProps> = ({
   playerOneColor,
   playerTwoColor,
   currAnimations,
-  removeAnimationFunction,
+  onAnimationComplete,
   highlightedMoves,
 }: BarProps) => {
   const playerOneCheckers = [];
@@ -39,7 +39,7 @@ const Bar: FunctionComponent<BarProps> = ({
       <Checker
         key={i}
         color={playerOneColor}
-        removeAnimationFunction={removeAnimationFunction}
+        onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
     );
@@ -58,7 +58,7 @@ const Bar: FunctionComponent<BarProps> = ({
       <Checker
         key={i}
         color={playerTwoColor}
-        removeAnimationFunction={removeAnimationFunction}
+        onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
     );

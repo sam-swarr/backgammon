@@ -14,7 +14,7 @@ type BoardPointProps = {
   clickHandler: (fromPoint: number | "BAR") => boolean;
   highlightedMoves: Move[];
   currAnimations: Animation[];
-  removeAnimationFunction: (id: number) => void;
+  onAnimationComplete: (id: number) => void;
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -26,7 +26,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   clickHandler,
   highlightedMoves,
   currAnimations,
-  removeAnimationFunction,
+  onAnimationComplete,
 }: BoardPointProps) => {
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
@@ -60,7 +60,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
         key={i + color}
         color={color}
         animation={anim}
-        removeAnimationFunction={removeAnimationFunction}
+        onAnimationComplete={onAnimationComplete}
       />
     );
   }

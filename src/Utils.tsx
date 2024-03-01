@@ -7,6 +7,7 @@ import {
   setShowGameOverDialog,
   setShowSettingsMenu,
 } from "./store/settingsSlice";
+import { reset as resetAnimatableMoves } from "./store/animatableMovesSlice";
 import { reset as resetGameBoard } from "./store/gameBoardSlice";
 import { reset as resetPlayerState } from "./store/playersSlice";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
@@ -106,4 +107,5 @@ export function resetStoreForLocalGame(dispatchFn: Function): void {
   dispatchFn(clearProvisionalMoves());
   dispatchFn(clearHighlightedMoves());
   dispatchFn(clearNetworkedAnimations());
+  dispatchFn(resetAnimatableMoves());
 }

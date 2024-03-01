@@ -52,7 +52,7 @@ const SettingsMenu: FunctionComponent<SettingsMenuProps> = () => {
           >
             <Checker
               color={settings.playerOneColor}
-              removeAnimationFunction={() => {}}
+              onAnimationComplete={() => {}}
               animation={null}
             />
           </div>

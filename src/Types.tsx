@@ -41,6 +41,11 @@ export type Move = {
   checkerOwner: Player;
 };
 
+export type AnimatableMove = {
+  animationID: number;
+  move: Move;
+};
+
 export enum GameResult {
   NotOver = "NOT_OVER",
   PlayerWon = "PLAYER_WON",

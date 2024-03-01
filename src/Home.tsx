@@ -13,7 +13,7 @@ type HomeProps = {
   playerOneColor: Color;
   playerTwoColor: Color;
   currAnimations: Animation[];
-  removeAnimationFunction: (id: number) => void;
+  onAnimationComplete: (id: number) => void;
 };
 
 const Home: FunctionComponent<HomeProps> = ({
@@ -24,7 +24,7 @@ const Home: FunctionComponent<HomeProps> = ({
   playerOneColor,
   playerTwoColor,
   currAnimations,
-  removeAnimationFunction,
+  onAnimationComplete,
 }: HomeProps) => {
   const playerOneCheckers = [];
   for (let i = 0; i < homeState[Player.One]; i++) {
@@ -39,7 +39,7 @@ const Home: FunctionComponent<HomeProps> = ({
       <Checker
         key={i}
         color={playerOneColor}
-        removeAnimationFunction={removeAnimationFunction}
+        onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
     );
@@ -58,7 +58,7 @@ const Home: FunctionComponent<HomeProps> = ({
       <Checker
         key={i}
         color={playerTwoColor}
-        removeAnimationFunction={removeAnimationFunction}
+        onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
     );

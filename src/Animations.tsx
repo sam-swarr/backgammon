@@ -1,11 +1,10 @@
 import {
+  AnimatableMove,
   GameBoardState,
   HitStatus,
-  Move,
   MovementDirection,
   Player,
 } from "./Types";
-import { genAnimationID } from "./Utils";
 import { getPointStateAtIndex } from "./store/moves";
 
 const POINT_WIDTH = 5.333;
@@ -37,15 +36,17 @@ export type Animation = {
 
 export function createAnimationData(
   gameBoardState: GameBoardState,
-  move: Move,
+  animatableMove: AnimatableMove,
   playerMovementDirection: MovementDirection
 ): Animation[] {
+  let move = animatableMove.move;
   let result = [];
   result.push(
     createAnimationDatum(
       gameBoardState,
       move.from,
       move.to,
+      animatableMove.animationID,
       move.checkerOwner,
       playerMovementDirection
     )
@@ -60,6 +61,7 @@ export function createAnimationData(
         gameBoardState,
         move.to,
         "BAR",
+        animatableMove.animationID,
         otherPlayer,
         playerMovementDirection
       )
@@ -73,6 +75,7 @@ function createAnimationDatum(
   gameBoardState: GameBoardState,
   fromPoint: number | "BAR" | "HOME",
   toPoint: number | "BAR" | "HOME",
+  animationID: number,
   checkerOwner: Player,
   playerMovementDirection: MovementDirection
 ): Animation {
@@ -100,7 +103,7 @@ function createAnimationDatum(
     );
 
     return {
-      id: genAnimationID(),
+      id: animationID,
       location: toPoint,
       translation: {
         translateX: fromX - toX,
@@ -135,7 +138,7 @@ function createAnimationDatum(
     );
 
     return {
-      id: genAnimationID(),
+      id: animationID,
       location: toPoint,
       translation: {
         translateX: fromX - toX,

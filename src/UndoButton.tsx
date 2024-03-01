@@ -10,14 +10,12 @@ import { ActionsContext } from "./ActionsContext";
 
 type UndoMoveButtonProps = {
   provisionalGameBoardState: GameBoardState;
-  addAnimationsToQueueFunction: Function;
   disableUndoButton: boolean;
   setDisableUndoButton: (disable: boolean) => void;
 };
 
 const UndoMoveButton: FunctionComponent<UndoMoveButtonProps> = ({
   provisionalGameBoardState,
-  addAnimationsToQueueFunction,
   disableUndoButton,
   setDisableUndoButton,
 }: UndoMoveButtonProps) => {

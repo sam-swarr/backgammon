@@ -3,7 +3,6 @@ import { FunctionComponent } from "react";
 import { createLobby } from "./Firebase";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
-import { GameState, setState } from "./store/gameStateSlice";
 import { resetStoreForLocalGame } from "./Utils";
 
 type MainMenuProps = {};

@@ -7,13 +7,13 @@ import { Color } from "./Types";
 type CheckerProps = {
   animation: Animation | undefined | null;
   color: Color;
-  removeAnimationFunction: (id: number) => void;
+  onAnimationComplete: (id: number) => void;
 };
 
 const Checker: FunctionComponent<CheckerProps> = ({
   color,
   animation,
-  removeAnimationFunction,
+  onAnimationComplete,
 }: CheckerProps) => {
   const colorClass = color === Color.White ? "white" : "black";
   const ref = React.useRef(null);
@@ -43,7 +43,7 @@ const Checker: FunctionComponent<CheckerProps> = ({
             style={transitionStyles[state]}
             onTransitionEnd={() => {
               if (animation != null) {
-                removeAnimationFunction(animation.id);
+                onAnimationComplete(animation.id);
               }
             }}
           />
