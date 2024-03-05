@@ -40,7 +40,6 @@ const GameBoard: FunctionComponent = () => {
     highlightedMoves,
     provisionalMoves,
     players,
-    networkedAnimations,
     animatableMoves,
   ] = useAppSelector((state) => [
     state.currentPlayer,
@@ -51,7 +50,6 @@ const GameBoard: FunctionComponent = () => {
     state.highlightedMoves.moves,
     state.provisionalMoves,
     state.players,
-    state.networkedAnimations,
     state.animatableMoves,
   ]);
   const actions = useContext(ActionsContext);
@@ -200,7 +198,7 @@ const GameBoard: FunctionComponent = () => {
     return false;
   };
 
-  const submitButtonHandler = () => {
+  const submitButtonHandler = async () => {
     // Temporarily prevent the submit button from showing up to avoid it
     // appearing immediately when dice are still rolling when there are no
     // legal moves.
@@ -208,10 +206,10 @@ const GameBoard: FunctionComponent = () => {
     setTimeout(() => {
       setDisableSubmitButton(false);
     }, 1300);
-    actions.submitMoves(
+    await actions.submitMoves(
       gameBoardState,
       currentPlayer === Player.One ? Player.Two : Player.One,
-      networkedAnimations
+      provisionalMoves
     );
   };
 

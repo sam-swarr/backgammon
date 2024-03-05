@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 
 import { useLoaderData } from "react-router-dom";
 import InformationText from "./InformationText";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { useAppDispatch } from "./store/hooks";
 import GameBoard from "./GameBoard";
 import {
   FirestoreGameData,
@@ -23,10 +23,8 @@ import {
 } from "./ActionsContext";
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
-import { setGameBoardState } from "./store/gameBoardSlice";
+import { enqueueNetworkedMoves } from "./store/animatableMovesSlice";
 import { getClientPlayer } from "./Utils";
-import { createAnimationData } from "./Animations";
-import { AddNetworkedAnimationPayload } from "./store/networkedAnimationsSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -38,31 +36,9 @@ export function loader({ params }: any): LoaderData {
 
 const NetworkedGameRoom: FunctionComponent = () => {
   const { roomCode } = useLoaderData() as LoaderData;
-  const [gameBoardState, settings] = useAppSelector((state) => [
-    state.gameBoard,
-    state.settings,
-  ]);
+
   const dispatch = useAppDispatch();
   const [gameActions, setGameActions] = useState<Actions | null>(null);
-
-  // const dispatchAnimationsInSequence = (
-  //   animationPayloads: AddNetworkedAnimationPayload[]
-  // ) => {
-  //   for (let i = 0; i <)
-  //   let animationData = animationPayload.animationData;
-  //   let a = {
-  //     location: animationData.location,
-  //     animation: calculateTranslationOffsets(
-  //       data.gameBoard,
-  //       animationData.move,
-  //       animationData.checkerOwner,
-  //       settings.movementDirection
-  //     ),
-  //   };
-  //   console.log("RECEIVED ANIMATION");
-  //   console.log(a);
-  //   dispatch(addAnimation(a));
-  // };
 
   useEffect(() => {
     const connectToLobby = async () => {
@@ -76,31 +52,16 @@ const NetworkedGameRoom: FunctionComponent = () => {
         onSnapshot(docRef, (doc) => {
           // Dispatch all relevant updates to the redux store
           let data = doc.data() as FirestoreGameData;
-          dispatch(setGameBoardState(data.gameBoard));
           dispatch(setState(data.gameState));
           dispatch(setPlayersState(data.players));
           dispatch(setCurrentPlayer(data.currentPlayer));
           dispatch(setDiceState(data.dice));
-          // data.networkedAnimations
-          //   .filter(
-          //     (animationPayload) =>
-          //       animationPayload.animateFor === getClientPlayer(data.players)
-          //   )
-          //   .forEach((animationPayload) => {
-          //     let animationData = animationPayload.animationData;
-          //     let a = {
-          //       location: animationData.location,
-          //       animation: calculateTranslationOffsets(
-          //         data.gameBoard,
-          //         animationData.move,
-          //         animationData.checkerOwner,
-          //         settings.movementDirection
-          //       ),
-          //     };
-          //     console.log("RECEIVED ANIMATION");
-          //     console.log(a);
-          //     // dispatch(addAnimation(a));
-          //   });
+          if (
+            data.networkedMoves != null &&
+            getClientPlayer(data.players) === data.networkedMoves.animateFor
+          ) {
+            dispatch(enqueueNetworkedMoves(data.networkedMoves));
+          }
 
           // Handle case where 2nd player is just joining for the first time
           if (!hasJoinedLobby(data.players)) {

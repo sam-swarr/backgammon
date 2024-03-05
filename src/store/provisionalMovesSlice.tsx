@@ -11,10 +11,6 @@ export const provisionalMovesSlice = createSlice({
     appendProvisionalMove: (state, action: { type: string; payload: Move }) => {
       return [...state, action.payload];
     },
-    removeLastProvisionalMove: (state) => {
-      state.pop();
-      return state;
-    },
     clearProvisionalMoves: () => {
       return [];
     },
@@ -22,10 +18,7 @@ export const provisionalMovesSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  appendProvisionalMove,
-  removeLastProvisionalMove,
-  clearProvisionalMoves,
-} = provisionalMovesSlice.actions;
+export const { appendProvisionalMove, clearProvisionalMoves } =
+  provisionalMovesSlice.actions;
 
 export default provisionalMovesSlice.reducer;

@@ -21,7 +21,7 @@ import { performInitialRolls, rollDiceImpl } from "./store/dice";
 import { DiceData } from "./store/diceSlice";
 import { GameBoardState, Player } from "./Types";
 import { STARTING_BOARD_STATE } from "./Constants";
-import { AddNetworkedAnimationPayload } from "./store/networkedAnimationsSlice";
+import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBEAjHStQSJVxt6gxABDueJ4JdSPEjlHXE",
@@ -89,7 +89,7 @@ export type FirestoreGameData = {
   players: PlayersDataPayload;
   currentPlayer: Player;
   dice: DiceData;
-  networkedAnimations: AddNetworkedAnimationPayload[];
+  networkedMoves: NetworkedMovesPayload;
   roomCode: string;
 };
 
@@ -121,7 +121,7 @@ export async function createLobby(): Promise<CreateLobbyResult> {
       initialRolls: initialRolls,
       currentRoll: startingRoll,
     },
-    networkedAnimations: [],
+    networkedMoves: null,
     timeCreated: serverTimestamp(),
   });
 
@@ -195,7 +195,7 @@ export async function writeEndTurnToDB(
   docRef: DocumentReference,
   newGameBoardState: GameBoardState,
   newCurrentPlayer: Player,
-  networkedAnimations: AddNetworkedAnimationPayload[]
+  networkedMoves: NetworkedMovesPayload
 ) {
   return await setDoc(
     docRef,
@@ -205,7 +205,7 @@ export async function writeEndTurnToDB(
       dice: {
         currentRoll: rollDiceImpl(),
       },
-      networkedAnimations: networkedAnimations,
+      networkedMoves,
     },
     { merge: true }
   );

@@ -15,7 +15,6 @@ import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
 import { performInitialRolls } from "./store/dice";
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
-import { clearNetworkedAnimations } from "./store/networkedAnimationsSlice";
 
 /**
  * Certain actions or pieces of UI should only be performed or shown to
@@ -106,6 +105,5 @@ export function resetStoreForLocalGame(dispatchFn: Function): void {
   dispatchFn(resetPlayerState());
   dispatchFn(clearProvisionalMoves());
   dispatchFn(clearHighlightedMoves());
-  dispatchFn(clearNetworkedAnimations());
   dispatchFn(resetAnimatableMoves());
 }

@@ -8,7 +8,6 @@ import highlightedMovesReducer from "./highlightedMovesSlice";
 import provisionalMovesReducer from "./provisionalMovesSlice";
 import settingsReducer from "./settingsSlice";
 import playersSliceReducer from "./playersSlice";
-import networkedAnimationsReducer from "./networkedAnimationsSlice";
 import animatableMovesSlice from "./animatableMovesSlice";
 
 export const store = configureStore({
@@ -21,7 +20,6 @@ export const store = configureStore({
     currentPlayer: currentPlayerReducer,
     players: playersSliceReducer,
     settings: settingsReducer,
-    networkedAnimations: networkedAnimationsReducer,
     animatableMoves: animatableMovesSlice,
   },
 });
