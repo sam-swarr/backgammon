@@ -159,6 +159,17 @@ export function didPlayerWin(
   return GameResult.PlayerWonGammon;
 }
 
+export function pipCount(gameBoardState: GameBoardState, player: Player) {
+  let result = 0;
+  result += gameBoardState.barState[player] * 25;
+  for (let i = 0; i < 24; i++) {
+    let numCheckers = gameBoardState.pointsState[i][player];
+    let multiplier = player === Player.One ? i + 1 : 24 - i;
+    result += numCheckers * multiplier;
+  }
+  return result;
+}
+
 // Action creators are generated for each case reducer function
 export const { setGameBoardState, reset } = gameBoardSlice.actions;
 

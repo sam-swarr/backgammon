@@ -135,6 +135,54 @@
   }
 }
 
+.Player-cards-wrapper {
+  display: flex;
+  height: 6vh;
+  margin-left: 5.5%;
+  margin-right: 5.5%;
+  width: 89%;
+}
+
+.Player-card-wrapper {
+  color: #b8b8b8;
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+
+.Player-card-checker-wrapper {
+  display: flex;
+  height: 6vh;
+  width: 6vh
+}
+
+.Player-card-checker-wrapper .Checker {
+  margin: 20% 20%;
+  height: 60%;
+  width: 60%;
+}
+
+.Player-name-and-score-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.Player-name-wrapper {
+  font-size: 2vh;
+  font-weight: bold;
+  height: 50%;
+}
+
+.Player-score-wrapper {
+  display: flex;
+  font-size: 1.5vh;
+  height: 50%;
+}
+
+.Player-points-wrapper {
+  margin-left: 1vw;
+}
+
 .Information-text-wrapper {
   margin-left: 5.5%;
   margin-right: 5.5%;

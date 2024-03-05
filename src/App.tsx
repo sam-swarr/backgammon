@@ -2,18 +2,17 @@ import { FunctionComponent } from "react";
 import cx from "classnames";
 import "./App.css";
 
-import GameBoard from "./GameBoard";
 import MainMenu from "./MainMenu";
 import SettingsMenuButton from "./SettingsMenuButton";
 import SettingsMenu from "./SettingsMenu";
 import GameOverDialog from "./GameOverDialog";
-import InformationText from "./InformationText";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NetworkedGameRoom, {
   loader as NetworkedGameRoomLoader,
 } from "./NetworkedGameRoom";
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
 import { useAppDispatch } from "./store/hooks";
+import GameRoom from "./GameRoom";
 
 type AppProps = {};
 
@@ -28,10 +27,7 @@ const App: FunctionComponent<AppProps> = () => {
       path: "/local",
       element: (
         <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
-          <div className={"Game-area-wrapper"}>
-            <GameBoard />
-            <InformationText />
-          </div>
+          <GameRoom />
         </ActionsContext.Provider>
       ),
     },

@@ -1,9 +1,7 @@
 import { FunctionComponent, useEffect, useState } from "react";
 
 import { useLoaderData } from "react-router-dom";
-import InformationText from "./InformationText";
 import { useAppDispatch } from "./store/hooks";
-import GameBoard from "./GameBoard";
 import {
   FirestoreGameData,
   findLobby,
@@ -25,6 +23,7 @@ import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { enqueueNetworkedMoves } from "./store/animatableMovesSlice";
 import { getClientPlayer } from "./Utils";
+import GameRoom from "./GameRoom";
 
 type LoaderData = {
   roomCode: string;
@@ -89,10 +88,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
   } else {
     return (
       <ActionsContext.Provider value={gameActions}>
-        <div className={"Game-area-wrapper"}>
-          <GameBoard />
-          <InformationText />
-        </div>
+        <GameRoom />
       </ActionsContext.Provider>
     );
   }

@@ -2,6 +2,7 @@ import {
   applyMoveToGameBoardState,
   deepCloneGameBoardState,
   didPlayerWin,
+  pipCount,
 } from "../gameBoardSlice";
 import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from "../../Constants";
 import { GameBoardState, GameResult, HitStatus, Player } from "../../Types";
@@ -373,4 +374,30 @@ test("didPlayerWin detects backgammon win for player 2", () => {
   expect(didPlayerWin(TEST_BOARD, Player.Two)).toEqual(
     GameResult.PlayerWonBackgammon
   );
+});
+
+test("pipCount correctly calculates total pips remaining", () => {
+  // Starting totals
+  let TEST_BOARD = deepCloneGameBoardState(STARTING_BOARD_STATE);
+  expect(pipCount(TEST_BOARD, Player.One)).toEqual(167);
+  expect(pipCount(TEST_BOARD, Player.Two)).toEqual(167);
+
+  // Empty board
+  TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  expect(pipCount(TEST_BOARD, Player.One)).toEqual(0);
+  expect(pipCount(TEST_BOARD, Player.Two)).toEqual(0);
+
+  // Checkers that are home do not count
+  TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.homeState[Player.One] = 1;
+  TEST_BOARD.homeState[Player.Two] = 1;
+  expect(pipCount(TEST_BOARD, Player.One)).toEqual(0);
+  expect(pipCount(TEST_BOARD, Player.Two)).toEqual(0);
+
+  // Checkers that are on the bar count for 25 pips
+  TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.barState[Player.One] = 1;
+  TEST_BOARD.barState[Player.Two] = 1;
+  expect(pipCount(TEST_BOARD, Player.One)).toEqual(25);
+  expect(pipCount(TEST_BOARD, Player.Two)).toEqual(25);
 });
