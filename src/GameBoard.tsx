@@ -141,11 +141,14 @@ const GameBoard: FunctionComponent = () => {
     }
   }, [gameBoardState, currentPlayer, dispatch]);
 
-  const allPossibleMoves = getAllPossibleMovesForDice(
-    gameBoardState,
-    availableDice,
-    currentPlayer
-  );
+  const isPlayerActivelyMoving =
+    gameState === GameState.PlayerMoving &&
+    isCurrentPlayer(players, currentPlayer, actions);
+
+  const allPossibleMoves =
+    isPlayerActivelyMoving && currAnimatableMove === null
+      ? getAllPossibleMovesForDice(gameBoardState, availableDice, currentPlayer)
+      : [];
 
   const topLeftPoints = [];
   const bottomLeftPoints = [];
@@ -157,10 +160,7 @@ const GameBoard: FunctionComponent = () => {
   ): boolean => {
     // Disable click handler if it's not a player's turn or if the client is not
     // the current player.
-    if (
-      gameState !== GameState.PlayerMoving ||
-      !isCurrentPlayer(players, currentPlayer, actions)
-    ) {
+    if (!isPlayerActivelyMoving) {
       return true;
     }
 
