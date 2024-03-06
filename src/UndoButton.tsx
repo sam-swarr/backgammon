@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
+import { clearLastPointClicked } from "./store/lastPointClickedSlice";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
 import { HitStatus, Move } from "./Types";
 import { enqueueAnimatableMoves } from "./store/animatableMovesSlice";
@@ -38,7 +38,7 @@ const UndoMoveButton: FunctionComponent = () => {
 
           dispatch(enqueueAnimatableMoves(movesToAnimate));
           dispatch(clearProvisionalMoves());
-          dispatch(clearHighlightedMoves());
+          dispatch(clearLastPointClicked());
         }}
       />
     </div>

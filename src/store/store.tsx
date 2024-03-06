@@ -4,7 +4,7 @@ import currentPlayerReducer from "./currentPlayerSlice";
 import diceReducer from "./diceSlice";
 import gameBoardReducer from "./gameBoardSlice";
 import gameStateReducer from "./gameStateSlice";
-import highlightedMovesReducer from "./highlightedMovesSlice";
+import lastPointClickedReducer from "./lastPointClickedSlice";
 import provisionalMovesReducer from "./provisionalMovesSlice";
 import settingsReducer from "./settingsSlice";
 import playersSliceReducer from "./playersSlice";
@@ -14,7 +14,7 @@ export const store = configureStore({
   reducer: {
     gameBoard: gameBoardReducer,
     gameState: gameStateReducer,
-    highlightedMoves: highlightedMovesReducer,
+    lastPointClicked: lastPointClickedReducer,
     provisionalMoves: provisionalMovesReducer,
     dice: diceReducer,
     currentPlayer: currentPlayerReducer,

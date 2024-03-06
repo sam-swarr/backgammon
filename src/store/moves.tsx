@@ -240,6 +240,25 @@ export function getAllPossibleMoveSetsImpl(
   return result;
 }
 
+export function getAllPossibleMovesForDice(
+  gameBoardState: GameBoardState,
+  dice: number[],
+  currentPlayer: Player
+): Move[] {
+  let result: Move[] = [];
+  let seenDieValues = new Set();
+  for (let i = 0; i < dice.length; i++) {
+    if (seenDieValues.has(dice[i])) {
+      continue;
+    }
+    seenDieValues.add(dice[i]);
+    result = result.concat(
+      getAllPossibleMovesForGivenDieRoll(gameBoardState, dice[i], currentPlayer)
+    );
+  }
+  return result;
+}
+
 export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,

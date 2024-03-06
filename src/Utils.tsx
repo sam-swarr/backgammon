@@ -11,7 +11,7 @@ import { reset as resetAnimatableMoves } from "./store/animatableMovesSlice";
 import { reset as resetGameBoard } from "./store/gameBoardSlice";
 import { reset as resetPlayerState } from "./store/playersSlice";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
-import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
+import { clearLastPointClicked } from "./store/lastPointClickedSlice";
 import { performInitialRolls } from "./store/dice";
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
@@ -104,6 +104,6 @@ export function resetStoreForLocalGame(dispatchFn: Function): void {
   );
   dispatchFn(resetPlayerState());
   dispatchFn(clearProvisionalMoves());
-  dispatchFn(clearHighlightedMoves());
+  dispatchFn(clearLastPointClicked());
   dispatchFn(resetAnimatableMoves());
 }

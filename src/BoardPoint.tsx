@@ -4,6 +4,7 @@ import cx from "classnames";
 import Checker from "./Checker";
 import { Color, Move, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
+import { LastPointClicked } from "./store/lastPointClickedSlice";
 
 type BoardPointProps = {
   pointState: PointState;
@@ -12,7 +13,8 @@ type BoardPointProps = {
   playerTwoColor: Color;
   pointNumber: number;
   clickHandler: (fromPoint: number | "BAR") => boolean;
-  highlightedMoves: Move[];
+  allPossibleMoves: Move[];
+  lastPointClicked: LastPointClicked;
   currAnimations: Animation[];
   onAnimationComplete: (id: number) => void;
 };
@@ -24,7 +26,8 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   playerTwoColor,
   pointNumber,
   clickHandler,
-  highlightedMoves,
+  allPossibleMoves,
+  lastPointClicked,
   currAnimations,
   onAnimationComplete,
 }: BoardPointProps) => {
@@ -71,12 +74,15 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   };
 
   let highlight = null;
-  const isHighlightedFromPoint = highlightedMoves.some(
-    (highlightedMove: Move) => highlightedMove.from === pointNumber
-  );
-  const isHighlightedToPoint = highlightedMoves.some(
-    (highlightedMove: Move) => highlightedMove.to === pointNumber
-  );
+  const isHighlightedFromPoint =
+    allPossibleMoves.some((move: Move) => move.from === pointNumber) &&
+    (lastPointClicked.point === -1 || lastPointClicked.point === pointNumber);
+  const isHighlightedToPoint =
+    lastPointClicked.point !== -1 &&
+    allPossibleMoves.some(
+      (move: Move) =>
+        move.to === pointNumber && move.from === lastPointClicked.point
+    );
   if (isHighlightedFromPoint || isHighlightedToPoint || showNoMoveHighlight) {
     highlight = (
       <div

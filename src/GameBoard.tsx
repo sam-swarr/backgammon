@@ -8,11 +8,15 @@ import {
 } from "./store/gameBoardSlice";
 import { GameState, setState } from "./store/gameStateSlice";
 import {
-  clearHighlightedMoves,
-  setHighlightedMoves,
-} from "./store/highlightedMovesSlice";
+  clearLastPointClicked,
+  setLastPointClicked,
+} from "./store/lastPointClickedSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { areProvisionalMovesSubmittable, getMoveIfValid } from "./store/moves";
+import {
+  areProvisionalMovesSubmittable,
+  getAllPossibleMovesForDice,
+  getMoveIfValid,
+} from "./store/moves";
 import { appendProvisionalMove } from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
 import { Color, GameResult, Move, MovementDirection, Player } from "./Types";
@@ -37,7 +41,7 @@ const GameBoard: FunctionComponent = () => {
     diceData,
     originalGameBoardState,
     gameState,
-    highlightedMoves,
+    lastPointClicked,
     provisionalMoves,
     players,
     animatableMoves,
@@ -47,7 +51,7 @@ const GameBoard: FunctionComponent = () => {
     state.dice,
     state.gameBoard,
     state.gameState,
-    state.highlightedMoves.moves,
+    state.lastPointClicked,
     state.provisionalMoves,
     state.players,
     state.animatableMoves,
@@ -137,6 +141,12 @@ const GameBoard: FunctionComponent = () => {
     }
   }, [gameBoardState, currentPlayer, dispatch]);
 
+  const allPossibleMoves = getAllPossibleMovesForDice(
+    gameBoardState,
+    availableDice,
+    currentPlayer
+  );
+
   const topLeftPoints = [];
   const bottomLeftPoints = [];
   const topRightPoints = [];
@@ -154,8 +164,10 @@ const GameBoard: FunctionComponent = () => {
       return true;
     }
 
-    // Check if player clicked on a highlighted destination.
-    const movesToApply = highlightedMoves.filter((m) => m.to === pointClicked);
+    // Filter out just the moves that begin on last point clicked and end on the point currently being clicked.
+    const movesToApply = allPossibleMoves.filter(
+      (m) => m.from === lastPointClicked.point && m.to === pointClicked
+    );
     if (movesToApply.length > 0) {
       // There may be multiple potential moves to apply in the case where
       // both dice can bear a checker off. If this is the case, find the
@@ -168,32 +180,18 @@ const GameBoard: FunctionComponent = () => {
       }
       dispatch(appendProvisionalMove(moveToApply));
       dispatch(enqueueAnimatableMoves([moveToApply]));
-      dispatch(clearHighlightedMoves());
+      dispatch(clearLastPointClicked());
       return true;
     } else if (pointClicked !== "HOME") {
-      const possibleMoves: Move[] = [];
-      const seenDieValues = new Set();
-      for (let i = 0; i < availableDice.length; i++) {
-        if (!seenDieValues.has(availableDice[i])) {
-          const possibleMove = getMoveIfValid(
-            gameBoardState,
-            pointClicked,
-            availableDice[i],
-            currentPlayer
-          );
-          if (possibleMove !== null) {
-            possibleMoves.push(possibleMove);
-          }
-        }
-        seenDieValues.add(availableDice[i]);
-      }
-      dispatch(
-        setHighlightedMoves({
-          lastPointClicked: pointClicked,
-          moves: possibleMoves,
-        })
+      let hasMovesFromPoint = allPossibleMoves.some(
+        (move) => move.from === pointClicked
       );
-      return possibleMoves.length > 0;
+      if (hasMovesFromPoint) {
+        dispatch(setLastPointClicked({ point: pointClicked }));
+      } else {
+        dispatch(clearLastPointClicked());
+      }
+      return hasMovesFromPoint;
     }
     return false;
   };
@@ -221,7 +219,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -237,7 +236,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -253,7 +253,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -269,7 +270,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -286,7 +288,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -302,7 +305,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -318,7 +322,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -334,7 +339,8 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          highlightedMoves={highlightedMoves}
+          allPossibleMoves={allPossibleMoves}
+          lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
           playerTwoColor={playerTwoColor}
@@ -349,7 +355,12 @@ const GameBoard: FunctionComponent = () => {
   const home = (
     <Home
       homeState={gameBoardState.homeState}
-      isHighlighted={highlightedMoves.some((m) => m.to === "HOME")}
+      isHighlighted={
+        lastPointClicked.point !== -1 &&
+        allPossibleMoves.some(
+          (m) => m.from === lastPointClicked.point && m.to === "HOME"
+        )
+      }
       clickHandler={boardPointClickHandler}
       currentPlayer={currentPlayer}
       playerOneColor={playerOneColor}
@@ -404,7 +415,8 @@ const GameBoard: FunctionComponent = () => {
         playerTwoColor={playerTwoColor}
         currAnimations={currAnimations}
         onAnimationComplete={onAnimationComplete}
-        highlightedMoves={highlightedMoves}
+        allPossibleMoves={allPossibleMoves}
+        lastPointClicked={lastPointClicked}
       />
       <div className="Game-board-half">
         <BeginGameButton />

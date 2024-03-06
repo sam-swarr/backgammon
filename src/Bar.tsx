@@ -4,6 +4,7 @@ import cx from "classnames";
 import Checker from "./Checker";
 import { Animation } from "./Animations";
 import { Color, Move, Player, PointState } from "./Types";
+import { LastPointClicked } from "./store/lastPointClickedSlice";
 
 type BarProps = {
   barState: PointState;
@@ -13,7 +14,8 @@ type BarProps = {
   playerTwoColor: Color;
   currAnimations: Animation[];
   onAnimationComplete: (id: number) => void;
-  highlightedMoves: Move[];
+  allPossibleMoves: Move[];
+  lastPointClicked: LastPointClicked;
 };
 
 const Bar: FunctionComponent<BarProps> = ({
@@ -24,7 +26,8 @@ const Bar: FunctionComponent<BarProps> = ({
   playerTwoColor,
   currAnimations,
   onAnimationComplete,
-  highlightedMoves,
+  allPossibleMoves,
+  lastPointClicked,
 }: BarProps) => {
   const playerOneCheckers = [];
   for (let i = 0; i < barState[Player.One]; i++) {
@@ -64,9 +67,9 @@ const Bar: FunctionComponent<BarProps> = ({
     );
   }
 
-  const isHighlighted = highlightedMoves.some(
-    (highlightedMove: Move) => highlightedMove.from === "BAR"
-  );
+  const isHighlighted =
+    allPossibleMoves.some((move: Move) => move.from === "BAR") &&
+    (lastPointClicked.point === -1 || lastPointClicked.point === "BAR");
 
   return (
     <div

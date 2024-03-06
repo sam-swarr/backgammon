@@ -3,7 +3,7 @@ import { GameState, setState } from "./store/gameStateSlice";
 import { DocumentReference } from "firebase/firestore";
 import { writeEndTurnToDB, writeNewGameStateToDB } from "./Firebase";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
-import { clearHighlightedMoves } from "./store/highlightedMovesSlice";
+import { clearLastPointClicked } from "./store/lastPointClickedSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { rollDice } from "./store/diceSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
@@ -51,7 +51,7 @@ export class LocalGameActions extends Actions {
     _movesToSubmit: Move[]
   ): Promise<void> {
     this.dispatchFn(clearProvisionalMoves());
-    this.dispatchFn(clearHighlightedMoves());
+    this.dispatchFn(clearLastPointClicked());
     this.dispatchFn(setGameBoardState(newGameBoardState));
     this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
     this.dispatchFn(rollDice());
@@ -88,7 +88,7 @@ export class NetworkedGameActions extends Actions {
     };
 
     this.dispatchFn(clearProvisionalMoves());
-    this.dispatchFn(clearHighlightedMoves());
+    this.dispatchFn(clearLastPointClicked());
 
     await writeEndTurnToDB(
       this.docRef,
