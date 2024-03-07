@@ -103,6 +103,13 @@ export class NetworkedGameActions extends Actions {
     this.dispatchFn(clearProvisionalMoves());
     this.dispatchFn(clearLastPointClicked());
 
+    // Optimistically write these changes to the local store first so that
+    // local client gets a fast update. The same changes will propagate to the
+    // other client via the DB write after this.
+    this.dispatchFn(setState(GameState.PlayerRolling));
+    this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
+
     await writeEndTurnToDB(
       this.docRef,
       newGameBoardState,
