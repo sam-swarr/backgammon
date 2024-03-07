@@ -205,6 +205,7 @@ export async function writeEndTurnToDB(
       dice: {
         currentRoll: rollDiceImpl(),
       },
+      gameState: GameState.PlayerRolling,
       networkedMoves,
     },
     { merge: true }

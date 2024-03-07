@@ -8,7 +8,9 @@ import lastPointClickedReducer from "./lastPointClickedSlice";
 import provisionalMovesReducer from "./provisionalMovesSlice";
 import settingsReducer from "./settingsSlice";
 import playersSliceReducer from "./playersSlice";
-import animatableMovesSlice from "./animatableMovesSlice";
+import animatableMovesReducer from "./animatableMovesSlice";
+import doublingCubeReducer from "./doublingCubeSlice";
+import matchScoreReducer from "./matchScoreSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +22,9 @@ export const store = configureStore({
     currentPlayer: currentPlayerReducer,
     players: playersSliceReducer,
     settings: settingsReducer,
-    animatableMoves: animatableMovesSlice,
+    animatableMoves: animatableMovesReducer,
+    doublingCube: doublingCubeReducer,
+    matchScore: matchScoreReducer,
   },
 });
 

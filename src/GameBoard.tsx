@@ -15,11 +15,10 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   areProvisionalMovesSubmittable,
   getAllPossibleMovesForDice,
-  getMoveIfValid,
 } from "./store/moves";
 import { appendProvisionalMove } from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
-import { Color, GameResult, Move, MovementDirection, Player } from "./Types";
+import { Color, GameResult, MovementDirection, Player } from "./Types";
 import Bar from "./Bar";
 import BoardPoint from "./BoardPoint";
 import Dice from "./Dice";
@@ -33,6 +32,7 @@ import {
   dequeueAnimatableMove,
   enqueueAnimatableMoves,
 } from "./store/animatableMovesSlice";
+import RollingMenu from "./RollingMenu";
 
 const GameBoard: FunctionComponent = () => {
   const [
@@ -370,16 +370,18 @@ const GameBoard: FunctionComponent = () => {
     />
   );
 
-  let diceComponent = null;
+  let uiComponent = null;
   if (gameState === GameState.CoinFlip) {
-    diceComponent = <OpeningDiceRoll />;
+    uiComponent = <OpeningDiceRoll />;
   } else if (
     gameState === GameState.WaitingToBegin ||
     gameState === GameState.WaitingForPlayers
   ) {
-    diceComponent = null;
+    uiComponent = null;
+  } else if (gameState === GameState.PlayerRolling) {
+    uiComponent = <RollingMenu />;
   } else {
-    diceComponent = (
+    uiComponent = (
       <Dice
         currentPlayerColor={
           currentPlayer === Player.One ? playerOneColor : playerTwoColor
@@ -420,7 +422,7 @@ const GameBoard: FunctionComponent = () => {
       />
       <div className="Game-board-half">
         <BeginGameButton />
-        {diceComponent}
+        {uiComponent}
         <div className="Game-board-quadrant top">{topRightPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>
       </div>

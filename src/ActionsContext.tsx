@@ -20,6 +20,10 @@ export class Actions {
     console.error("Unexpected use of default ActionsContext.");
   }
 
+  async rollButtonClicked(): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
   async submitMoves(
     _newGameBoardState: GameBoardState,
     _newCurrentPlayer: Player,
@@ -45,6 +49,10 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(setState(GameState.PlayerMoving));
   }
 
+  async rollButtonClicked(): Promise<void> {
+    this.dispatchFn(setState(GameState.PlayerMoving));
+  }
+
   async submitMoves(
     newGameBoardState: GameBoardState,
     newCurrentPlayer: Player,
@@ -52,6 +60,7 @@ export class LocalGameActions extends Actions {
   ): Promise<void> {
     this.dispatchFn(clearProvisionalMoves());
     this.dispatchFn(clearLastPointClicked());
+    this.dispatchFn(setState(GameState.PlayerRolling));
     this.dispatchFn(setGameBoardState(newGameBoardState));
     this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
     this.dispatchFn(rollDice());
@@ -74,6 +83,10 @@ export class NetworkedGameActions extends Actions {
 
   beginFirstTurn(): void {
     writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
+  }
+
+  async rollButtonClicked(): Promise<void> {
+    await writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
   }
 
   async submitMoves(
