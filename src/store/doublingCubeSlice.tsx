@@ -5,14 +5,15 @@ export type DoublingCubeData = {
   owner: Player | null;
   gameStakes: number;
 };
-const initialState: DoublingCubeData = {
+
+export const InitialDoublingCubeState: DoublingCubeData = {
   owner: null,
   gameStakes: 1,
 };
 
 export const doublingCubeSlice = createSlice({
   name: "doublingCubeState",
-  initialState: initialState,
+  initialState: InitialDoublingCubeState,
   reducers: {
     setDoublingCubeData: (
       _,
@@ -21,7 +22,7 @@ export const doublingCubeSlice = createSlice({
       return action.payload;
     },
     resetDoublingCubeData: () => {
-      return initialState;
+      return InitialDoublingCubeState;
     },
   },
 });

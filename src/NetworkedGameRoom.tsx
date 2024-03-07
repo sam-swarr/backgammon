@@ -24,6 +24,8 @@ import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { enqueueNetworkedMoves } from "./store/animatableMovesSlice";
 import { getClientPlayer } from "./Utils";
 import GameRoom from "./GameRoom";
+import { setDoublingCubeData } from "./store/doublingCubeSlice";
+import { setMatchScore } from "./store/matchScoreSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -55,6 +57,8 @@ const NetworkedGameRoom: FunctionComponent = () => {
           dispatch(setPlayersState(data.players));
           dispatch(setCurrentPlayer(data.currentPlayer));
           dispatch(setDiceState(data.dice));
+          dispatch(setDoublingCubeData(data.doublingCube));
+          dispatch(setMatchScore(data.matchScore));
           if (
             data.networkedMoves != null &&
             getClientPlayer(data.players) === data.networkedMoves.animateFor

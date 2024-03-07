@@ -32,7 +32,8 @@ import {
   dequeueAnimatableMove,
   enqueueAnimatableMoves,
 } from "./store/animatableMovesSlice";
-import RollingMenu from "./RollingMenu";
+import RollButton from "./RollButton";
+import OfferDoubleButton from "./OfferDoubleButton";
 
 const GameBoard: FunctionComponent = () => {
   const [
@@ -382,18 +383,11 @@ const GameBoard: FunctionComponent = () => {
     }, 1300);
   };
 
-  let uiComponent = null;
+  let diceComponent = null;
   if (gameState === GameState.CoinFlip) {
-    uiComponent = <OpeningDiceRoll />;
-  } else if (
-    gameState === GameState.WaitingToBegin ||
-    gameState === GameState.WaitingForPlayers
-  ) {
-    uiComponent = null;
-  } else if (gameState === GameState.PlayerRolling) {
-    uiComponent = <RollingMenu onRollButtonClicked={onRollButtonClicked} />;
-  } else {
-    uiComponent = (
+    diceComponent = <OpeningDiceRoll />;
+  } else if (gameState === GameState.PlayerMoving) {
+    diceComponent = (
       <Dice
         currentPlayerColor={
           currentPlayer === Player.One ? playerOneColor : playerTwoColor
@@ -412,12 +406,15 @@ const GameBoard: FunctionComponent = () => {
         submitButtonHandler={submitButtonHandler}
       />
     );
+  } else {
+    diceComponent = null;
   }
 
   return (
     <div className="Game-board-wrapper">
       {playerMovementDirection === MovementDirection.Clockwise ? home : null}
       <div className="Game-board-half">
+        <OfferDoubleButton />
         <div className="Game-board-quadrant top">{topLeftPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomLeftPoints}</div>
       </div>
@@ -434,7 +431,8 @@ const GameBoard: FunctionComponent = () => {
       />
       <div className="Game-board-half">
         <BeginGameButton />
-        {uiComponent}
+        <RollButton onRollButtonClicked={onRollButtonClicked} />
+        {diceComponent}
         <div className="Game-board-quadrant top">{topRightPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>
       </div>

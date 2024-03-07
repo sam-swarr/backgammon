@@ -3,6 +3,7 @@ import { Auth, User, getAuth, signInAnonymously } from "firebase/auth";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   DocumentReference,
+  FieldValue,
   Firestore,
   addDoc,
   collection,
@@ -22,6 +23,11 @@ import { DiceData } from "./store/diceSlice";
 import { GameBoardState, Player } from "./Types";
 import { STARTING_BOARD_STATE } from "./Constants";
 import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
+import {
+  DoublingCubeData,
+  InitialDoublingCubeState,
+} from "./store/doublingCubeSlice";
+import { InitialMatchScoreState, MatchScore } from "./store/matchScoreSlice";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBEAjHStQSJVxt6gxABDueJ4JdSPEjlHXE",
@@ -89,8 +95,11 @@ export type FirestoreGameData = {
   players: PlayersDataPayload;
   currentPlayer: Player;
   dice: DiceData;
-  networkedMoves: NetworkedMovesPayload;
+  networkedMoves: NetworkedMovesPayload | null;
   roomCode: string;
+  doublingCube: DoublingCubeData;
+  matchScore: MatchScore;
+  timeCreated: FieldValue;
 };
 
 type CreateLobbyResult = {
@@ -105,7 +114,7 @@ export async function createLobby(): Promise<CreateLobbyResult> {
   const initialRolls = performInitialRolls();
   const startingRoll = initialRolls[Object.keys(initialRolls).length - 1];
 
-  const docRef = await addDoc(collection(db, "lobbies"), {
+  const initialGameData: FirestoreGameData = {
     roomCode: roomCode,
     gameBoard: STARTING_BOARD_STATE,
     gameState: GameState.WaitingForPlayers,
@@ -122,8 +131,12 @@ export async function createLobby(): Promise<CreateLobbyResult> {
       currentRoll: startingRoll,
     },
     networkedMoves: null,
+    doublingCube: InitialDoublingCubeState,
+    matchScore: InitialMatchScoreState,
     timeCreated: serverTimestamp(),
-  });
+  };
+
+  const docRef = await addDoc(collection(db, "lobbies"), initialGameData);
 
   console.log("Document written with ID: ", docRef.id);
   console.log("Created room: " + roomCode);
@@ -207,6 +220,20 @@ export async function writeEndTurnToDB(
       },
       gameState: GameState.PlayerRolling,
       networkedMoves,
+    },
+    { merge: true }
+  );
+}
+
+export async function writeAcceptDoubleToDB(
+  docRef: DocumentReference,
+  newDoublingCubeData: DoublingCubeData
+) {
+  return await setDoc(
+    docRef,
+    {
+      gameState: GameState.PlayerRolling,
+      doublingCube: newDoublingCubeData,
     },
     { merge: true }
   );

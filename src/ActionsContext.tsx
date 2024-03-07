@@ -1,7 +1,11 @@
 import { createContext } from "react";
 import { GameState, setState } from "./store/gameStateSlice";
 import { DocumentReference } from "firebase/firestore";
-import { writeEndTurnToDB, writeNewGameStateToDB } from "./Firebase";
+import {
+  writeAcceptDoubleToDB,
+  writeEndTurnToDB,
+  writeNewGameStateToDB,
+} from "./Firebase";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
 import { clearLastPointClicked } from "./store/lastPointClickedSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
@@ -10,6 +14,7 @@ import { setGameBoardState } from "./store/gameBoardSlice";
 import { GameBoardState, Move, Player } from "./Types";
 import { genAnimationID } from "./Utils";
 import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
+import { setDoublingCubeData } from "./store/doublingCubeSlice";
 
 export class Actions {
   beginCoinFlip(): void {
@@ -21,6 +26,21 @@ export class Actions {
   }
 
   async rollButtonClicked(): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async offerDoubleButtonClicked(): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async acceptDoubleButtonClicked(
+    _newDoublingCubeOwner: Player,
+    _newGameStakes: number
+  ): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async forfeitButtonClicked(): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
 
@@ -51,6 +71,28 @@ export class LocalGameActions extends Actions {
 
   async rollButtonClicked(): Promise<void> {
     this.dispatchFn(setState(GameState.PlayerMoving));
+  }
+
+  async offerDoubleButtonClicked(): Promise<void> {
+    this.dispatchFn(setState(GameState.PlayerOfferingDouble));
+  }
+
+  async acceptDoubleButtonClicked(
+    newDoublingCubeOwner: Player,
+    newGameStakes: number
+  ): Promise<void> {
+    this.dispatchFn(
+      setDoublingCubeData({
+        owner: newDoublingCubeOwner,
+        gameStakes: newGameStakes,
+      })
+    );
+    this.dispatchFn(setState(GameState.PlayerRolling));
+  }
+
+  async forfeitButtonClicked(): Promise<void> {
+    // TODO
+    console.log("FORFEIT");
   }
 
   async submitMoves(
@@ -85,6 +127,31 @@ export class NetworkedGameActions extends Actions {
     writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
   }
 
+  async offerDoubleButtonClicked(): Promise<void> {
+    writeNewGameStateToDB(this.docRef, GameState.PlayerOfferingDouble);
+  }
+
+  async acceptDoubleButtonClicked(
+    newDoublingCubeOwner: Player,
+    newGameStakes: number
+  ): Promise<void> {
+    const newDoublingCubeData = {
+      owner: newDoublingCubeOwner,
+      gameStakes: newGameStakes,
+    };
+
+    // Optimistically update local client.
+    this.dispatchFn(setDoublingCubeData(newDoublingCubeData));
+    this.dispatchFn(setState(GameState.PlayerRolling));
+
+    return await writeAcceptDoubleToDB(this.docRef, newDoublingCubeData);
+  }
+
+  async forfeitButtonClicked(): Promise<void> {
+    // TODO
+    console.log("FORFEIT");
+  }
+
   async rollButtonClicked(): Promise<void> {
     await writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
   }
@@ -110,7 +177,7 @@ export class NetworkedGameActions extends Actions {
     this.dispatchFn(setGameBoardState(newGameBoardState));
     this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
 
-    await writeEndTurnToDB(
+    return await writeEndTurnToDB(
       this.docRef,
       newGameBoardState,
       newCurrentPlayer,
