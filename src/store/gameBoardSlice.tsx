@@ -170,6 +170,36 @@ export function pipCount(gameBoardState: GameBoardState, player: Player) {
   return result;
 }
 
+export function areBoardStatesEquivalent(
+  boardA: GameBoardState,
+  boardB: GameBoardState
+): boolean {
+  if (
+    boardA.barState[Player.One] !== boardB.barState[Player.One] ||
+    boardA.barState[Player.Two] !== boardB.barState[Player.Two]
+  ) {
+    return false;
+  }
+
+  if (
+    boardA.homeState[Player.One] !== boardB.homeState[Player.One] ||
+    boardA.homeState[Player.Two] !== boardB.homeState[Player.Two]
+  ) {
+    return false;
+  }
+
+  for (let i = 0; i <= 23; i++) {
+    if (
+      boardA.pointsState[i][Player.One] !== boardB.pointsState[i][Player.One] ||
+      boardA.pointsState[i][Player.Two] !== boardB.pointsState[i][Player.Two]
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 // Action creators are generated for each case reducer function
 export const { setGameBoardState, reset } = gameBoardSlice.actions;
 
