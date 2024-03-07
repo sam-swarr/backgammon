@@ -3,7 +3,13 @@ import { useAppSelector } from "./store/hooks";
 import { ActionsContext } from "./ActionsContext";
 import { isCurrentPlayer } from "./Utils";
 
-const RollingMenu: FunctionComponent = () => {
+type RollingMenuProps = {
+  onRollButtonClicked: Function;
+};
+
+const RollingMenu: FunctionComponent<RollingMenuProps> = ({
+  onRollButtonClicked,
+}: RollingMenuProps) => {
   const [players, currentPlayer] = useAppSelector((state) => [
     state.players,
     state.currentPlayer,
@@ -29,6 +35,7 @@ const RollingMenu: FunctionComponent = () => {
           <button
             className={"Roll-button"}
             onClick={() => {
+              onRollButtonClicked();
               actions.rollButtonClicked();
             }}
           >

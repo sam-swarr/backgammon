@@ -65,6 +65,7 @@ const GameBoard: FunctionComponent = () => {
 
   const dispatch = useAppDispatch();
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
+  const [disableHighlightedMoves, setDisableHighlightedMoves] = useState(false);
   const [currAnimations, setCurrAnimations] = useState(new Array<Animation>());
 
   const currAnimatableMove =
@@ -146,7 +147,9 @@ const GameBoard: FunctionComponent = () => {
     isCurrentPlayer(players, currentPlayer, actions);
 
   const allPossibleMoves =
-    isPlayerActivelyMoving && currAnimatableMove === null
+    isPlayerActivelyMoving &&
+    currAnimatableMove === null &&
+    !disableHighlightedMoves
       ? getAllPossibleMovesForDice(gameBoardState, availableDice, currentPlayer)
       : [];
 
@@ -370,6 +373,15 @@ const GameBoard: FunctionComponent = () => {
     />
   );
 
+  const onRollButtonClicked = () => {
+    // Prevent highlights on possible moves from appearing
+    // until after the dice have finished animating.
+    setDisableHighlightedMoves(true);
+    setTimeout(() => {
+      setDisableHighlightedMoves(false);
+    }, 1300);
+  };
+
   let uiComponent = null;
   if (gameState === GameState.CoinFlip) {
     uiComponent = <OpeningDiceRoll />;
@@ -379,7 +391,7 @@ const GameBoard: FunctionComponent = () => {
   ) {
     uiComponent = null;
   } else if (gameState === GameState.PlayerRolling) {
-    uiComponent = <RollingMenu />;
+    uiComponent = <RollingMenu onRollButtonClicked={onRollButtonClicked} />;
   } else {
     uiComponent = (
       <Dice
