@@ -172,6 +172,7 @@ export async function joinLobbyAsPlayerTwo(docRef: DocumentReference) {
   return await setDoc(
     docRef,
     {
+      gameState: GameState.WaitingToBegin,
       players: {
         playerTwo: {
           uid: getCurrentUser().uid,

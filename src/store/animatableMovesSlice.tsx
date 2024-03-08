@@ -51,6 +51,13 @@ export const animatableMovesSlice = createSlice({
         return [...state, ...newMoves];
       }
     },
+    invalidateNetworkedMoves: (
+      state,
+      action: { type: string; payload: NetworkedMovesPayload }
+    ) => {
+      seenPayloadIDs.add(action.payload.id);
+      return state;
+    },
     dequeueAnimatableMove: (state) => {
       return state.slice(1);
     },
@@ -64,6 +71,7 @@ export const animatableMovesSlice = createSlice({
 export const {
   enqueueAnimatableMoves,
   enqueueNetworkedMoves,
+  invalidateNetworkedMoves,
   dequeueAnimatableMove,
   reset,
 } = animatableMovesSlice.actions;

@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 import { useLoaderData } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
@@ -9,10 +9,9 @@ import {
   hasJoinedLobby,
   joinLobbyAsPlayerTwo,
   signIn,
-  writeNewGameStateToDB,
 } from "./Firebase";
 import { onSnapshot } from "firebase/firestore";
-import { GameState, setState } from "./store/gameStateSlice";
+import { setState } from "./store/gameStateSlice";
 import { setPlayersState } from "./store/playersSlice";
 import {
   Actions,
@@ -21,11 +20,15 @@ import {
 } from "./ActionsContext";
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
-import { enqueueNetworkedMoves } from "./store/animatableMovesSlice";
+import {
+  enqueueNetworkedMoves,
+  invalidateNetworkedMoves,
+} from "./store/animatableMovesSlice";
 import { getClientPlayer } from "./Utils";
 import GameRoom from "./GameRoom";
 import { setDoublingCubeData } from "./store/doublingCubeSlice";
 import { setMatchScore } from "./store/matchScoreSlice";
+import { setGameBoardState } from "./store/gameBoardSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -39,17 +42,26 @@ const NetworkedGameRoom: FunctionComponent = () => {
   const { roomCode } = useLoaderData() as LoaderData;
 
   const dispatch = useAppDispatch();
-  const [gameActions, setGameActions] = useState<Actions | null>(null);
+
+  // We wrap the _gameActions state inside a Ref and use the Ref instead.
+  // That's because if we just used a normal state variable, the onSnapshot()
+  // callback below would just capture the value of gameActions on the very
+  // first render (which would always be null).
+  const [_gameActions, _setGameActions] = useState<Actions | null>(null);
+  const gameActionsRef = useRef(_gameActions);
+  function setGameActions(gameActions: Actions) {
+    gameActionsRef.current = gameActions;
+    _setGameActions(gameActions);
+  }
 
   useEffect(() => {
-    const connectToLobby = async () => {
+    async function connectToLobby() {
       await signIn();
       const docRef = await findLobby(roomCode);
       if (docRef == null) {
         console.error("No lobby found with code: " + roomCode);
         // TODO: show error screen
       } else {
-        setGameActions(new NetworkedGameActions(dispatch, docRef));
         onSnapshot(docRef, (doc) => {
           // Dispatch all relevant updates to the redux store
           let data = doc.data() as FirestoreGameData;
@@ -63,7 +75,15 @@ const NetworkedGameRoom: FunctionComponent = () => {
             data.networkedMoves != null &&
             getClientPlayer(data.players) === data.networkedMoves.animateFor
           ) {
-            dispatch(enqueueNetworkedMoves(data.networkedMoves));
+            if (gameActionsRef.current == null) {
+              // In this case, we've just reconnected to the DB mid-game. We'll be syncing the
+              // up-to-date boardState at the end of this function, so we should ignore any
+              // networked moves in the DB since we don't want to animate those on top of the
+              // already-up-to-date board.
+              dispatch(invalidateNetworkedMoves(data.networkedMoves));
+            } else {
+              dispatch(enqueueNetworkedMoves(data.networkedMoves));
+            }
           }
 
           // Handle case where 2nd player is just joining for the first time
@@ -76,22 +96,29 @@ const NetworkedGameRoom: FunctionComponent = () => {
               );
               // TODO: show error screen
             } else {
-              joinLobbyAsPlayerTwo(docRef).then(() => {
-                writeNewGameStateToDB(docRef, GameState.WaitingToBegin);
-              });
+              joinLobbyAsPlayerTwo(docRef);
             }
+          }
+
+          // This is the first DB read for this session, so update the gameBoardState directly
+          // (since this could be a client reconnecting mid-game). From here on, the client
+          // will manually track its own gameBoardState locally by applying the networkedMoves
+          // that come over the wire.
+          if (gameActionsRef.current == null) {
+            dispatch(setGameBoardState(data.gameBoard));
+            setGameActions(new NetworkedGameActions(dispatch, docRef));
           }
         });
       }
-    };
+    }
     connectToLobby();
-  }, [roomCode, dispatch]);
+  }, [dispatch, roomCode]);
 
-  if (gameActions == null) {
+  if (gameActionsRef.current == null) {
     return null;
   } else {
     return (
-      <ActionsContext.Provider value={gameActions}>
+      <ActionsContext.Provider value={gameActionsRef.current}>
         <GameRoom />
       </ActionsContext.Provider>
     );
