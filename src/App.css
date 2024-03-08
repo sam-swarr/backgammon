@@ -342,10 +342,20 @@
 
 .Checker {
   border-radius: 50%;
-  padding-top: 50%;
   transition: transform 0.3s ease-out;
+  height: 16.667%;
   width: 50%;
   z-index: 4;
+}
+
+.Checker.highlighted {
+  border: 3px solid #3ba000;
+  border-style: dashed;
+}
+
+.Checker.selected {
+  border: 3px solid #cb0d0d;
+  border-style: dashed;
 }
 
 .Checker.white {
@@ -388,7 +398,7 @@
 
 .Player-one-bar-checkers .Checker, .Player-two-bar-checkers .Checker {
   border-radius: 50%;
-  padding-top: 83.5%;
+  height: 15.23%;
   width: 83.5%;
 }
 

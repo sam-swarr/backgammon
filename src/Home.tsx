@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import cx from "classnames";
 
-import Checker from "./Checker";
+import Checker, { CheckerStatus } from "./Checker";
 import { Color, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
 
@@ -39,6 +39,7 @@ const Home: FunctionComponent<HomeProps> = ({
       <Checker
         key={i}
         color={playerOneColor}
+        status={CheckerStatus.None}
         onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
@@ -58,6 +59,7 @@ const Home: FunctionComponent<HomeProps> = ({
       <Checker
         key={i}
         color={playerTwoColor}
+        status={CheckerStatus.None}
         onAnimationComplete={onAnimationComplete}
         animation={anim}
       />

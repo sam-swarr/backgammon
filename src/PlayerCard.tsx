@@ -1,6 +1,6 @@
 import { FunctionComponent, useContext } from "react";
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
-import Checker from "./Checker";
+import Checker, { CheckerStatus } from "./Checker";
 import { Color, Player } from "./Types";
 import { useAppSelector } from "./store/hooks";
 import { pipCount } from "./store/gameBoardSlice";
@@ -53,6 +53,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
       <div className={"Player-card-checker-wrapper"}>
         <Checker
           color={color}
+          status={CheckerStatus.None}
           onAnimationComplete={() => {}}
           animation={null}
         />

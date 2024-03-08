@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-import Checker from "./Checker";
+import Checker, { CheckerStatus } from "./Checker";
 import { Color, MovementDirection } from "./Types";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
@@ -52,6 +52,7 @@ const SettingsMenu: FunctionComponent<SettingsMenuProps> = () => {
           >
             <Checker
               color={settings.playerOneColor}
+              status={CheckerStatus.None}
               onAnimationComplete={() => {}}
               animation={null}
             />

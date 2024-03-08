@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
-import cx from "classnames";
 
-import Checker from "./Checker";
+import Checker, { CheckerStatus } from "./Checker";
 import { Animation } from "./Animations";
 import { Color, Move, Player, PointState } from "./Types";
 import { LastPointClicked } from "./store/lastPointClickedSlice";
@@ -29,6 +28,11 @@ const Bar: FunctionComponent<BarProps> = ({
   allPossibleMoves,
   lastPointClicked,
 }: BarProps) => {
+  const isSelected = lastPointClicked.point === "BAR";
+  const isHighlighted =
+    lastPointClicked.point === -1 &&
+    allPossibleMoves.some((move: Move) => move.from === "BAR");
+
   const playerOneCheckers = [];
   for (let i = 0; i < barState[Player.One]; i++) {
     let anim = currAnimations.find((a) => {
@@ -38,10 +42,21 @@ const Bar: FunctionComponent<BarProps> = ({
         a.checkerNumber === i + 1
       );
     });
+
+    let status = CheckerStatus.None;
+    if (i === barState[Player.One] - 1 && currentPlayer === Player.One) {
+      if (isSelected) {
+        status = CheckerStatus.Selected;
+      } else if (isHighlighted) {
+        status = CheckerStatus.Highlighted;
+      }
+    }
+
     playerOneCheckers.push(
       <Checker
         key={i}
         color={playerOneColor}
+        status={status}
         onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
@@ -57,19 +72,26 @@ const Bar: FunctionComponent<BarProps> = ({
         a.checkerNumber === i + 1
       );
     });
+
+    let status = CheckerStatus.None;
+    if (i === barState[Player.Two] - 1 && currentPlayer === Player.Two) {
+      if (isSelected) {
+        status = CheckerStatus.Selected;
+      } else if (isHighlighted) {
+        status = CheckerStatus.Highlighted;
+      }
+    }
+
     playerTwoCheckers.push(
       <Checker
         key={i}
         color={playerTwoColor}
+        status={status}
         onAnimationComplete={onAnimationComplete}
         animation={anim}
       />
     );
   }
-
-  const isHighlighted =
-    allPossibleMoves.some((move: Move) => move.from === "BAR") &&
-    (lastPointClicked.point === -1 || lastPointClicked.point === "BAR");
 
   return (
     <div
@@ -78,21 +100,9 @@ const Bar: FunctionComponent<BarProps> = ({
         clickHandler("BAR");
       }}
     >
-      <div
-        className={cx("Player-one-bar-checkers", {
-          highlight: isHighlighted && currentPlayer === Player.One,
-        })}
-      >
-        {playerOneCheckers}
-      </div>
+      <div className={"Player-one-bar-checkers"}>{playerOneCheckers}</div>
       <div className="Game-board-bar-spacer" />
-      <div
-        className={cx("Player-two-bar-checkers", {
-          highlight: isHighlighted && currentPlayer === Player.Two,
-        })}
-      >
-        {playerTwoCheckers}
-      </div>
+      <div className={"Player-two-bar-checkers"}>{playerTwoCheckers}</div>
     </div>
   );
 };

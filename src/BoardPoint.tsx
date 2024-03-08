@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import cx from "classnames";
 
-import Checker from "./Checker";
+import Checker, { CheckerStatus } from "./Checker";
 import { Color, Move, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
 import { LastPointClicked } from "./store/lastPointClickedSlice";
@@ -37,6 +37,35 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   }
   const [showNoMoveHighlight, setShowNoMoveHighlight] = useState(false);
 
+  const topOrBottomClass = {
+    top: location === "TOP",
+    bottom: location === "BOTTOM",
+  };
+
+  let highlight = null;
+  const isHighlightedToPoint =
+    lastPointClicked.point !== -1 &&
+    allPossibleMoves.some(
+      (move: Move) =>
+        move.to === pointNumber && move.from === lastPointClicked.point
+    );
+  if (isHighlightedToPoint || showNoMoveHighlight) {
+    highlight = (
+      <div
+        className={cx("Point-wrapper-highlight", {
+          ...topOrBottomClass,
+          to: isHighlightedToPoint,
+          noMove: showNoMoveHighlight,
+        })}
+      />
+    );
+  }
+
+  const isSelectedFromPoint = lastPointClicked.point === pointNumber;
+  const isHighlightedFromPoint =
+    lastPointClicked.point === -1 &&
+    allPossibleMoves.some((move: Move) => move.from === pointNumber);
+
   const occupyingPlayer =
     pointState[Player.One] > pointState[Player.Two] ? Player.One : Player.Two;
   const checkerCount =
@@ -53,6 +82,15 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
       return a.location === pointNumber && a.checkerNumber === i + 1;
     });
 
+    let status = CheckerStatus.None;
+    if (i === checkerCount - 1) {
+      if (isSelectedFromPoint) {
+        status = CheckerStatus.Selected;
+      } else if (isHighlightedFromPoint) {
+        status = CheckerStatus.Highlighted;
+      }
+    }
+
     checkers.push(
       <Checker
         // It's important to include the color here in the key. If not, when a checker hits another checker,
@@ -62,36 +100,9 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
         // invoke the onEnter callbacks again.
         key={i + color}
         color={color}
+        status={status}
         animation={anim}
         onAnimationComplete={onAnimationComplete}
-      />
-    );
-  }
-
-  const topOrBottomClass = {
-    top: location === "TOP",
-    bottom: location === "BOTTOM",
-  };
-
-  let highlight = null;
-  const isHighlightedFromPoint =
-    allPossibleMoves.some((move: Move) => move.from === pointNumber) &&
-    (lastPointClicked.point === -1 || lastPointClicked.point === pointNumber);
-  const isHighlightedToPoint =
-    lastPointClicked.point !== -1 &&
-    allPossibleMoves.some(
-      (move: Move) =>
-        move.to === pointNumber && move.from === lastPointClicked.point
-    );
-  if (isHighlightedFromPoint || isHighlightedToPoint || showNoMoveHighlight) {
-    highlight = (
-      <div
-        className={cx("Point-wrapper-highlight", {
-          ...topOrBottomClass,
-          from: isHighlightedFromPoint,
-          to: isHighlightedToPoint,
-          noMove: showNoMoveHighlight,
-        })}
       />
     );
   }
