@@ -1,4 +1,7 @@
-import { deepCloneGameBoardState } from "../gameBoardSlice";
+import {
+  applyMoveToGameBoardState,
+  deepCloneGameBoardState,
+} from "../gameBoardSlice";
 import {
   areProvisionalMovesSubmittable,
   CanOccupyResult,
@@ -7,13 +10,14 @@ import {
   getAllPossibleMovesForGivenDieRoll,
   getDistanceFromHome,
   getIndexAfterMoving,
+  getInverseMove,
   getMoveIfValid,
   getPointStateAtIndex,
   hasAllCheckersInHomeBoard,
   maxDieValueUsedInMoveSet,
 } from "../moves";
 import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from "../../Constants";
-import { HitStatus, Player } from "../../Types";
+import { HitStatus, Move, Player } from "../../Types";
 
 test("getPointStateAtIndex works", () => {
   expect(getPointStateAtIndex(STARTING_BOARD_STATE, 0)).toEqual({
@@ -1701,6 +1705,150 @@ test("areProvisionalMovesSubmittable ensures max die value is used when not all 
         checkerOwner: Player.One,
       },
     ])
+  ).toEqual(true);
+});
+
+test("provisional moves are properly unwound for areProvisionalMovesSubmittable call", () => {
+  let BOARD_WITH_PROVISIONAL_MOVES = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[1] = {
+    [Player.One]: 2,
+    [Player.Two]: 0,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[2] = {
+    [Player.One]: 0,
+    [Player.Two]: 1,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.barState = { [Player.One]: 0, [Player.Two]: 1 };
+
+  let PROVISIONAL_MOVES: Move[] = [
+    {
+      dieUsed: 3,
+      from: "BAR",
+      to: 2,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.Two,
+    },
+  ];
+
+  let BOARD_WITH_PROVISIONAL_MOVES_UNWOUND = BOARD_WITH_PROVISIONAL_MOVES;
+  for (let i = PROVISIONAL_MOVES.length - 1; i >= 0; i--) {
+    BOARD_WITH_PROVISIONAL_MOVES_UNWOUND = applyMoveToGameBoardState(
+      BOARD_WITH_PROVISIONAL_MOVES_UNWOUND,
+      getInverseMove(PROVISIONAL_MOVES[i])
+    );
+  }
+
+  expect(
+    areProvisionalMovesSubmittable(
+      BOARD_WITH_PROVISIONAL_MOVES_UNWOUND,
+      [2, 3],
+      Player.Two,
+      PROVISIONAL_MOVES
+    )
+  ).toEqual(true);
+});
+
+test("provisional moves are properly unwound for areProvisionalMovesSubmittable call 2", () => {
+  let BOARD_WITH_PROVISIONAL_MOVES = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[2] = {
+    [Player.One]: 0,
+    [Player.Two]: 1,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[3] = {
+    [Player.One]: 0,
+    [Player.Two]: 1,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[4] = {
+    [Player.One]: 2,
+    [Player.Two]: 0,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[5] = {
+    [Player.One]: 2,
+    [Player.Two]: 0,
+  };
+
+  let PROVISIONAL_MOVES: Move[] = [
+    {
+      dieUsed: 3,
+      from: "BAR",
+      to: 2,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.Two,
+    },
+  ];
+
+  let BOARD_WITH_PROVISIONAL_MOVES_UNWOUND = BOARD_WITH_PROVISIONAL_MOVES;
+  for (let i = PROVISIONAL_MOVES.length - 1; i >= 0; i--) {
+    BOARD_WITH_PROVISIONAL_MOVES_UNWOUND = applyMoveToGameBoardState(
+      BOARD_WITH_PROVISIONAL_MOVES_UNWOUND,
+      getInverseMove(PROVISIONAL_MOVES[i])
+    );
+  }
+
+  // Not submittable because both dice can be used if Player.Two uses the 2 to enter from the bar
+  // and then moves the checker on point 3 to point 6 using the 3.
+  expect(
+    areProvisionalMovesSubmittable(
+      BOARD_WITH_PROVISIONAL_MOVES_UNWOUND,
+      [2, 3],
+      Player.Two,
+      PROVISIONAL_MOVES
+    )
+  ).toEqual(false);
+});
+
+test("provisional moves are properly unwound for areProvisionalMovesSubmittable call 3", () => {
+  let BOARD_WITH_PROVISIONAL_MOVES = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[1] = {
+    [Player.One]: 0,
+    [Player.Two]: 1,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[4] = {
+    [Player.One]: 2,
+    [Player.Two]: 0,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[5] = {
+    [Player.One]: 2,
+    [Player.Two]: 0,
+  };
+  BOARD_WITH_PROVISIONAL_MOVES.pointsState[6] = {
+    [Player.One]: 0,
+    [Player.Two]: 1,
+  };
+
+  let PROVISIONAL_MOVES: Move[] = [
+    {
+      dieUsed: 2,
+      from: "BAR",
+      to: 2,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.Two,
+    },
+    {
+      dieUsed: 3,
+      from: 3,
+      to: 6,
+      hitStatus: HitStatus.NoHit,
+      checkerOwner: Player.Two,
+    },
+  ];
+
+  let BOARD_WITH_PROVISIONAL_MOVES_UNWOUND = BOARD_WITH_PROVISIONAL_MOVES;
+  for (let i = PROVISIONAL_MOVES.length - 1; i >= 0; i--) {
+    BOARD_WITH_PROVISIONAL_MOVES_UNWOUND = applyMoveToGameBoardState(
+      BOARD_WITH_PROVISIONAL_MOVES_UNWOUND,
+      getInverseMove(PROVISIONAL_MOVES[i])
+    );
+  }
+
+  // Unlike previous test case, these are now submittable because both dice were used.
+  expect(
+    areProvisionalMovesSubmittable(
+      BOARD_WITH_PROVISIONAL_MOVES_UNWOUND,
+      [2, 3],
+      Player.Two,
+      PROVISIONAL_MOVES
+    )
   ).toEqual(true);
 });
 

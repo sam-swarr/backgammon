@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   areProvisionalMovesSubmittable,
   getAllPossibleMovesForDice,
+  getInverseMove,
 } from "./store/moves";
 import { appendProvisionalMove } from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
@@ -387,6 +388,17 @@ const GameBoard: FunctionComponent = () => {
   if (gameState === GameState.CoinFlip) {
     diceComponent = <OpeningDiceRoll />;
   } else if (gameState === GameState.PlayerMoving) {
+    // Unwind the provisional moves to reconstruct the game board state
+    // before there were any provisional moves so that we can validate
+    // that the provisional move set is legal to submit.
+    let gameBoardStateBeforeProvisionalMoves = gameBoardState;
+    for (let i = provisionalMoves.length - 1; i >= 0; i--) {
+      gameBoardStateBeforeProvisionalMoves = applyMoveToGameBoardState(
+        gameBoardStateBeforeProvisionalMoves,
+        getInverseMove(provisionalMoves[i])
+      );
+    }
+
     diceComponent = (
       <Dice
         currentPlayerColor={
@@ -397,7 +409,7 @@ const GameBoard: FunctionComponent = () => {
         canSubmit={
           !disableSubmitButton &&
           areProvisionalMovesSubmittable(
-            originalGameBoardState,
+            gameBoardStateBeforeProvisionalMoves,
             diceData.currentRoll,
             currentPlayer,
             provisionalMoves

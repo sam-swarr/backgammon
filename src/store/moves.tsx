@@ -170,6 +170,19 @@ export function getMoveIfValid(
   return null;
 }
 
+export function getInverseMove(move: Move): Move {
+  return {
+    from: move.to,
+    to: move.from,
+    dieUsed: move.dieUsed,
+    hitStatus:
+      move.hitStatus === HitStatus.IsHit
+        ? HitStatus.UndoesHit
+        : HitStatus.NoHit,
+    checkerOwner: move.checkerOwner,
+  };
+}
+
 export function getAllPossibleMoveSets(
   gameBoardState: GameBoardState,
   dieRolls: number[],

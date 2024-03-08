@@ -6,7 +6,7 @@ import {
   pipCount,
 } from "../gameBoardSlice";
 import { EMPTY_BOARD_STATE, STARTING_BOARD_STATE } from "../../Constants";
-import { GameBoardState, GameResult, HitStatus, Player } from "../../Types";
+import { GameResult, HitStatus, Player } from "../../Types";
 
 test("deepCloneGameBoardState works", () => {
   const BOARD_A = deepCloneGameBoardState(EMPTY_BOARD_STATE);
