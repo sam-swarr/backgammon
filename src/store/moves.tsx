@@ -183,6 +183,105 @@ export function getInverseMove(move: Move): Move {
   };
 }
 
+/**
+ * @param gameBoardState
+ * @param dieRolls
+ * @param currentPlayer
+ * @returns List of all move sets (sequence of one or more moves) that the current player can
+ *          make starting from the given point using one or more of the given dice.
+ */
+export function getAllMoveSetsFromStartingPoint(
+  gameBoardState: GameBoardState,
+  dieRolls: number[],
+  fromPoint: number | "BAR",
+  currentPlayer: Player
+): Move[][] {
+  let result: Move[][] = [];
+  result = result.concat(
+    getAllMoveSetsFromStartingPointImpl(
+      gameBoardState,
+      fromPoint,
+      dieRolls,
+      0,
+      currentPlayer,
+      []
+    )
+  );
+
+  // If there are exactly 2 die rolls, this means the dice
+  // values are different. We should reverse the dice order
+  // and calculate all move sets again.
+  if (dieRolls.length === 2) {
+    const reversedDieRolls = [...dieRolls].reverse();
+    result = result.concat(
+      getAllMoveSetsFromStartingPointImpl(
+        gameBoardState,
+        fromPoint,
+        reversedDieRolls,
+        0,
+        currentPlayer,
+        []
+      )
+    );
+  }
+
+  return result;
+}
+
+function getAllMoveSetsFromStartingPointImpl(
+  gameBoardState: GameBoardState,
+  fromPoint: number | "BAR" | "HOME",
+  dieRolls: number[],
+  dieIndex: number,
+  currentPlayer: Player,
+  resultSoFar: Move[][]
+): Move[][] {
+  // Base Case: We've used all dice. Just return result so far.
+  if (dieIndex >= dieRolls.length) {
+    return resultSoFar;
+  }
+
+  // See if there is a valid move from the starting point.
+  const move =
+    fromPoint === "HOME"
+      ? null
+      : getMoveIfValid(
+          gameBoardState,
+          fromPoint,
+          dieRolls[dieIndex],
+          currentPlayer
+        );
+
+  // Base Case: there is no valid move. Just return result so far.
+  if (move == null) {
+    return resultSoFar;
+  } else {
+    // Recursive Case: apply new move to board, append new move set to result, and recurse.
+    const newGameBoardState = applyMoveToGameBoardState(gameBoardState, move);
+    let newMoveSet =
+      resultSoFar.length > 0
+        ? [[...resultSoFar[resultSoFar.length - 1], move]]
+        : [[move]];
+
+    return getAllMoveSetsFromStartingPointImpl(
+      newGameBoardState,
+      move.to,
+      dieRolls,
+      dieIndex + 1,
+      currentPlayer,
+      [...resultSoFar, ...newMoveSet]
+    );
+  }
+}
+
+/**
+ * @param gameBoardState
+ * @param dieRolls
+ * @param currentPlayer
+ * @returns List of all move sets (sequence of one or more moves) that the current player can
+ *          make using the given dice. Each move set will contain the maximum number of legal moves
+ *          possible for that scenario.
+ */
 export function getAllPossibleMoveSets(
   gameBoardState: GameBoardState,
   dieRolls: number[],
@@ -253,6 +352,13 @@ export function getAllPossibleMoveSetsImpl(
   return result;
 }
 
+/**
+ * @param gameBoardState
+ * @param dice
+ * @param currentPlayer
+ * @returns List of all legal moves the given player can make using a single die from the provided
+ *          dice values.
+ */
 export function getAllPossibleMovesForDice(
   gameBoardState: GameBoardState,
   dice: number[],
@@ -272,6 +378,12 @@ export function getAllPossibleMovesForDice(
   return result;
 }
 
+/**
+ * @param gameBoardState
+ * @param dieRoll
+ * @param currentPlayer
+ * @returns List of all legal moves the given player can make using the single die value provided.
+ */
 export function getAllPossibleMovesForGivenDieRoll(
   gameBoardState: GameBoardState,
   dieRoll: number,

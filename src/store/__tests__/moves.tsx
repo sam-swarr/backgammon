@@ -6,6 +6,7 @@ import {
   areProvisionalMovesSubmittable,
   CanOccupyResult,
   canPlayerOccupyPoint,
+  getAllMoveSetsFromStartingPoint,
   getAllPossibleMoveSets,
   getAllPossibleMovesForGivenDieRoll,
   getDistanceFromHome,
@@ -1881,4 +1882,224 @@ test("areProvisionalMovesSubmittable handles situations where not all doubles ca
       },
     ])
   ).toEqual(true);
+});
+
+test("getAllMoveSetsFromStartingPoint works for non-doubles", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[0] = { [Player.One]: 0, [Player.Two]: 1 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [2, 4], 0, Player.Two)
+  ).toEqual([
+    [
+      {
+        dieUsed: 2,
+        from: 0,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 2,
+        from: 0,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 4,
+        from: 2,
+        to: 6,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 4,
+        from: 0,
+        to: 4,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 4,
+        from: 0,
+        to: 4,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 2,
+        from: 4,
+        to: 6,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+  ]);
+});
+
+test("getAllMoveSetsFromStartingPoint works for non-doubles with a point in the way", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[0] = { [Player.One]: 0, [Player.Two]: 1 };
+  TEST_BOARD.pointsState[2] = { [Player.One]: 2, [Player.Two]: 0 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [2, 4], 0, Player.Two)
+  ).toEqual([
+    [
+      {
+        dieUsed: 4,
+        from: 0,
+        to: 4,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 4,
+        from: 0,
+        to: 4,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 2,
+        from: 4,
+        to: 6,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+  ]);
+});
+
+test("getAllMoveSetsFromStartingPoint works for doubles", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[0] = { [Player.One]: 0, [Player.Two]: 1 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [1, 1, 1, 1], 0, Player.Two)
+  ).toEqual([
+    [
+      {
+        dieUsed: 1,
+        from: 0,
+        to: 1,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 0,
+        to: 1,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 1,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 0,
+        to: 1,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 1,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 2,
+        to: 3,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 0,
+        to: 1,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 1,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 2,
+        to: 3,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 3,
+        to: 4,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+  ]);
+});
+
+test("getAllMoveSetsFromStartingPoint works for doubles with a point in the way", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[0] = { [Player.One]: 0, [Player.Two]: 1 };
+  TEST_BOARD.pointsState[3] = { [Player.One]: 2, [Player.Two]: 0 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [1, 1, 1, 1], 0, Player.Two)
+  ).toEqual([
+    [
+      {
+        dieUsed: 1,
+        from: 0,
+        to: 1,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 1,
+        from: 0,
+        to: 1,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 1,
+        from: 1,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+  ]);
 });
