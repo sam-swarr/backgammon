@@ -13,7 +13,8 @@ type BoardPointProps = {
   playerTwoColor: Color;
   pointNumber: number;
   clickHandler: (fromPoint: number | "BAR") => boolean;
-  allPossibleMoves: Move[];
+  allPossibleInitialMoves: Move[];
+  allPossibleMoveSetsFromSelectedPoint: Move[][];
   lastPointClicked: LastPointClicked;
   currAnimations: Animation[];
   onAnimationComplete: (id: number) => void;
@@ -26,7 +27,8 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   playerTwoColor,
   pointNumber,
   clickHandler,
-  allPossibleMoves,
+  allPossibleInitialMoves,
+  allPossibleMoveSetsFromSelectedPoint,
   lastPointClicked,
   currAnimations,
   onAnimationComplete,
@@ -45,9 +47,10 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   let highlight = null;
   const isHighlightedToPoint =
     lastPointClicked.point !== -1 &&
-    allPossibleMoves.some(
-      (move: Move) =>
-        move.to === pointNumber && move.from === lastPointClicked.point
+    allPossibleMoveSetsFromSelectedPoint.some(
+      (moveSet: Move[]) =>
+        moveSet[moveSet.length - 1].to === pointNumber &&
+        moveSet[0].from === lastPointClicked.point
     );
   if (isHighlightedToPoint || showNoMoveHighlight) {
     highlight = (
@@ -64,7 +67,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   const isSelectedFromPoint = lastPointClicked.point === pointNumber;
   const isHighlightedFromPoint =
     lastPointClicked.point === -1 &&
-    allPossibleMoves.some((move: Move) => move.from === pointNumber);
+    allPossibleInitialMoves.some((move: Move) => move.from === pointNumber);
 
   const occupyingPlayer =
     pointState[Player.One] > pointState[Player.Two] ? Player.One : Player.Two;

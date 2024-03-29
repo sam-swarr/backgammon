@@ -1,5 +1,4 @@
 import { FunctionComponent, useContext, useEffect, useState } from "react";
-
 import { getAvailableDice } from "./store/dice";
 import {
   applyMoveToGameBoardState,
@@ -14,12 +13,13 @@ import {
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   areProvisionalMovesSubmittable,
+  getAllMoveSetsFromStartingPoint,
   getAllPossibleMovesForDice,
   getInverseMove,
 } from "./store/moves";
 import { appendProvisionalMove } from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
-import { Color, GameResult, MovementDirection, Player } from "./Types";
+import { Color, GameResult, Move, MovementDirection, Player } from "./Types";
 import Bar from "./Bar";
 import BoardPoint from "./BoardPoint";
 import Dice from "./Dice";
@@ -148,12 +148,29 @@ const GameBoard: FunctionComponent = () => {
     gameState === GameState.PlayerMoving &&
     isCurrentPlayer(players, currentPlayer, actions);
 
-  const allPossibleMoves =
+  let allPossibleInitialMoves: Move[] = [];
+  let allPossibleMoveSetsFromSelectedPoint: Move[][] = [];
+
+  if (
     isPlayerActivelyMoving &&
     currAnimatableMove === null &&
     !disableHighlightedMoves
-      ? getAllPossibleMovesForDice(gameBoardState, availableDice, currentPlayer)
-      : [];
+  ) {
+    if (lastPointClicked.point === -1) {
+      allPossibleInitialMoves = getAllPossibleMovesForDice(
+        gameBoardState,
+        availableDice,
+        currentPlayer
+      );
+    } else if (lastPointClicked.point !== -1) {
+      allPossibleMoveSetsFromSelectedPoint = getAllMoveSetsFromStartingPoint(
+        gameBoardState,
+        availableDice,
+        lastPointClicked.point,
+        currentPlayer
+      );
+    }
+  }
 
   const topLeftPoints = [];
   const bottomLeftPoints = [];
@@ -169,26 +186,43 @@ const GameBoard: FunctionComponent = () => {
       return true;
     }
 
-    // Filter out just the moves that begin on last point clicked and end on the point currently being clicked.
-    const movesToApply = allPossibleMoves.filter(
-      (m) => m.from === lastPointClicked.point && m.to === pointClicked
+    // Filter out the move sets whose first move begins on the last point clicked and
+    // whose final move ends on the point currently being clicked.
+    const moveSetsToApply = allPossibleMoveSetsFromSelectedPoint.filter(
+      (moveSet: Move[]) =>
+        moveSet[0].from === lastPointClicked.point &&
+        moveSet[moveSet.length - 1].to === pointClicked
     );
-    if (movesToApply.length > 0) {
-      // There may be multiple potential moves to apply in the case where
+    if (moveSetsToApply.length > 0) {
+      // There may be multiple potential move sets to apply in the case where
       // both dice can bear a checker off. If this is the case, find the
-      // move that uses the bigger die.
-      let moveToApply = movesToApply[0];
-      for (let i = 1; i < movesToApply.length; i++) {
-        if (movesToApply[i].dieUsed > moveToApply.dieUsed) {
-          moveToApply = movesToApply[i];
+      // moveset that uses the most dice or the bigger die in case of a tie.
+      let moveSetToApply = moveSetsToApply[0];
+      for (let i = 1; i < moveSetsToApply.length; i++) {
+        if (moveSetsToApply[i].length > moveSetToApply.length) {
+          moveSetToApply = moveSetsToApply[i];
+        } else if (moveSetsToApply[i].length === moveSetToApply.length) {
+          let maxDieUsedInMoveSet = moveSetToApply.reduce(
+            (prevMaxDie, currMove) =>
+              prevMaxDie > currMove.dieUsed ? prevMaxDie : currMove.dieUsed,
+            0
+          );
+          let maxDieUsedInCurrMoveSet = moveSetsToApply[i].reduce(
+            (prevMaxDie, currMove) =>
+              prevMaxDie > currMove.dieUsed ? prevMaxDie : currMove.dieUsed,
+            0
+          );
+          if (maxDieUsedInCurrMoveSet > maxDieUsedInMoveSet) {
+            moveSetToApply = moveSetsToApply[i];
+          }
         }
       }
-      dispatch(appendProvisionalMove(moveToApply));
-      dispatch(enqueueAnimatableMoves([moveToApply]));
+      moveSetToApply.forEach((move) => dispatch(appendProvisionalMove(move)));
+      dispatch(enqueueAnimatableMoves(moveSetToApply));
       dispatch(clearLastPointClicked());
       return true;
     } else if (pointClicked !== "HOME") {
-      let hasMovesFromPoint = allPossibleMoves.some(
+      let hasMovesFromPoint = allPossibleInitialMoves.some(
         (move) => move.from === pointClicked
       );
       if (hasMovesFromPoint) {
@@ -224,7 +258,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
@@ -241,7 +278,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
@@ -258,7 +298,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
@@ -275,7 +318,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
@@ -293,7 +339,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
@@ -310,7 +359,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
@@ -327,7 +379,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"TOP"}
           playerOneColor={playerOneColor}
@@ -344,7 +399,10 @@ const GameBoard: FunctionComponent = () => {
           key={i}
           pointState={pointsState[i]}
           clickHandler={boardPointClickHandler}
-          allPossibleMoves={allPossibleMoves}
+          allPossibleInitialMoves={allPossibleInitialMoves}
+          allPossibleMoveSetsFromSelectedPoint={
+            allPossibleMoveSetsFromSelectedPoint
+          }
           lastPointClicked={lastPointClicked}
           location={"BOTTOM"}
           playerOneColor={playerOneColor}
@@ -360,12 +418,9 @@ const GameBoard: FunctionComponent = () => {
   const home = (
     <Home
       homeState={gameBoardState.homeState}
-      isHighlighted={
-        lastPointClicked.point !== -1 &&
-        allPossibleMoves.some(
-          (m) => m.from === lastPointClicked.point && m.to === "HOME"
-        )
-      }
+      isHighlighted={allPossibleMoveSetsFromSelectedPoint.some(
+        (moveSet: Move[]) => moveSet[moveSet.length - 1].to === "HOME"
+      )}
       clickHandler={boardPointClickHandler}
       currentPlayer={currentPlayer}
       playerOneColor={playerOneColor}
@@ -388,15 +443,29 @@ const GameBoard: FunctionComponent = () => {
   if (gameState === GameState.CoinFlip) {
     diceComponent = <OpeningDiceRoll />;
   } else if (gameState === GameState.PlayerMoving) {
-    // Unwind the provisional moves to reconstruct the game board state
-    // before there were any provisional moves so that we can validate
-    // that the provisional move set is legal to submit.
-    let gameBoardStateBeforeProvisionalMoves = gameBoardState;
-    for (let i = provisionalMoves.length - 1; i >= 0; i--) {
-      gameBoardStateBeforeProvisionalMoves = applyMoveToGameBoardState(
-        gameBoardStateBeforeProvisionalMoves,
-        getInverseMove(provisionalMoves[i])
-      );
+    let canSubmitMoves = false;
+    // Check that we're not currently animating a series of moves right now since we don't
+    // want to unwind the provisional gameboard state until we've finished applying the
+    // queue of moves.
+    if (currAnimatableMove === null) {
+      // Unwind the provisional moves to reconstruct the game board state
+      // before there were any provisional moves so that we can validate
+      // that the provisional move set is legal to submit.
+      let gameBoardStateBeforeProvisionalMoves = gameBoardState;
+      for (let i = provisionalMoves.length - 1; i >= 0; i--) {
+        gameBoardStateBeforeProvisionalMoves = applyMoveToGameBoardState(
+          gameBoardStateBeforeProvisionalMoves,
+          getInverseMove(provisionalMoves[i])
+        );
+      }
+      canSubmitMoves =
+        !disableSubmitButton &&
+        areProvisionalMovesSubmittable(
+          gameBoardStateBeforeProvisionalMoves,
+          diceData.currentRoll,
+          currentPlayer,
+          provisionalMoves
+        );
     }
 
     diceComponent = (
@@ -406,15 +475,7 @@ const GameBoard: FunctionComponent = () => {
         }
         availableDice={availableDice}
         diceValues={diceData.currentRoll}
-        canSubmit={
-          !disableSubmitButton &&
-          areProvisionalMovesSubmittable(
-            gameBoardStateBeforeProvisionalMoves,
-            diceData.currentRoll,
-            currentPlayer,
-            provisionalMoves
-          )
-        }
+        canSubmit={canSubmitMoves}
         submitButtonHandler={submitButtonHandler}
       />
     );
@@ -438,7 +499,7 @@ const GameBoard: FunctionComponent = () => {
         playerTwoColor={playerTwoColor}
         currAnimations={currAnimations}
         onAnimationComplete={onAnimationComplete}
-        allPossibleMoves={allPossibleMoves}
+        allPossibleMoves={allPossibleInitialMoves}
         lastPointClicked={lastPointClicked}
       />
       <div className="Game-board-half">

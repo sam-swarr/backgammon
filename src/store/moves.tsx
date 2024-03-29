@@ -208,10 +208,10 @@ export function getAllMoveSetsFromStartingPoint(
     )
   );
 
-  // If there are exactly 2 die rolls, this means the dice
-  // values are different. We should reverse the dice order
-  // and calculate all move sets again.
-  if (dieRolls.length === 2) {
+  // If there are two different dice values, we should reverse the dice order
+  // and calculate all move sets again since different sequences of moves
+  // might be available if the dice are played in a different order.
+  if (dieRolls.length === 2 && dieRolls[0] !== dieRolls[1]) {
     const reversedDieRolls = [...dieRolls].reverse();
     result = result.concat(
       getAllMoveSetsFromStartingPointImpl(

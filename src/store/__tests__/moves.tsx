@@ -2103,3 +2103,94 @@ test("getAllMoveSetsFromStartingPoint works for doubles with a point in the way"
     ],
   ]);
 });
+
+test("getAllMoveSetsFromStartingPoint works for with no dice left", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[0] = { [Player.One]: 0, [Player.Two]: 1 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [], 0, Player.Two)
+  ).toEqual([]);
+});
+
+test("getAllMoveSetsFromStartingPoint works for with one dice left", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[3] = { [Player.One]: 0, [Player.Two]: 1 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [2], 3, Player.Two)
+  ).toEqual([
+    [
+      {
+        dieUsed: 2,
+        from: 3,
+        to: 5,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+  ]);
+});
+
+test("getAllMoveSetsFromStartingPoint works for with doubles with only 2 dice available", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[0] = { [Player.One]: 0, [Player.Two]: 1 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [2, 2], 0, Player.Two)
+  ).toEqual([
+    [
+      {
+        dieUsed: 2,
+        from: 0,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+    [
+      {
+        dieUsed: 2,
+        from: 0,
+        to: 2,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+      {
+        dieUsed: 2,
+        from: 2,
+        to: 4,
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.Two,
+      },
+    ],
+  ]);
+});
+
+test("getAllMoveSetsFromStartingPoint works for when both dice can be used to bear off", () => {
+  let TEST_BOARD = deepCloneGameBoardState(EMPTY_BOARD_STATE);
+  TEST_BOARD.pointsState[1] = { [Player.One]: 1, [Player.Two]: 0 };
+
+  expect(
+    getAllMoveSetsFromStartingPoint(TEST_BOARD, [2, 3], 1, Player.One)
+  ).toEqual([
+    [
+      {
+        dieUsed: 2,
+        from: 1,
+        to: "HOME",
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.One,
+      },
+    ],
+    [
+      {
+        dieUsed: 3,
+        from: 1,
+        to: "HOME",
+        hitStatus: HitStatus.NoHit,
+        checkerOwner: Player.One,
+      },
+    ],
+  ]);
+});
