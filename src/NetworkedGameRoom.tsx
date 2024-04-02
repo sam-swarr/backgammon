@@ -29,6 +29,7 @@ import GameRoom from "./GameRoom";
 import { setDoublingCubeData } from "./store/doublingCubeSlice";
 import { setMatchScore } from "./store/matchScoreSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
+import { Player } from "./Types";
 
 type LoaderData = {
   roomCode: string;
@@ -119,7 +120,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
   } else {
     return (
       <ActionsContext.Provider value={gameActionsRef.current}>
-        <GameRoom />
+        <GameRoom playerPerspective={Player.One} />
       </ActionsContext.Provider>
     );
   }

@@ -21,7 +21,7 @@ import { appendProvisionalMove } from "./store/provisionalMovesSlice";
 import { setShowGameOverDialog } from "./store/settingsSlice";
 import { Color, GameResult, Move, MovementDirection, Player } from "./Types";
 import Bar from "./Bar";
-import BoardPoint from "./BoardPoint";
+import BoardPoint, { BoardPointLocation } from "./BoardPoint";
 import Dice from "./Dice";
 import Home from "./Home";
 import { Animation, createAnimationData } from "./Animations";
@@ -36,7 +36,115 @@ import {
 import RollButton from "./RollButton";
 import OfferDoubleButton from "./OfferDoubleButton";
 
-const GameBoard: FunctionComponent = () => {
+enum BoardQuadrants {
+  TopLeft = "TOP_LEFT",
+  TopRight = "TOP_RIGHT",
+  BottomLeft = "BOTTOM_LEFT",
+  BottomRight = "BOTTOM_RIGHT",
+}
+
+const BOARD_POINT_LAYOUTS = {
+  [Player.One]: {
+    [MovementDirection.CounterClockwise]: {
+      [BoardQuadrants.TopLeft]: {
+        start: 12,
+        end: 17,
+        increment: 1,
+      },
+      [BoardQuadrants.TopRight]: {
+        start: 18,
+        end: 23,
+        increment: 1,
+      },
+      [BoardQuadrants.BottomLeft]: {
+        start: 11,
+        end: 6,
+        increment: -1,
+      },
+      [BoardQuadrants.BottomRight]: {
+        start: 5,
+        end: 0,
+        increment: -1,
+      },
+    },
+    [MovementDirection.Clockwise]: {
+      [BoardQuadrants.TopLeft]: {
+        start: 23,
+        end: 18,
+        increment: -1,
+      },
+      [BoardQuadrants.TopRight]: {
+        start: 17,
+        end: 12,
+        increment: -1,
+      },
+      [BoardQuadrants.BottomLeft]: {
+        start: 0,
+        end: 5,
+        increment: 1,
+      },
+      [BoardQuadrants.BottomRight]: {
+        start: 6,
+        end: 11,
+        increment: 1,
+      },
+    },
+  },
+  [Player.Two]: {
+    [MovementDirection.CounterClockwise]: {
+      [BoardQuadrants.TopLeft]: {
+        start: 0,
+        end: 5,
+        increment: 1,
+      },
+      [BoardQuadrants.TopRight]: {
+        start: 6,
+        end: 11,
+        increment: 1,
+      },
+      [BoardQuadrants.BottomLeft]: {
+        start: 23,
+        end: 18,
+        increment: -1,
+      },
+      [BoardQuadrants.BottomRight]: {
+        start: 17,
+        end: 12,
+        increment: -1,
+      },
+    },
+    [MovementDirection.Clockwise]: {
+      [BoardQuadrants.TopLeft]: {
+        start: 11,
+        end: 6,
+        increment: -1,
+      },
+      [BoardQuadrants.TopRight]: {
+        start: 5,
+        end: 0,
+        increment: -1,
+      },
+      [BoardQuadrants.BottomLeft]: {
+        start: 12,
+        end: 17,
+        increment: 1,
+      },
+      [BoardQuadrants.BottomRight]: {
+        start: 18,
+        end: 23,
+        increment: 1,
+      },
+    },
+  },
+};
+
+type GameBoardProps = {
+  playerPerspective: Player;
+};
+
+const GameBoard: FunctionComponent<GameBoardProps> = ({
+  playerPerspective,
+}: GameBoardProps) => {
   const [
     currentPlayer,
     settings,
@@ -172,11 +280,6 @@ const GameBoard: FunctionComponent = () => {
     }
   }
 
-  const topLeftPoints = [];
-  const bottomLeftPoints = [];
-  const topRightPoints = [];
-  const bottomRightPoints = [];
-
   const boardPointClickHandler = (
     pointClicked: number | "BAR" | "HOME"
   ): boolean => {
@@ -251,169 +354,117 @@ const GameBoard: FunctionComponent = () => {
     );
   };
 
+  const topLeftPoints: Array<React.ReactNode> = [];
+  const bottomLeftPoints: Array<React.ReactNode> = [];
+  const topRightPoints: Array<React.ReactNode> = [];
+  const bottomRightPoints: Array<React.ReactNode> = [];
+
   const pointsState = gameBoardState.pointsState;
-  if (playerMovementDirection === MovementDirection.CounterClockwise) {
-    for (let i = 12; i <= 17; i++) {
-      topLeftPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"TOP"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-    for (let i = 11; i >= 6; i--) {
-      bottomLeftPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"BOTTOM"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-    for (let i = 18; i <= 23; i++) {
-      topRightPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"TOP"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-    for (let i = 5; i >= 0; i--) {
-      bottomRightPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"BOTTOM"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-  } else {
-    for (let i = 23; i >= 18; i--) {
-      topLeftPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"TOP"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-    for (let i = 0; i <= 5; i++) {
-      bottomLeftPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"BOTTOM"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-    for (let i = 17; i >= 12; i--) {
-      topRightPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"TOP"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
-    for (let i = 6; i <= 11; i++) {
-      bottomRightPoints.push(
-        <BoardPoint
-          key={i}
-          pointState={pointsState[i]}
-          clickHandler={boardPointClickHandler}
-          allPossibleInitialMoves={allPossibleInitialMoves}
-          allPossibleMoveSetsFromSelectedPoint={
-            allPossibleMoveSetsFromSelectedPoint
-          }
-          lastPointClicked={lastPointClicked}
-          location={"BOTTOM"}
-          playerOneColor={playerOneColor}
-          playerTwoColor={playerTwoColor}
-          pointNumber={i}
-          currAnimations={currAnimations}
-          onAnimationComplete={onAnimationComplete}
-        />
-      );
-    }
+  let layoutData =
+    BOARD_POINT_LAYOUTS[playerPerspective][playerMovementDirection];
+
+  let topLeftData = layoutData[BoardQuadrants.TopLeft];
+  for (
+    let i = topLeftData.start;
+    i !== topLeftData.end + topLeftData.increment;
+    i += topLeftData.increment
+  ) {
+    topLeftPoints.push(
+      <BoardPoint
+        key={i}
+        pointState={pointsState[i]}
+        clickHandler={boardPointClickHandler}
+        allPossibleInitialMoves={allPossibleInitialMoves}
+        allPossibleMoveSetsFromSelectedPoint={
+          allPossibleMoveSetsFromSelectedPoint
+        }
+        lastPointClicked={lastPointClicked}
+        location={BoardPointLocation.Top}
+        playerOneColor={playerOneColor}
+        playerTwoColor={playerTwoColor}
+        pointNumber={i}
+        currAnimations={currAnimations}
+        onAnimationComplete={onAnimationComplete}
+      />
+    );
+  }
+
+  let topRightData = layoutData[BoardQuadrants.TopRight];
+  for (
+    let i = topRightData.start;
+    i !== topRightData.end + topRightData.increment;
+    i += topRightData.increment
+  ) {
+    topRightPoints.push(
+      <BoardPoint
+        key={i}
+        pointState={pointsState[i]}
+        clickHandler={boardPointClickHandler}
+        allPossibleInitialMoves={allPossibleInitialMoves}
+        allPossibleMoveSetsFromSelectedPoint={
+          allPossibleMoveSetsFromSelectedPoint
+        }
+        lastPointClicked={lastPointClicked}
+        location={BoardPointLocation.Top}
+        playerOneColor={playerOneColor}
+        playerTwoColor={playerTwoColor}
+        pointNumber={i}
+        currAnimations={currAnimations}
+        onAnimationComplete={onAnimationComplete}
+      />
+    );
+  }
+
+  let bottomLeftData = layoutData[BoardQuadrants.BottomLeft];
+  for (
+    let i = bottomLeftData.start;
+    i !== bottomLeftData.end + bottomLeftData.increment;
+    i += bottomLeftData.increment
+  ) {
+    bottomLeftPoints.push(
+      <BoardPoint
+        key={i}
+        pointState={pointsState[i]}
+        clickHandler={boardPointClickHandler}
+        allPossibleInitialMoves={allPossibleInitialMoves}
+        allPossibleMoveSetsFromSelectedPoint={
+          allPossibleMoveSetsFromSelectedPoint
+        }
+        lastPointClicked={lastPointClicked}
+        location={BoardPointLocation.Bottom}
+        playerOneColor={playerOneColor}
+        playerTwoColor={playerTwoColor}
+        pointNumber={i}
+        currAnimations={currAnimations}
+        onAnimationComplete={onAnimationComplete}
+      />
+    );
+  }
+
+  let bottomRightData = layoutData[BoardQuadrants.BottomRight];
+  for (
+    let i = bottomRightData.start;
+    i !== bottomRightData.end + bottomRightData.increment;
+    i += bottomRightData.increment
+  ) {
+    bottomRightPoints.push(
+      <BoardPoint
+        key={i}
+        pointState={pointsState[i]}
+        clickHandler={boardPointClickHandler}
+        allPossibleInitialMoves={allPossibleInitialMoves}
+        allPossibleMoveSetsFromSelectedPoint={
+          allPossibleMoveSetsFromSelectedPoint
+        }
+        lastPointClicked={lastPointClicked}
+        location={BoardPointLocation.Bottom}
+        playerOneColor={playerOneColor}
+        playerTwoColor={playerTwoColor}
+        pointNumber={i}
+        currAnimations={currAnimations}
+        onAnimationComplete={onAnimationComplete}
+      />
+    );
   }
 
   const home = (
@@ -486,7 +537,12 @@ const GameBoard: FunctionComponent = () => {
 
   return (
     <div className="Game-board-wrapper">
-      {playerMovementDirection === MovementDirection.Clockwise ? home : null}
+      {(playerPerspective === Player.One &&
+        playerMovementDirection === MovementDirection.Clockwise) ||
+      (playerPerspective === Player.Two &&
+        playerMovementDirection === MovementDirection.CounterClockwise)
+        ? home
+        : null}
       <div className="Game-board-half">
         <OfferDoubleButton />
         <div className="Game-board-quadrant top">{topLeftPoints}</div>
@@ -510,7 +566,10 @@ const GameBoard: FunctionComponent = () => {
         <div className="Game-board-quadrant top">{topRightPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomRightPoints}</div>
       </div>
-      {playerMovementDirection === MovementDirection.CounterClockwise
+      {(playerPerspective === Player.One &&
+        playerMovementDirection === MovementDirection.CounterClockwise) ||
+      (playerPerspective === Player.Two &&
+        playerMovementDirection === MovementDirection.Clockwise)
         ? home
         : null}
     </div>

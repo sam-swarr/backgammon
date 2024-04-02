@@ -121,7 +121,6 @@ export async function createLobby(): Promise<CreateLobbyResult> {
     players: {
       playerOne: {
         uid: (await signIn()).uid,
-        username: "Sam",
       },
       playerTwo: null,
     },
@@ -176,7 +175,6 @@ export async function joinLobbyAsPlayerTwo(docRef: DocumentReference) {
       players: {
         playerTwo: {
           uid: getCurrentUser().uid,
-          username: "Opponent",
         },
       },
     },

@@ -13,6 +13,7 @@ import NetworkedGameRoom, {
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
 import { useAppDispatch } from "./store/hooks";
 import GameRoom from "./GameRoom";
+import { Player } from "./Types";
 
 type AppProps = {};
 
@@ -27,7 +28,7 @@ const App: FunctionComponent<AppProps> = () => {
       path: "/local",
       element: (
         <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
-          <GameRoom />
+          <GameRoom playerPerspective={Player.One} />
         </ActionsContext.Provider>
       ),
     },

@@ -3,7 +3,6 @@ import { getCurrentUser } from "../Firebase";
 
 type PlayerData = {
   uid: string;
-  username: string;
 };
 
 export type PlayersData = {

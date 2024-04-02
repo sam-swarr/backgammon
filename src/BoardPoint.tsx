@@ -6,9 +6,14 @@ import { Color, Move, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
 import { LastPointClicked } from "./store/lastPointClickedSlice";
 
-type BoardPointProps = {
+export enum BoardPointLocation {
+  Top = "TOP",
+  Bottom = "BOTTOM",
+}
+
+export type BoardPointProps = {
   pointState: PointState;
-  location: "TOP" | "BOTTOM";
+  location: BoardPointLocation;
   playerOneColor: Color;
   playerTwoColor: Color;
   pointNumber: number;
@@ -40,8 +45,8 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   const [showNoMoveHighlight, setShowNoMoveHighlight] = useState(false);
 
   const topOrBottomClass = {
-    top: location === "TOP",
-    bottom: location === "BOTTOM",
+    top: location === BoardPointLocation.Top,
+    bottom: location === BoardPointLocation.Bottom,
   };
 
   let highlight = null;
