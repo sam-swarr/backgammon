@@ -5,7 +5,6 @@ import { useAppSelector } from "./store/hooks";
 import Die from "./Die";
 import { CSSTransition } from "react-transition-group";
 import { ActionsContext } from "./ActionsContext";
-import { isHostClient } from "./Utils";
 
 const OpeningDiceRoll: FunctionComponent = () => {
   const actions = useContext(ActionsContext);
@@ -36,13 +35,13 @@ const OpeningDiceRoll: FunctionComponent = () => {
               // TODO: send automatic double dispatch
               setInitialRollCounter(initialRollCounter + 1);
               setForceReroll(false);
-              if (isHostClient(players, actions)) {
+              if (actions.isHostClient()) {
                 setTimeout(() => {
                   actions.beginFirstTurn();
                 }, 1500);
               }
             } else {
-              if (isHostClient(players, actions)) {
+              if (actions.isHostClient()) {
                 actions.beginFirstTurn();
               }
             }

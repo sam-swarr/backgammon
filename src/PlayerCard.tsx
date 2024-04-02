@@ -4,7 +4,6 @@ import Checker, { CheckerStatus } from "./Checker";
 import { Color, Player } from "./Types";
 import { useAppSelector } from "./store/hooks";
 import { pipCount } from "./store/gameBoardSlice";
-import { isHostClient } from "./Utils";
 
 export enum PlayerCardSide {
   Left = "LEFT",
@@ -32,7 +31,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     if (actions instanceof LocalGameActions) {
       playerName = "Player 1";
     } else {
-      playerName = isHostClient(players, actions) ? "You" : "Opponent";
+      playerName = actions.isHostClient() ? "You" : "Opponent";
     }
     pips = pipCount(gameBoardState, Player.One);
     color = settings.playerOneColor;
@@ -40,7 +39,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     if (actions instanceof LocalGameActions) {
       playerName = "Player 2";
     } else {
-      playerName = isHostClient(players, actions) ? "Opponent" : "You";
+      playerName = actions.isHostClient() ? "Opponent" : "You";
     }
     pips = pipCount(gameBoardState, Player.Two);
     color = settings.playerOneColor === Color.Black ? Color.White : Color.Black;

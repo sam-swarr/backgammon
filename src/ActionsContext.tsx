@@ -17,6 +17,19 @@ import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
 import { setDoublingCubeData } from "./store/doublingCubeSlice";
 
 export class Actions {
+  /**
+   * Certain actions or pieces of UI should only be performed or shown to
+   * the "host" client. For a networked game, this will be the player who
+   * created the lobby. For a local game, there's only one client which is
+   * always the host.
+   *
+   * @returns true if the current client is the host
+   */
+  isHostClient(): boolean {
+    console.error("Unexpected use of default ActionsContext.");
+    return false;
+  }
+
   beginCoinFlip(): void {
     console.error("Unexpected use of default ActionsContext.");
   }
@@ -59,6 +72,10 @@ export class LocalGameActions extends Actions {
   constructor(dispatchFn: Function) {
     super();
     this.dispatchFn = dispatchFn;
+  }
+
+  isHostClient(): boolean {
+    return true;
   }
 
   beginCoinFlip(): void {
@@ -110,13 +127,23 @@ export class LocalGameActions extends Actions {
 }
 
 export class NetworkedGameActions extends Actions {
+  isHost: boolean;
   dispatchFn: Function;
   docRef: DocumentReference;
 
-  constructor(dispatchFn: Function, docRef: DocumentReference) {
+  constructor(
+    isHostClient: boolean,
+    dispatchFn: Function,
+    docRef: DocumentReference
+  ) {
     super();
+    this.isHost = isHostClient;
     this.dispatchFn = dispatchFn;
     this.docRef = docRef;
+  }
+
+  isHostClient(): boolean {
+    return this.isHost;
   }
 
   beginCoinFlip(): void {

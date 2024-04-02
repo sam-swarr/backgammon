@@ -88,6 +88,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
           }
 
           // Handle case where 2nd player is just joining for the first time
+          let isHost = true;
           if (!hasJoinedLobby(data.players)) {
             if (data.players.playerTwo != null) {
               console.error(
@@ -99,6 +100,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
             } else {
               joinLobbyAsPlayerTwo(docRef);
             }
+            isHost = false;
           }
 
           // This is the first DB read for this session, so update the gameBoardState directly
@@ -107,7 +109,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
           // that come over the wire.
           if (gameActionsRef.current == null) {
             dispatch(setGameBoardState(data.gameBoard));
-            setGameActions(new NetworkedGameActions(dispatch, docRef));
+            setGameActions(new NetworkedGameActions(isHost, dispatch, docRef));
           }
         });
       }
@@ -120,7 +122,11 @@ const NetworkedGameRoom: FunctionComponent = () => {
   } else {
     return (
       <ActionsContext.Provider value={gameActionsRef.current}>
-        <GameRoom playerPerspective={Player.One} />
+        <GameRoom
+          playerPerspective={
+            gameActionsRef.current.isHostClient() ? Player.One : Player.Two
+          }
+        />
       </ActionsContext.Provider>
     );
   }
