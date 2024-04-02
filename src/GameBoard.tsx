@@ -195,11 +195,12 @@ const GameBoard: FunctionComponent = () => {
     );
     if (moveSetsToApply.length > 0) {
       // There may be multiple potential move sets to apply in the case where
-      // both dice can bear a checker off. If this is the case, find the
-      // moveset that uses the most dice or the bigger die in case of a tie.
+      // one or both dice can bear a checker off. If this is the case, find the
+      // moveset that uses the fewest dice. Or if all potential movesets are the
+      // same length, use the one that uses the biggest die.
       let moveSetToApply = moveSetsToApply[0];
       for (let i = 1; i < moveSetsToApply.length; i++) {
-        if (moveSetsToApply[i].length > moveSetToApply.length) {
+        if (moveSetsToApply[i].length < moveSetToApply.length) {
           moveSetToApply = moveSetsToApply[i];
         } else if (moveSetsToApply[i].length === moveSetToApply.length) {
           let maxDieUsedInMoveSet = moveSetToApply.reduce(
