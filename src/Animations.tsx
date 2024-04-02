@@ -37,7 +37,8 @@ export type Animation = {
 export function createAnimationData(
   gameBoardState: GameBoardState,
   animatableMove: AnimatableMove,
-  playerMovementDirection: MovementDirection
+  playerOneMovementDirection: MovementDirection,
+  playerPerspective: Player
 ): Animation[] {
   let move = animatableMove.move;
   let result = [];
@@ -52,7 +53,8 @@ export function createAnimationData(
         move.from,
         animatableMove.animationID,
         otherPlayer,
-        playerMovementDirection
+        playerOneMovementDirection,
+        playerPerspective
       )
     );
   }
@@ -64,7 +66,8 @@ export function createAnimationData(
       move.to,
       animatableMove.animationID,
       move.checkerOwner,
-      playerMovementDirection
+      playerOneMovementDirection,
+      playerPerspective
     )
   );
 
@@ -79,7 +82,8 @@ export function createAnimationData(
         "BAR",
         animatableMove.animationID,
         otherPlayer,
-        playerMovementDirection
+        playerOneMovementDirection,
+        playerPerspective
       )
     );
   }
@@ -93,11 +97,18 @@ function createAnimationDatum(
   toPoint: number | "BAR" | "HOME",
   animationID: number,
   checkerOwner: Player,
-  playerMovementDirection: MovementDirection
+  playerOneMovementDirection: MovementDirection,
+  playerPerspective: Player
 ): Animation {
-  if (playerMovementDirection === MovementDirection.CounterClockwise) {
-    const fromX = calculateDistanceOnXAxisCCW(fromPoint);
-    const toX = calculateDistanceOnXAxisCCW(toPoint);
+  if (playerOneMovementDirection === MovementDirection.CounterClockwise) {
+    const fromX =
+      playerPerspective === Player.One
+        ? calculateDistanceOnXAxisCCW(fromPoint)
+        : calculateDistanceOnXAxisCW(fromPoint);
+    const toX =
+      playerPerspective === Player.One
+        ? calculateDistanceOnXAxisCCW(toPoint)
+        : calculateDistanceOnXAxisCW(toPoint);
 
     const fromNumberOfCheckers = getPointStateAtIndex(
       gameBoardState,
@@ -106,7 +117,8 @@ function createAnimationDatum(
     const fromY = calculateDistanceOnYAxis(
       fromPoint,
       fromNumberOfCheckers,
-      checkerOwner
+      checkerOwner,
+      playerPerspective
     );
 
     // Add one since the checker hasn't logically been moved yet.
@@ -115,7 +127,8 @@ function createAnimationDatum(
     const toY = calculateDistanceOnYAxis(
       toPoint,
       toNumberOfCheckers,
-      checkerOwner
+      checkerOwner,
+      playerPerspective
     );
 
     return {
@@ -131,8 +144,14 @@ function createAnimationDatum(
   }
   // MovementDirection.Clockwise
   else {
-    const fromX = calculateDistanceOnXAxisCW(fromPoint);
-    const toX = calculateDistanceOnXAxisCW(toPoint);
+    const fromX =
+      playerPerspective === Player.One
+        ? calculateDistanceOnXAxisCW(fromPoint)
+        : calculateDistanceOnXAxisCCW(fromPoint);
+    const toX =
+      playerPerspective === Player.One
+        ? calculateDistanceOnXAxisCW(toPoint)
+        : calculateDistanceOnXAxisCCW(toPoint);
 
     const fromNumberOfCheckers = getPointStateAtIndex(
       gameBoardState,
@@ -141,7 +160,8 @@ function createAnimationDatum(
     const fromY = calculateDistanceOnYAxis(
       fromPoint,
       fromNumberOfCheckers,
-      checkerOwner
+      checkerOwner,
+      playerPerspective
     );
 
     // Add one since the checker hasn't logically been moved yet.
@@ -150,7 +170,8 @@ function createAnimationDatum(
     const toY = calculateDistanceOnYAxis(
       toPoint,
       toNumberOfCheckers,
-      checkerOwner
+      checkerOwner,
+      playerPerspective
     );
 
     return {
@@ -205,7 +226,8 @@ function calculateDistanceOnXAxisCW(point: number | "BAR" | "HOME"): number {
 function calculateDistanceOnYAxis(
   point: number | "BAR" | "HOME",
   numCheckers: number,
-  checkerOwner: Player
+  checkerOwner: Player,
+  playerPerspective: Player
 ): number {
   if (point === "BAR") {
     if (checkerOwner === Player.One) {
@@ -224,7 +246,10 @@ function calculateDistanceOnYAxis(
       return 0;
     }
   } else {
-    if (point >= 12) {
+    if (
+      (playerPerspective === Player.One && point >= 12) ||
+      (playerPerspective === Player.Two && point < 12)
+    ) {
       // These points are on the top of the screen. Checkers are stacked from the top edge down.
       return CHECKER_HEIGHT * (numCheckers - 1);
     } else {

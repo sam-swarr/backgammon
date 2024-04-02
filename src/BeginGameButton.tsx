@@ -4,10 +4,7 @@ import { GameState } from "./store/gameStateSlice";
 import { ActionsContext } from "./ActionsContext";
 
 const BeginGameButton: FunctionComponent = () => {
-  const [gameState, players] = useAppSelector((state) => [
-    state.gameState,
-    state.players,
-  ]);
+  const [gameState] = useAppSelector((state) => [state.gameState]);
   const actions = useContext(ActionsContext);
 
   if (gameState === GameState.WaitingForPlayers) {

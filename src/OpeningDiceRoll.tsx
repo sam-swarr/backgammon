@@ -8,10 +8,9 @@ import { ActionsContext } from "./ActionsContext";
 
 const OpeningDiceRoll: FunctionComponent = () => {
   const actions = useContext(ActionsContext);
-  const [dice, settings, players] = useAppSelector((state) => [
+  const [dice, settings] = useAppSelector((state) => [
     state.dice,
     state.settings,
-    state.players,
   ]);
 
   const [initialRollCounter, setInitialRollCounter] = useState(0);

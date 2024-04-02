@@ -213,7 +213,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       createAnimationData(
         originalGameBoardState,
         currAnimatableMove,
-        playerMovementDirection
+        playerMovementDirection,
+        playerPerspective
       )
     );
   }

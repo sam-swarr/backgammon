@@ -17,10 +17,9 @@ type PlayerCardProps = {
 const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   side,
 }: PlayerCardProps) => {
-  const [gameBoardState, settings, players] = useAppSelector((state) => [
+  const [gameBoardState, settings] = useAppSelector((state) => [
     state.gameBoard,
     state.settings,
-    state.players,
   ]);
   let actions = useContext(ActionsContext);
 
