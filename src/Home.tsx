@@ -14,6 +14,7 @@ type HomeProps = {
   playerTwoColor: Color;
   currAnimations: Animation[];
   onAnimationComplete: (id: number) => void;
+  checkerPulse: boolean;
 };
 
 const Home: FunctionComponent<HomeProps> = ({
@@ -25,6 +26,7 @@ const Home: FunctionComponent<HomeProps> = ({
   playerTwoColor,
   currAnimations,
   onAnimationComplete,
+  checkerPulse,
 }: HomeProps) => {
   const playerOneCheckers = [];
   for (let i = 0; i < homeState[Player.One]; i++) {
@@ -39,6 +41,7 @@ const Home: FunctionComponent<HomeProps> = ({
       <Checker
         key={i}
         color={playerOneColor}
+        checkerPulse={checkerPulse}
         status={CheckerStatus.None}
         onAnimationComplete={onAnimationComplete}
         animation={anim}
@@ -59,6 +62,7 @@ const Home: FunctionComponent<HomeProps> = ({
       <Checker
         key={i}
         color={playerTwoColor}
+        checkerPulse={checkerPulse}
         status={CheckerStatus.None}
         onAnimationComplete={onAnimationComplete}
         animation={anim}

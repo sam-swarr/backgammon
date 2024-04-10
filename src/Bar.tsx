@@ -15,6 +15,7 @@ type BarProps = {
   onAnimationComplete: (id: number) => void;
   allPossibleMoves: Move[];
   lastPointClicked: LastPointClicked;
+  checkerPulse: boolean;
 };
 
 const Bar: FunctionComponent<BarProps> = ({
@@ -27,6 +28,7 @@ const Bar: FunctionComponent<BarProps> = ({
   onAnimationComplete,
   allPossibleMoves,
   lastPointClicked,
+  checkerPulse,
 }: BarProps) => {
   const isSelected = lastPointClicked.point === "BAR";
   const isHighlighted =
@@ -56,6 +58,7 @@ const Bar: FunctionComponent<BarProps> = ({
       <Checker
         key={i}
         color={playerOneColor}
+        checkerPulse={checkerPulse}
         status={status}
         onAnimationComplete={onAnimationComplete}
         animation={anim}
@@ -86,6 +89,7 @@ const Bar: FunctionComponent<BarProps> = ({
       <Checker
         key={i}
         color={playerTwoColor}
+        checkerPulse={checkerPulse}
         status={status}
         onAnimationComplete={onAnimationComplete}
         animation={anim}

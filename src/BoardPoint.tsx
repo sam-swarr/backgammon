@@ -23,6 +23,7 @@ export type BoardPointProps = {
   lastPointClicked: LastPointClicked;
   currAnimations: Animation[];
   onAnimationComplete: (id: number) => void;
+  checkerPulse: boolean;
 };
 
 const BoardPoint: FunctionComponent<BoardPointProps> = ({
@@ -37,6 +38,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
   lastPointClicked,
   currAnimations,
   onAnimationComplete,
+  checkerPulse,
 }: BoardPointProps) => {
   if (pointState[Player.One] > 0 && pointState[Player.Two] > 0) {
     console.error("Invalid PointState on point " + pointNumber);
@@ -108,6 +110,7 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
         // invoke the onEnter callbacks again.
         key={i + color}
         color={color}
+        checkerPulse={checkerPulse}
         status={status}
         animation={anim}
         onAnimationComplete={onAnimationComplete}

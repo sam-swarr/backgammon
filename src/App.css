@@ -208,7 +208,8 @@
 }
 
 .Game-board-half {
-  background-color:rgb(45, 105, 155);
+  background-image: url(board-background.svg);
+  background-size: cover;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -303,19 +304,23 @@
 }
 
 .Point-triangle.even {
-  background-color: rgb(122, 96, 22);
+  background-image: url(board-point-dark.svg);
+  background-position: top;
+  background-size: cover;
+}
+
+.Point-triangle.even.bottom {
+  background-image: url(board-point-dark-bottom.svg);
 }
 
 .Point-triangle.odd {
-  background-color: rgb(156, 141, 100);
+  background-image: url(board-point-light.svg);
+  background-position: top;
+  background-size: cover;
 }
 
-.Point-triangle.bottom {
-  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
-}
-
-.Point-triangle.top {
-  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+.Point-triangle.odd.bottom {
+  background-image: url(board-point-light-bottom.svg);
 }
 
 .Checkers-wrapper {
@@ -341,29 +346,30 @@
 }
 
 .Checker {
-  border-radius: 50%;
-  transition: transform 0.3s ease-out;
-  height: 16.667%;
-  width: 50%;
+  filter: drop-shadow(0 0 0.2vh rgb(0, 0, 0, 0.6));
+  transition: transform 0.3s ease-out, filter 0.5s ease-in-out;
+  will-change: transform, filter;
+  height: 15%;
+  width: 45%;
   z-index: 4;
 }
 
-.Checker.highlighted {
-  border: 3px solid #3ba000;
-  border-style: dashed;
-}
-
-.Checker.selected {
-  border: 3px solid #cb0d0d;
-  border-style: dashed;
-}
-
 .Checker.white {
-  background-color: rgb(226, 213, 223);
+  background-image: url(checker-light.svg);
+  background-repeat: no-repeat;
+}
+
+.Checker.highlighted-pulse, .Checker.selected-pulse {
+  filter: drop-shadow(0 0 0.5vh #f7dcab);
+}
+
+.Checker.highlighted, .Checker.selected {
+  filter: drop-shadow(0 0 0.1vh #f7dcab);
 }
 
 .Checker.black {
-  background-color: rgb(56, 48, 27);
+  background-image: url(checker-dark.svg);
+  background-repeat: no-repeat;
 }
 
 .Player-one-bar-checkers, .Player-two-bar-checkers {

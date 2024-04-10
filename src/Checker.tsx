@@ -13,14 +13,16 @@ export enum CheckerStatus {
 
 type CheckerProps = {
   animation: Animation | undefined | null;
+  checkerPulse: boolean;
   color: Color;
   status: CheckerStatus;
   onAnimationComplete: (id: number) => void;
 };
 
 const Checker: FunctionComponent<CheckerProps> = ({
-  color,
   animation,
+  checkerPulse,
+  color,
   status,
   onAnimationComplete,
 }: CheckerProps) => {
@@ -48,8 +50,13 @@ const Checker: FunctionComponent<CheckerProps> = ({
         let d = (
           <div
             className={cx("Checker", colorClass, {
-              highlighted: status === CheckerStatus.Highlighted,
-              selected: status === CheckerStatus.Selected,
+              highlighted:
+                status === CheckerStatus.Highlighted && !checkerPulse,
+              "highlighted-pulse":
+                status === CheckerStatus.Highlighted && checkerPulse,
+              selected: status === CheckerStatus.Selected && !checkerPulse,
+              "selected-pulse":
+                status === CheckerStatus.Selected && checkerPulse,
             })}
             ref={ref}
             style={transitionStyles[state]}

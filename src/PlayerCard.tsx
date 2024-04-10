@@ -51,6 +51,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
       <div className={"Player-card-checker-wrapper"}>
         <Checker
           color={color}
+          checkerPulse={false}
           status={CheckerStatus.None}
           onAnimationComplete={() => {}}
           animation={null}

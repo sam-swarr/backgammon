@@ -197,3 +197,5 @@ export const MOVE_FROM_INDICES: Array<"BAR" | number> = [
   22,
   23,
 ];
+
+export const CHECKER_ANIMATION_PULSE_TIMER_MS = 700;

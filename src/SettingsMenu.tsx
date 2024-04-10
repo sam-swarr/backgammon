@@ -52,6 +52,7 @@ const SettingsMenu: FunctionComponent<SettingsMenuProps> = () => {
           >
             <Checker
               color={settings.playerOneColor}
+              checkerPulse={false}
               status={CheckerStatus.None}
               onAnimationComplete={() => {}}
               animation={null}

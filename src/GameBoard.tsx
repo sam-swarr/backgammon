@@ -35,6 +35,7 @@ import {
 } from "./store/animatableMovesSlice";
 import RollButton from "./RollButton";
 import OfferDoubleButton from "./OfferDoubleButton";
+import { CHECKER_ANIMATION_PULSE_TIMER_MS } from "./Constants";
 
 enum BoardQuadrants {
   TopLeft = "TOP_LEFT",
@@ -224,6 +225,15 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     provisionalMoves
   );
 
+  // Setup checker pulse animation timer
+  const [checkerPulse, setCheckerPulse] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCheckerPulse(!checkerPulse);
+    }, CHECKER_ANIMATION_PULSE_TIMER_MS);
+    return () => clearInterval(interval);
+  }, [checkerPulse]);
+
   // Define useEffect function to check for game win, which will run immediately after
   // render (since we can't be dispatching state updates while in the render path).
   // We define it here so it'll capture the board state after applying provisional moves.
@@ -386,6 +396,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         pointNumber={i}
         currAnimations={currAnimations}
         onAnimationComplete={onAnimationComplete}
+        checkerPulse={checkerPulse}
       />
     );
   }
@@ -412,6 +423,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         pointNumber={i}
         currAnimations={currAnimations}
         onAnimationComplete={onAnimationComplete}
+        checkerPulse={checkerPulse}
       />
     );
   }
@@ -438,6 +450,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         pointNumber={i}
         currAnimations={currAnimations}
         onAnimationComplete={onAnimationComplete}
+        checkerPulse={checkerPulse}
       />
     );
   }
@@ -464,6 +477,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         pointNumber={i}
         currAnimations={currAnimations}
         onAnimationComplete={onAnimationComplete}
+        checkerPulse={checkerPulse}
       />
     );
   }
@@ -480,6 +494,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       playerTwoColor={playerTwoColor}
       currAnimations={currAnimations}
       onAnimationComplete={onAnimationComplete}
+      checkerPulse={checkerPulse}
     />
   );
 
@@ -551,6 +566,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       </div>
       <Bar
         barState={gameBoardState.barState}
+        checkerPulse={checkerPulse}
         clickHandler={boardPointClickHandler}
         currentPlayer={currentPlayer}
         playerOneColor={playerOneColor}
