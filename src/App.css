@@ -15,7 +15,7 @@
 
 .App-wrapper {
   align-items: center;
-  background-color: #282c34;
+  background-color: #06080b;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -81,7 +81,7 @@
 
 .Game-board-wrapper {
   align-items: center;
-  background-color: #282c34;
+  background-color: #06080b;
   color: white;
   display: flex;
   height: 36.92vw;
@@ -210,12 +210,26 @@
 .Game-board-half {
   background-image: url(board-background.svg);
   background-size: cover;
+  border-color: #212529;
+  border-width: 0.8vh;
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
   position: relative;
   width: 40%;
+}
+
+.Game-board-half.left {
+  border-left-style: solid;
+  border-top-style: solid;
+  border-bottom-style: solid;
+}
+
+.Game-board-half.right {
+  border-right-style: solid;
+  border-top-style: solid;
+  border-bottom-style: solid;
 }
 
 .Game-board-quadrant {
@@ -230,7 +244,9 @@
 }
 
 .Game-board-bar {
-  background-color:rgb(32, 78, 5);
+  background-image: url(dots.svg);
+  background-color: #06080b;
+  background-size: 10vw;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -303,24 +319,20 @@
   z-index: 1;
 }
 
-.Point-triangle.even {
-  background-image: url(board-point-dark.svg);
-  background-position: top;
-  background-size: cover;
+.Point-triangle.top {
+  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
 }
 
-.Point-triangle.even.bottom {
-  background-image: url(board-point-dark-bottom.svg);
+.Point-triangle.bottom {
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+}
+
+.Point-triangle.even {
+  background-color: #0F1744;
 }
 
 .Point-triangle.odd {
-  background-image: url(board-point-light.svg);
-  background-position: top;
-  background-size: cover;
-}
-
-.Point-triangle.odd.bottom {
-  background-image: url(board-point-light-bottom.svg);
+  background-color: #885525;
 }
 
 .Checkers-wrapper {

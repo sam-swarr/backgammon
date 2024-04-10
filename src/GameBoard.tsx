@@ -559,7 +559,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         playerMovementDirection === MovementDirection.CounterClockwise)
         ? home
         : null}
-      <div className="Game-board-half">
+      <div className="Game-board-half left">
         <OfferDoubleButton />
         <div className="Game-board-quadrant top">{topLeftPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomLeftPoints}</div>
@@ -576,7 +576,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         allPossibleMoves={allPossibleInitialMoves}
         lastPointClicked={lastPointClicked}
       />
-      <div className="Game-board-half">
+      <div className="Game-board-half right">
         <BeginGameButton />
         <RollButton onRollButtonClicked={onRollButtonClicked} />
         {diceComponent}
