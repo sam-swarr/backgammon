@@ -134,6 +134,13 @@ const BoardPoint: FunctionComponent<BoardPointProps> = ({
       <div className={cx("Checkers-wrapper", topOrBottomClass)}>{checkers}</div>
       {highlight}
       <div
+        className={cx("Point-triangle-inner", {
+          ...topOrBottomClass,
+          even: pointNumber % 2 === 0,
+          odd: pointNumber % 2 !== 0,
+        })}
+      />
+      <div
         className={cx("Point-triangle", {
           ...topOrBottomClass,
           even: pointNumber % 2 === 0,

@@ -319,20 +319,40 @@
   z-index: 1;
 }
 
-.Point-triangle.top {
+.Point-triangle-inner {
+  height: 96%;
+  margin-left: 12%;
+  position: absolute;
+  width: 76%;
+  z-index: 2;
+}
+
+.Point-triangle-inner.bottom {
+  margin-top: 12%;
+}
+
+.Point-triangle-inner.even {
+  background-color: #0F1744;
+}
+
+.Point-triangle-inner.odd {
+  background-color: #885525;
+}
+
+.Point-triangle.top, .Point-triangle-inner.top {
   clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
 }
 
-.Point-triangle.bottom {
+.Point-triangle.bottom, .Point-triangle-inner.bottom {
   clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
 }
 
 .Point-triangle.even {
-  background-color: #0F1744;
+  background-color: #636781;
 }
 
 .Point-triangle.odd {
-  background-color: #885525;
+  background-color: #997345;
 }
 
 .Checkers-wrapper {
@@ -341,7 +361,7 @@
   flex-wrap: wrap;
   height: 100%;
   width: 100%;
-  z-index: 2;
+  z-index: 3;
 }
 
 .Checkers-wrapper.top {
@@ -607,7 +627,7 @@
   position: absolute;
   top: 45%;
   width: 80%;
-  z-index: 3;
+  z-index: 5;
 }
 
 .Die-faces {
