@@ -20,6 +20,8 @@
   flex-direction: column;
   height: 100vh;
   justify-content: center;
+  min-width: 800px;
+  min-height: 500px;
   width: 100vw;
 }
 
@@ -84,9 +86,11 @@
   background-color: #06080b;
   color: white;
   display: flex;
-  height: 36.92vw;
+  height: 36vw;
   justify-content: center;
-  width: 80vw;
+  min-height: 300px;
+  min-width: 600px;
+  width: 72vw;
 }
 
 .Main-menu-wrapper {
@@ -160,7 +164,7 @@
   color: #b8b8b8;
   display: flex;
   justify-content: center;
-  height: 10%;
+  height: 8%;
   width: 16%;
 }
 
@@ -219,7 +223,7 @@
   height: 100%;
   justify-content: space-between;
   position: relative;
-  width: 40%;
+  width: 45.5%;
 }
 
 .Game-board-half.left {
@@ -253,7 +257,7 @@
 
 .Game-board-bar {
   background:
-  url(dots.svg) center/8em padding-box,
+  url(dots.svg) center/420% padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
   border: 5px solid transparent;
   display: flex;
@@ -265,7 +269,7 @@
 
 .Game-board-home {
   background:
-  url(dots.svg) center/8em padding-box,
+  url(dots.svg) center/300% padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
   border: 5px solid transparent;
   border-left-style: none;
@@ -516,8 +520,8 @@
 
 .Settings-menu-button-wrapper {
   position: absolute;
-  right: 2vw;
-  top: 2vw;
+  right: 2%;
+  top: 2%;
 }
 
 .Settings-menu .modal-content {
@@ -636,7 +640,7 @@
  .Accept-double-menu-wrapper {
   align-items: center;
   display: flex;
-  height: 3.69vw;
+  height: 10%;
   left: 10%;
   justify-content: space-evenly;
   position: absolute;
@@ -648,11 +652,11 @@
 .Die-faces {
   align-items: center;
   display: flex;
-  height: 4vw;
+  height: 120%;
   justify-content: center;
   transform-style: preserve-3d;
   transition: transform 1.3s ease-out;
-  width: 4vw;
+  width: 15.5%;
 }
 
 .Die-face {
