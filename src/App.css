@@ -160,7 +160,8 @@
   color: #b8b8b8;
   display: flex;
   justify-content: center;
-  width: 50%;
+  height: 10%;
+  width: 16%;
 }
 
 .Player-card-checker-wrapper {
@@ -178,12 +179,13 @@
 .Player-name-and-score-wrapper {
   display: flex;
   flex-direction: column;
+  padding-top: 2%;
 }
 
 .Player-name-wrapper {
   font-size: 2vh;
   font-weight: bold;
-  height: 50%;
+  height: 40%;
 }
 
 .Player-score-wrapper {
@@ -193,7 +195,7 @@
 }
 
 .Player-points-wrapper {
-  margin-left: 1vw;
+  margin-left: 0.8vw;
 }
 
 .Information-text-wrapper {
@@ -221,15 +223,21 @@
 }
 
 .Game-board-half.left {
-  border-left-style: solid;
-  border-top-style: solid;
-  border-bottom-style: solid;
+  background:
+  url(board-background.svg) padding-box,
+  linear-gradient(to bottom, #22274A, #564112) border-box;
+  border: 5px solid transparent;
+  border-right-style: none;
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
 }
 
 .Game-board-half.right {
-  border-right-style: solid;
-  border-top-style: solid;
-  border-bottom-style: solid;
+  background:
+  url(board-background.svg) padding-box,
+  linear-gradient(to bottom, #22274A, #564112) border-box;
+  border: 5px solid transparent;
+  border-left-style: none;
 }
 
 .Game-board-quadrant {
@@ -244,9 +252,10 @@
 }
 
 .Game-board-bar {
-  background-image: url(dots.svg);
-  background-color: #06080b;
-  background-size: 10vw;
+  background:
+  url(dots.svg) center/8em padding-box,
+  linear-gradient(to bottom, #22274A, #564112) border-box;
+  border: 5px solid transparent;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -255,7 +264,13 @@
 }
 
 .Game-board-home {
-  background-color:rgb(32, 78, 5);
+  background:
+  url(dots.svg) center/8em padding-box,
+  linear-gradient(to bottom, #22274A, #564112) border-box;
+  border: 5px solid transparent;
+  border-left-style: none;
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
   display: flex;
   flex-direction: column;
   height: 100%;

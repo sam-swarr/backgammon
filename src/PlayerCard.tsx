@@ -6,8 +6,8 @@ import { useAppSelector } from "./store/hooks";
 import { pipCount } from "./store/gameBoardSlice";
 
 export enum PlayerCardSide {
-  Left = "LEFT",
-  Right = "RIGHT",
+  Top = "TOP",
+  Bottom = "BOTTOM",
 }
 
 type PlayerCardProps = {
@@ -26,7 +26,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   let playerName = "";
   let pips = 167;
   let color = Color.Black;
-  if (side === PlayerCardSide.Left) {
+  if (side === PlayerCardSide.Bottom) {
     if (actions instanceof LocalGameActions) {
       playerName = "Player 1";
     } else {

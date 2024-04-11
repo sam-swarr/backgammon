@@ -4,8 +4,8 @@ import PlayerCard, { PlayerCardSide } from "./PlayerCard";
 const PlayerCards: FunctionComponent = () => {
   return (
     <div className={"Player-cards-wrapper"}>
-      <PlayerCard side={PlayerCardSide.Left} />
-      <PlayerCard side={PlayerCardSide.Right} />
+      <PlayerCard side={PlayerCardSide.Bottom} />
+      <PlayerCard side={PlayerCardSide.Top} />
     </div>
   );
 };
