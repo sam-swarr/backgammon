@@ -1,3 +1,4 @@
+import cx from "classnames";
 import { FunctionComponent, useContext } from "react";
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
 import Checker, { CheckerStatus } from "./Checker";
@@ -47,7 +48,11 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   let playerScore = 0;
 
   return (
-    <div className={"Player-card-wrapper"}>
+    <div
+      className={cx("Player-card-wrapper", {
+        bottom: side === PlayerCardSide.Bottom,
+      })}
+    >
       <div className={"Player-card-checker-wrapper"}>
         <Checker
           color={color}

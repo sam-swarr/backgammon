@@ -161,17 +161,28 @@
 }
 
 .Player-card-wrapper {
+  background: #0F142F;
+  border: 5px solid #22274a;
+  border-radius: 1em 1em 0 0;
+  border-bottom-style: none;
   color: #b8b8b8;
   display: flex;
-  justify-content: center;
-  height: 8%;
-  width: 16%;
+  height: 9%;
+  position: relative;
+  left: 70%;
+  width: 22%;
+}
+
+.Player-card-wrapper.bottom {
+  background: #251F13;
+  border: 5px solid #564112;
+  border-radius: 0 0 1em 1em;
+  border-top-style: none;
 }
 
 .Player-card-checker-wrapper {
   display: flex;
-  height: 6vh;
-  width: 6vh
+  width: 24%;
 }
 
 .Player-card-checker-wrapper .Checker {
@@ -183,7 +194,6 @@
 .Player-name-and-score-wrapper {
   display: flex;
   flex-direction: column;
-  padding-top: 2%;
 }
 
 .Player-name-wrapper {
@@ -192,10 +202,34 @@
   height: 40%;
 }
 
-.Player-score-wrapper {
-  display: flex;
-  font-size: 1.5vh;
-  height: 50%;
+@media screen and (orientation: landscape) {
+  .Player-name-wrapper {
+    font-size: 1.2vw;
+    font-weight: bold;
+    height: 40%;
+    margin-top: 4%;
+  }
+
+  .Player-score-wrapper {
+    display: flex;
+    font-size: 0.8vw;
+    height: 50%;
+    margin-top: 4%;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Player-name-wrapper {
+    font-size: 2vh;
+    font-weight: bold;
+    height: 40%;
+  }
+
+  .Player-score-wrapper {
+    display: flex;
+    font-size: 0.8vw;
+    height: 50%;
+  }
 }
 
 .Player-points-wrapper {
