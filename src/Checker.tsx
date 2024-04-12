@@ -54,9 +54,7 @@ const Checker: FunctionComponent<CheckerProps> = ({
                 status === CheckerStatus.Highlighted && !checkerPulse,
               "highlighted-pulse":
                 status === CheckerStatus.Highlighted && checkerPulse,
-              selected: status === CheckerStatus.Selected && !checkerPulse,
-              "selected-pulse":
-                status === CheckerStatus.Selected && checkerPulse,
+              "selected-pulse": status === CheckerStatus.Selected,
             })}
             ref={ref}
             style={transitionStyles[state]}
