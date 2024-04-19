@@ -655,7 +655,7 @@
 }
 
 .Settings-menu-button {
-  background: url(gear.svg) no-repeat top left;
+  background: url(settings-icon.svg) no-repeat top left;
   background-size: contain;
 }
 
