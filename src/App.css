@@ -511,9 +511,8 @@
 }
 
 .Player-one-bar-checkers .Checker, .Player-two-bar-checkers .Checker {
-  border-radius: 50%;
-  height: 15.23%;
-  width: 83.5%;
+  height: 15%;
+  width: 120%;
 }
 
 .Player-one-home-checkers, .Player-two-home-checkers {
@@ -521,6 +520,22 @@
   display: flex;
   flex-direction: column;
   height: 47.5%;
+}
+
+.Player-one-home-checkers .Checker.white {
+  background-image: url(checker-home-light.svg);
+}
+
+.Player-one-home-checkers .Checker.black {
+  background-image: url(checker-home-dark.svg);
+}
+
+.Player-two-home-checkers .Checker.white {
+  background-image: url(checker-home-light.svg);
+}
+
+.Player-two-home-checkers .Checker.black {
+  background-image: url(checker-home-dark.svg);
 }
 
 .Player-one-home-checkers {
@@ -544,12 +559,12 @@
 }
 
 .Player-one-home-checkers .Checker, .Player-two-home-checkers .Checker {
-  border-radius: 15%;
+  border-radius: 10% 10% 34% 34%;
   height: 4%;
   margin-bottom: 3%;
   margin-top: 3%;
   padding-top: 0;
-  width: 70%;
+  width: 80%;
 }
 
 .Submit-button-wrapper, .Undo-button-wrapper, .Dice-row-spacer {

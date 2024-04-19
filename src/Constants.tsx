@@ -127,12 +127,12 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     },
   ],
   barState: {
-    [Player.One]: 0,
-    [Player.Two]: 0,
+    [Player.One]: 3,
+    [Player.Two]: 3,
   },
   homeState: {
-    [Player.One]: 0,
-    [Player.Two]: 0,
+    [Player.One]: 2,
+    [Player.Two]: 3,
   },
 };
 
