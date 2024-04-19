@@ -567,18 +567,27 @@
   width: 4vw;
 }
 
-.Submit-button {
-  background: url(submit-button.svg) no-repeat top left;
-  background-size: contain;
-  height: 100%;
-  width: 100%;
+.Submit-button, .Undo-button {
+  background: url(checkmark.svg) center / 60% padding-box, linear-gradient(to right, #3F3217, #564112) border-box;
+  border-color: #816c3d;
+  border-radius: 1vh;
+  background-repeat: no-repeat;
+  border-style: double;
+  border-width: 0.2em;
+  margin-left: 10%;
+  margin-top: 10%;
+  height: 80%;
+  transition: 0.2s;
+  width: 80%;
 }
 
-.Undo-button {
-  background: url(undo-button.svg) no-repeat top left;
-  background-size: contain;
-  height: 100%;
-  width: 100%;
+.Undo-button-wrapper .Undo-button {
+  background: url(undo-arrow.svg) center / 60% padding-box, linear-gradient(to right, #3F3217, #564112) border-box;
+  background-repeat: no-repeat;
+}
+
+.Submit-button:hover, .Undo-button:hover {
+  transform: scale(110%);
 }
 
 .mainmenu .Settings-menu-button-wrapper {
