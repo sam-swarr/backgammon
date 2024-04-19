@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import cx from "classnames";
 
 import Checker, { CheckerStatus } from "./Checker";
-import { Color, Player, PointState } from "./Types";
+import { Color, MovementDirection, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
 
 type HomeProps = {
@@ -15,6 +15,7 @@ type HomeProps = {
   currAnimations: Animation[];
   onAnimationComplete: (id: number) => void;
   checkerPulse: boolean;
+  playerMovementDirection: MovementDirection;
 };
 
 const Home: FunctionComponent<HomeProps> = ({
@@ -27,6 +28,7 @@ const Home: FunctionComponent<HomeProps> = ({
   currAnimations,
   onAnimationComplete,
   checkerPulse,
+  playerMovementDirection,
 }: HomeProps) => {
   const playerOneCheckers = [];
   for (let i = 0; i < homeState[Player.One]; i++) {
@@ -72,7 +74,9 @@ const Home: FunctionComponent<HomeProps> = ({
 
   return (
     <div
-      className="Game-board-home"
+      className={cx("Game-board-home", {
+        cw: playerMovementDirection === MovementDirection.Clockwise,
+      })}
       onClick={() => {
         clickHandler("HOME");
       }}

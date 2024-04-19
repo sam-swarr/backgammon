@@ -2,7 +2,7 @@ import cx from "classnames";
 import { FunctionComponent, useContext } from "react";
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
 import Checker, { CheckerStatus } from "./Checker";
-import { Color, Player } from "./Types";
+import { Color, MovementDirection, Player } from "./Types";
 import { useAppSelector } from "./store/hooks";
 import { pipCount } from "./store/gameBoardSlice";
 
@@ -51,6 +51,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     <div
       className={cx("Player-card-wrapper", {
         bottom: side === PlayerCardSide.Bottom,
+        cw: settings.movementDirection === MovementDirection.Clockwise,
       })}
     >
       <div className={"Player-card-checker-wrapper"}>

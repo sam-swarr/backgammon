@@ -1,4 +1,6 @@
 import { FunctionComponent, useContext, useEffect, useState } from "react";
+import cx from "classnames";
+
 import { getAvailableDice } from "./store/dice";
 import {
   applyMoveToGameBoardState,
@@ -495,6 +497,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       currAnimations={currAnimations}
       onAnimationComplete={onAnimationComplete}
       checkerPulse={checkerPulse}
+      playerMovementDirection={playerMovementDirection}
     />
   );
 
@@ -559,7 +562,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         playerMovementDirection === MovementDirection.CounterClockwise)
         ? home
         : null}
-      <div className="Game-board-half left">
+      <div
+        className={cx("Game-board-half left", {
+          cw: playerMovementDirection === MovementDirection.Clockwise,
+        })}
+      >
         <OfferDoubleButton />
         <div className="Game-board-quadrant top">{topLeftPoints}</div>
         <div className="Game-board-quadrant bottom">{bottomLeftPoints}</div>
@@ -576,7 +583,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         allPossibleMoves={allPossibleInitialMoves}
         lastPointClicked={lastPointClicked}
       />
-      <div className="Game-board-half right">
+      <div
+        className={cx("Game-board-half right", {
+          cw: playerMovementDirection === MovementDirection.Clockwise,
+        })}
+      >
         <BeginGameButton />
         <RollButton onRollButtonClicked={onRollButtonClicked} />
         {diceComponent}
