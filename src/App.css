@@ -727,7 +727,7 @@
 }
 
 .Die-face {
-  border: 0.3vw solid #ffffff69;
+  border-radius: 0.5vw;
   color: white;
   display: grid;
   gap: 0.4vw;
@@ -740,11 +740,13 @@
 }
 
 .Die-faces.white .Die-face {
-  background-color: rgb(226, 213, 223);
+  background-color: rgb(255 243 219);
+  border: 0.3vw solid #b49e70;
 }
 
 .Die-faces.black .Die-face {
-  background-color: rgb(56, 48, 27);
+  background-color: rgb(15 16 37);
+  border: 0.3vw solid #767293;
 }
 
 .Die-faces.white.spent .Die-face, .Die-faces.black.spent .Die-face {
@@ -757,7 +759,8 @@
 .Die-faces.white.spent.four .Die-face.four,
 .Die-faces.white.spent.five .Die-face.five,
 .Die-faces.white.spent.six .Die-face.six {
-  background-color: rgba(226, 213, 223, 0.25);
+  background-color: rgb(255 243 219 / 30%);
+  border-color: #b49e707a;
   display: grid;
 }
 
@@ -767,7 +770,8 @@
 .Die-faces.black.spent.four .Die-face.four,
 .Die-faces.black.spent.five .Die-face.five,
 .Die-faces.black.spent.six .Die-face.six {
-  background-color: rgb(56, 48, 27, 0.25);
+  background-color: rgb(15 16 37 / 15%);
+  border-color: #76729363;
   display: grid;
 }
 
@@ -778,11 +782,19 @@
 }
 
 .Die-faces.white .Die-pip {
-  background-color: black;
+  background-color: #1b1c22;
 }
 
 .Die-faces.black .Die-pip {
-  background-color: white;
+  background-color: #ede2ce;
+}
+
+.Die-faces.black.spent .Die-pip {
+  background-color: #ffffff70;
+}
+
+.Die-faces.white.spent .Die-pip {
+  background-color: #00000070;
 }
 
 .Die-faces.one, .Die-faces.one.black.reroll {
