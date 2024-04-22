@@ -469,6 +469,16 @@
   filter: drop-shadow(0 0 0.5vh #f7dcab);
 }
 
+.Checker.white.selected-pulse {
+  background-image: url(checker-light-selected.svg);
+  background-repeat: no-repeat;
+}
+
+.Checker.black.selected-pulse {
+  background-image: url(checker-dark-selected.svg);
+  background-repeat: no-repeat;
+}
+
 .Checker.highlighted, .Checker.selected {
   filter: drop-shadow(0 0 0.1vh #f7dcab);
 }
