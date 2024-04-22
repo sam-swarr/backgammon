@@ -346,6 +346,10 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         dispatch(setLastPointClicked({ point: pointClicked }));
       } else {
         dispatch(clearLastPointClicked());
+        // Don't show red no-move highlight if player is just unselected last clicked point.
+        if (pointClicked === lastPointClicked.point) {
+          return true;
+        }
       }
       return hasMovesFromPoint;
     }

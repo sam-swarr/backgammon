@@ -354,7 +354,8 @@
 }
 
 .Point-wrapper-highlight.to {
-  background-color: #2ac4b154;
+  background: url(stripes.svg);
+  background-size: cover;
 }
 
 .Point-wrapper-highlight.noMove {
@@ -364,11 +365,13 @@
 
 @keyframes nomove {
   from {
-    background-color: #c7262154;
+    background: url(stripes-red.svg);
+    background-size: cover;
   }
 
   to {
-    background-color: none;
+    background: url(stripes-red-fade.svg);
+    background-size: cover;
   }
 }
 
