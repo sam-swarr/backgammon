@@ -611,8 +611,9 @@
 }
 
 .Settings-menu .modal-content {
-  background-color:rgb(132, 171, 203);
-  border: 0.5vw solid rgb(78, 96, 124);
+  background-color: #abafc2;
+  border: 0.5vw solid #636781;
+  border-radius: 1vw;
   font-family: 'Barlow', sans-serif;
 }
 
@@ -629,8 +630,9 @@
 }
 
 .Settings-menu .modal-footer .btn {
-  background-color: #4e607c;
-  border-color: rgb(78, 96, 124);
+  background-color: #354e74;
+  border-color: rgb(24 38 61);
+  border-width: 0.2vh;
 }
 
 .Settings-menu .Settings-option-row {
