@@ -502,6 +502,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       onAnimationComplete={onAnimationComplete}
       checkerPulse={checkerPulse}
       playerMovementDirection={playerMovementDirection}
+      playerPerspective={playerPerspective}
     />
   );
 
@@ -568,7 +569,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
         : null}
       <div
         className={cx("Game-board-half left", {
-          cw: playerMovementDirection === MovementDirection.Clockwise,
+          cw:
+            (playerPerspective === Player.One &&
+              playerMovementDirection === MovementDirection.Clockwise) ||
+            (playerPerspective === Player.Two &&
+              playerMovementDirection === MovementDirection.CounterClockwise),
         })}
       >
         <OfferDoubleButton />
@@ -589,7 +594,11 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       />
       <div
         className={cx("Game-board-half right", {
-          cw: playerMovementDirection === MovementDirection.Clockwise,
+          cw:
+            (playerPerspective === Player.One &&
+              playerMovementDirection === MovementDirection.Clockwise) ||
+            (playerPerspective === Player.Two &&
+              playerMovementDirection === MovementDirection.CounterClockwise),
         })}
       >
         <BeginGameButton />

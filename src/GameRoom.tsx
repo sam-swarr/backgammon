@@ -12,9 +12,15 @@ const GameRoom: FunctionComponent<GameRoomProps> = ({
 }: GameRoomProps) => {
   return (
     <div className={"Game-area-wrapper"}>
-      <PlayerCard side={PlayerCardSide.Top} />
+      <PlayerCard
+        side={PlayerCardSide.Top}
+        playerPerspective={playerPerspective}
+      />
       <GameBoard playerPerspective={playerPerspective} />
-      <PlayerCard side={PlayerCardSide.Bottom} />
+      <PlayerCard
+        side={PlayerCardSide.Bottom}
+        playerPerspective={playerPerspective}
+      />
     </div>
   );
 };

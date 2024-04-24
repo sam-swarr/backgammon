@@ -147,14 +147,6 @@
   }
 }
 
-.Player-cards-wrapper {
-  display: flex;
-  height: 6vh;
-  margin-left: 5.5%;
-  margin-right: 5.5%;
-  width: 89%;
-}
-
 .Player-card-wrapper {
   background: #0F142F;
   border: 5px solid #22274a;
@@ -166,6 +158,10 @@
   position: relative;
   left: 70%;
   width: 22%;
+}
+
+.Player-card-wrapper.current-player {
+  filter: drop-shadow(0 0 1vh #f7dcab);
 }
 
 .Player-card-wrapper.cw {
@@ -257,6 +253,7 @@
   justify-content: space-between;
   position: relative;
   width: 45.5%;
+  z-index: 1;
 }
 
 .Game-board-half.left {

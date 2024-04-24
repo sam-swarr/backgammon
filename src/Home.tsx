@@ -16,6 +16,7 @@ type HomeProps = {
   onAnimationComplete: (id: number) => void;
   checkerPulse: boolean;
   playerMovementDirection: MovementDirection;
+  playerPerspective: Player;
 };
 
 const Home: FunctionComponent<HomeProps> = ({
@@ -29,6 +30,7 @@ const Home: FunctionComponent<HomeProps> = ({
   onAnimationComplete,
   checkerPulse,
   playerMovementDirection,
+  playerPerspective,
 }: HomeProps) => {
   const playerOneCheckers = [];
   for (let i = 0; i < homeState[Player.One]; i++) {
@@ -75,7 +77,11 @@ const Home: FunctionComponent<HomeProps> = ({
   return (
     <div
       className={cx("Game-board-home", {
-        cw: playerMovementDirection === MovementDirection.Clockwise,
+        cw:
+          (playerPerspective === Player.One &&
+            playerMovementDirection === MovementDirection.Clockwise) ||
+          (playerPerspective === Player.Two &&
+            playerMovementDirection === MovementDirection.CounterClockwise),
       })}
       onClick={() => {
         clickHandler("HOME");

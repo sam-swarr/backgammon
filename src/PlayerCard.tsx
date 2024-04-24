@@ -13,10 +13,12 @@ export enum PlayerCardSide {
 
 type PlayerCardProps = {
   side: PlayerCardSide;
+  playerPerspective: Player;
 };
 
 const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   side,
+  playerPerspective,
 }: PlayerCardProps) => {
   const [gameBoardState, settings] = useAppSelector((state) => [
     state.gameBoard,
@@ -24,25 +26,29 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   ]);
   let actions = useContext(ActionsContext);
 
+  let playerOneColor = settings.playerOneColor;
+  let playerTwoColor =
+    playerOneColor === Color.White ? Color.Black : Color.White;
+
   let playerName = "";
   let pips = 167;
   let color = Color.Black;
   if (side === PlayerCardSide.Bottom) {
     if (actions instanceof LocalGameActions) {
-      playerName = "Player 1";
+      playerName = playerPerspective === Player.One ? "Player 1" : "Player 2";
     } else {
-      playerName = actions.isHostClient() ? "You" : "Opponent";
+      playerName = "You";
     }
     pips = pipCount(gameBoardState, Player.One);
-    color = settings.playerOneColor;
+    color = playerPerspective === Player.One ? playerOneColor : playerTwoColor;
   } else {
     if (actions instanceof LocalGameActions) {
-      playerName = "Player 2";
+      playerName = playerPerspective === Player.One ? "Player 2" : "Player 1";
     } else {
-      playerName = actions.isHostClient() ? "Opponent" : "You";
+      playerName = "Opponent";
     }
     pips = pipCount(gameBoardState, Player.Two);
-    color = settings.playerOneColor === Color.Black ? Color.White : Color.Black;
+    color = playerPerspective === Player.Two ? playerOneColor : playerTwoColor;
   }
 
   let playerScore = 0;
@@ -51,7 +57,11 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     <div
       className={cx("Player-card-wrapper", {
         bottom: side === PlayerCardSide.Bottom,
-        cw: settings.movementDirection === MovementDirection.Clockwise,
+        cw:
+          (settings.movementDirection === MovementDirection.Clockwise &&
+            playerPerspective === Player.One) ||
+          (settings.movementDirection === MovementDirection.CounterClockwise &&
+            playerPerspective === Player.Two),
       })}
     >
       <div className={"Player-card-checker-wrapper"}>
