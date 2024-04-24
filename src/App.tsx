@@ -28,7 +28,7 @@ const App: FunctionComponent<AppProps> = () => {
       path: "/local",
       element: (
         <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
-          <GameRoom playerPerspective={Player.Two} />
+          <GameRoom playerPerspective={Player.One} />
         </ActionsContext.Provider>
       ),
     },

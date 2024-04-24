@@ -160,7 +160,7 @@
   width: 22%;
 }
 
-.Player-card-wrapper.current-player {
+.Player-card-wrapper.current {
   filter: drop-shadow(0 0 1vh #f7dcab);
 }
 

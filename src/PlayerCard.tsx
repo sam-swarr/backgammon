@@ -20,9 +20,10 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   side,
   playerPerspective,
 }: PlayerCardProps) => {
-  const [gameBoardState, settings] = useAppSelector((state) => [
+  const [gameBoardState, settings, currentPlayer] = useAppSelector((state) => [
     state.gameBoard,
     state.settings,
+    state.currentPlayer,
   ]);
   let actions = useContext(ActionsContext);
 
@@ -62,6 +63,10 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
             playerPerspective === Player.One) ||
           (settings.movementDirection === MovementDirection.CounterClockwise &&
             playerPerspective === Player.Two),
+        current:
+          (side === PlayerCardSide.Bottom &&
+            currentPlayer === playerPerspective) ||
+          (side === PlayerCardSide.Top && currentPlayer !== playerPerspective),
       })}
     >
       <div className={"Player-card-checker-wrapper"}>
