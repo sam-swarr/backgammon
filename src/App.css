@@ -72,7 +72,7 @@
   width: 10vw;
 }
 
-.Begin-game-button:hover, .Roll-button:hover, .Offer-double-button:hover, .Forfeit-game-button:hover, .Accept-double-button:hover {
+.Begin-game-button:hover, .Settings-menu-button:hover, .Roll-button:hover, .Offer-double-button:hover, .Forfeit-game-button:hover, .Accept-double-button:hover {
   transform: scale(110%);
 }
 
@@ -639,27 +639,86 @@
   border-bottom: 1px solid rgb(78, 96, 124);
   display: flex;
   justify-content: space-between;
-  padding: 4vh;
 }
 
 .Settings-menu .Settings-option-row.bottom {
   border-bottom: none;
 }
 
-.Settings-menu-checker-wrapper, .Settings-option-arrow-wrapper {
-  height: 3vw;
-  width: 3vw;
+.Settings-menu-player-names-and-checkers {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  padding-right: 5%;
+  width: 50%;
+}
+
+.Settings-menu-player-name-and-checker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+}
+
+.Settings-menu-player-name {
+  text-align: center;
+}
+
+.Settings-menu-checkers-wrapper {
+  display: flex;
+  justify-content: space-around;
+  height: 66%;
+  width: 100%;
+}
+
+.Settings-menu-checker-wrapper {
+  align-items: center;
+  display: flex;
+  height: 50%;
+  width: 31%;
+  justify-content: center;
 }
 
 .Settings-menu-checker-wrapper .Checker {
-  padding-top: 100%;
+  height: 100%;
   width: 100%;
+}
+
+.Settings-menu-color-swap-arrow-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: 0.2s;
+  width: 20%;
+}
+
+.Settings-menu-player-names-and-checkers:hover .Settings-menu-color-swap-arrow-wrapper {
+  transform: scale(110%);
+}
+
+.Settings-menu-color-swap {
+  font-size: 0.6em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.Settings-menu-color-swap-arrow {
+  background: url("swap-arrow.svg");
+  background-repeat: no-repeat;
+  height: 20%;
+  width: 50%;
 }
 
 .Settings-option-arrow {
   background-size: contain;
   height: 100%;
   width: 100%;
+}
+
+.Settings-checker-color-label {
+  padding: 4vh;
 }
 
 .Settings-option-arrow.clockwise {

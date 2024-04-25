@@ -42,7 +42,7 @@ const App: FunctionComponent<AppProps> = () => {
   return (
     <div className={cx("App-wrapper")}>
       <SettingsMenuButton />
-      <SettingsMenu />
+      <SettingsMenu playerPerspective={Player.One} />
       <GameOverDialog />
       <RouterProvider router={router} />
     </div>
