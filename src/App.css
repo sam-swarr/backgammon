@@ -56,6 +56,38 @@
   }
 }
 
+.Waiting-text-wrapper {
+  display: flex;
+}
+
+.Begin-game-button-wrapper.waiting-text {
+  color: #b8b8b8;
+  font-size: 0.8em;
+  justify-content: center;
+}
+
+.Waiting-spinner {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  background-image: url("loading-spinner.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 40%;
+  margin-top: 1%;
+  width: 8%;
+}
+
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
+
 .Begin-game-button, .Roll-button, .Offer-double-button, .Forfeit-game-button, .Accept-double-button {
   background: linear-gradient(to right, #3F3217, #564112);
   border-color: #816c3d;

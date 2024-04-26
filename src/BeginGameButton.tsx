@@ -9,8 +9,11 @@ const BeginGameButton: FunctionComponent = () => {
 
   if (gameState === GameState.WaitingForPlayers) {
     return (
-      <div className={"Begin-game-button-wrapper"}>
-        Waiting For Opponent To Join...
+      <div className={"Begin-game-button-wrapper waiting-text"}>
+        <div className={"Waiting-text-wrapper"}>
+          Waiting for opponent to join
+        </div>
+        <div className={"Waiting-spinner"} />
       </div>
     );
   } else if (gameState === GameState.WaitingToBegin) {
@@ -29,8 +32,11 @@ const BeginGameButton: FunctionComponent = () => {
       );
     } else {
       return (
-        <div className={"Begin-game-button-wrapper"}>
-          Waiting For Host To Begin Game...
+        <div className={"Begin-game-button-wrapper waiting-text"}>
+          <div className={"Waiting-text-wrapper"}>
+            Waiting for host to begin game
+          </div>
+          <div className={"Waiting-spinner"} />
         </div>
       );
     }
