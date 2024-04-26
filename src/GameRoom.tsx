@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import GameBoard from "./GameBoard";
 import { Player } from "./Types";
 import PlayerCard, { PlayerCardSide } from "./PlayerCard";
+import SettingsMenu from "./SettingsMenu";
 
 type GameRoomProps = {
   playerPerspective: Player;
@@ -12,6 +13,7 @@ const GameRoom: FunctionComponent<GameRoomProps> = ({
 }: GameRoomProps) => {
   return (
     <div className={"Game-area-wrapper"}>
+      <SettingsMenu playerPerspective={playerPerspective} />
       <PlayerCard
         side={PlayerCardSide.Top}
         playerPerspective={playerPerspective}

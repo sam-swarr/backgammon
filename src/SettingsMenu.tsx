@@ -111,18 +111,24 @@ const SettingsMenu: FunctionComponent<SettingsMenuProps> = ({
           </div>
         </div>
         <div className={"Settings-option-row bottom"}>
-          <div>Movement direction</div>
+          <div className={"Settings-checker-direction-label"}>
+            Movement direction
+          </div>
           <div
-            className={"Settings-option-arrow-wrapper"}
+            className={"Settings-option-movement-diagram-wrapper"}
             onClick={toggleMovementDirection}
           >
             <div
-              className={cx("Settings-option-arrow", {
-                clockwise:
-                  settings.movementDirection === MovementDirection.Clockwise,
-                counterclockwise:
-                  settings.movementDirection ===
-                  MovementDirection.CounterClockwise,
+              className={cx("Settings-option-movement-diagram", {
+                light: firstPlayerColor === Color.White,
+                dark: firstPlayerColor === Color.Black,
+                cw:
+                  (playerPerspective === Player.One &&
+                    settings.movementDirection ===
+                      MovementDirection.Clockwise) ||
+                  (playerPerspective === Player.Two &&
+                    settings.movementDirection ===
+                      MovementDirection.CounterClockwise),
               })}
             />
           </div>

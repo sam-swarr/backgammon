@@ -711,13 +711,43 @@
   width: 50%;
 }
 
-.Settings-option-arrow {
-  background-size: contain;
-  height: 100%;
-  width: 100%;
+.Settings-option-movement-diagram-wrapper {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 2%;
+  width: 50%;
 }
 
-.Settings-checker-color-label {
+.Settings-option-movement-diagram {
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100%;
+  transition: 0.2s;
+  width: 50%;
+}
+
+.Settings-option-movement-diagram:hover {
+  transform: scale(105%);
+}
+
+.Settings-option-movement-diagram.light {
+  background-image: url("diagram-light-ccw.svg");
+}
+
+.Settings-option-movement-diagram.light.cw {
+  background-image: url("diagram-light-cw.svg");
+}
+
+.Settings-option-movement-diagram.dark {
+  background-image: url("diagram-dark-ccw.svg");
+}
+
+.Settings-option-movement-diagram.dark.cw {
+  background-image: url("diagram-dark-cw.svg");
+}
+
+.Settings-checker-color-label, .Settings-checker-direction-label {
   padding: 4vh;
 }
 

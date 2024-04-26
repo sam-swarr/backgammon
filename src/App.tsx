@@ -4,7 +4,6 @@ import "./App.css";
 
 import MainMenu from "./MainMenu";
 import SettingsMenuButton from "./SettingsMenuButton";
-import SettingsMenu from "./SettingsMenu";
 import GameOverDialog from "./GameOverDialog";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NetworkedGameRoom, {
@@ -42,7 +41,6 @@ const App: FunctionComponent<AppProps> = () => {
   return (
     <div className={cx("App-wrapper")}>
       <SettingsMenuButton />
-      <SettingsMenu playerPerspective={Player.One} />
       <GameOverDialog />
       <RouterProvider router={router} />
     </div>
