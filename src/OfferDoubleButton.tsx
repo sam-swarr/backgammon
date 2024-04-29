@@ -39,10 +39,12 @@ const OfferDoubleButton: FunctionComponent = () => {
   }
 
   let showAcceptDoubleMenu = false;
+  let showWaitingForPlayerToAccept = false;
   if (actions instanceof LocalGameActions) {
     showAcceptDoubleMenu = true;
   } else {
     showAcceptDoubleMenu = !isCurrentPlayer(players, currentPlayer, actions);
+    showWaitingForPlayerToAccept = !showAcceptDoubleMenu;
   }
 
   if (gameState === GameState.PlayerRolling && showOfferDoubleButton) {
@@ -62,29 +64,53 @@ const OfferDoubleButton: FunctionComponent = () => {
     gameState === GameState.PlayerOfferingDouble &&
     showAcceptDoubleMenu
   ) {
+    let text = null;
+    if (actions instanceof LocalGameActions) {
+      text =
+        "Player " +
+        (currentPlayer === Player.One ? "1" : "2") +
+        " offers a double!";
+    } else {
+      text = "Opponent offers a double!";
+    }
     return (
       <div className={"Accept-double-menu-wrapper"}>
-        <button
-          className={"Forfeit-game-button"}
-          onClick={async () => {
-            await actions.forfeitButtonClicked();
-          }}
-        >
-          Forfeit
-        </button>
-        <button
-          className={"Accept-double-button"}
-          onClick={async () => {
-            const newOwner =
-              currentPlayer === Player.One ? Player.Two : Player.One;
-            await actions.acceptDoubleButtonClicked(
-              newOwner,
-              doublingCubeData.gameStakes * 2
-            );
-          }}
-        >
-          Accept
-        </button>
+        <div className={"Accept-double-menu-text-wrapper"}>{text}</div>
+        <div className={"Accept-double-menu-buttons-wrapper"}>
+          <button
+            className={"Forfeit-game-button"}
+            onClick={async () => {
+              await actions.forfeitButtonClicked();
+            }}
+          >
+            Forfeit
+          </button>
+          <button
+            className={"Accept-double-button"}
+            onClick={async () => {
+              const newOwner =
+                currentPlayer === Player.One ? Player.Two : Player.One;
+              await actions.acceptDoubleButtonClicked(
+                newOwner,
+                doublingCubeData.gameStakes * 2
+              );
+            }}
+          >
+            Accept
+          </button>
+        </div>
+      </div>
+    );
+  } else if (
+    gameState === GameState.PlayerOfferingDouble &&
+    showWaitingForPlayerToAccept
+  ) {
+    return (
+      <div className={"Waiting-for-accept-double-wrapper"}>
+        <div className={"Waiting-for-accept-double-text-wrapper"}>
+          {"Waiting for opponent to accept or forfeit"}
+        </div>
+        <div className={"Waiting-spinner"} />
       </div>
     );
   } else {

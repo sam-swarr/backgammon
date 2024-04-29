@@ -1048,3 +1048,51 @@
   text-shadow: 1px 1px 1px rgb(58, 7, 7);
   width: 100%;
 }
+
+.Accept-double-menu-wrapper {
+  display: flex;
+  height: 12%;
+  top: 44%;
+  flex-direction: column;
+}
+
+.Accept-double-menu-text-wrapper {
+  color: #b8b8b8;
+  font-size: 0.8em;
+}
+
+.Accept-double-menu-buttons-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.Accept-double-button, .Forfeit-game-button {
+  font-size: 0.8em;
+  height: 100%;
+  padding: 0;
+  width: 34%;
+}
+
+.Accept-double-button {
+  color: #62955D;
+}
+
+.Forfeit-game-button {
+  color: #C14534;
+}
+
+.Waiting-for-accept-double-wrapper {
+  align-items: center;
+  color: #b8b8b8;
+  display: flex;
+  font-size: 0.8em;
+  height: 12%;
+  left: 10%;
+  justify-content: center;
+  position: absolute;
+  top: 44%;
+  width: 80%;
+  z-index: 5;
+}
