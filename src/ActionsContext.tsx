@@ -35,7 +35,7 @@ export class Actions {
     console.error("Unexpected use of default ActionsContext.");
   }
 
-  beginFirstTurn(): void {
+  beginFirstTurn(_startingPlayer: Player): void {
     console.error("Unexpected use of default ActionsContext.");
   }
 
@@ -87,7 +87,8 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(setState(GameState.CoinFlip));
   }
 
-  beginFirstTurn(): void {
+  beginFirstTurn(startingPlayer: Player): void {
+    this.dispatchFn(setCurrentPlayer(startingPlayer));
     this.dispatchFn(setState(GameState.PlayerMoving));
   }
 
@@ -164,7 +165,9 @@ export class NetworkedGameActions extends Actions {
     writeNewGameStateToDB(this.docRef, GameState.CoinFlip);
   }
 
-  beginFirstTurn(): void {
+  beginFirstTurn(_startingPlayer: Player): void {
+    // The correct starting player is already written to the DB upon lobby creation
+    // so no need to do anything with startingPlayer here.
     writeNewGameStateToDB(this.docRef, GameState.PlayerMoving);
   }
 

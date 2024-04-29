@@ -1,6 +1,6 @@
 import { FunctionComponent, useContext, useRef, useState } from "react";
 
-import { Color } from "./Types";
+import { Color, Player } from "./Types";
 import { useAppSelector } from "./store/hooks";
 import Die from "./Die";
 import { CSSTransition } from "react-transition-group";
@@ -19,6 +19,11 @@ const OpeningDiceRoll: FunctionComponent = () => {
   let currOpeningRoll = dice.initialRolls[initialRollCounter];
   const nodeRef = useRef(null);
 
+  const startingRoll =
+    dice.initialRolls[Object.keys(dice.initialRolls).length - 1];
+  const startingPlayer =
+    startingRoll[0] > startingRoll[1] ? Player.One : Player.Two;
+
   return (
     <CSSTransition
       nodeRef={nodeRef}
@@ -36,12 +41,12 @@ const OpeningDiceRoll: FunctionComponent = () => {
               setForceReroll(false);
               if (actions.isHostClient()) {
                 setTimeout(() => {
-                  actions.beginFirstTurn();
+                  actions.beginFirstTurn(startingPlayer);
                 }, 1500);
               }
             } else {
               if (actions.isHostClient()) {
-                actions.beginFirstTurn();
+                actions.beginFirstTurn(startingPlayer);
               }
             }
           }, 1500);
