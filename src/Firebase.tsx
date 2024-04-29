@@ -237,3 +237,16 @@ export async function writeAcceptDoubleToDB(
     { merge: true }
   );
 }
+
+export async function writeAutomaticDoubleToDB(docRef: DocumentReference) {
+  return await setDoc(
+    docRef,
+    {
+      doublingCube: {
+        owner: null,
+        gameStakes: 2,
+      },
+    },
+    { merge: true }
+  );
+}

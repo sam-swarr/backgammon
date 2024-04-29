@@ -3,6 +3,7 @@ import { GameState, setState } from "./store/gameStateSlice";
 import { DocumentReference } from "firebase/firestore";
 import {
   writeAcceptDoubleToDB,
+  writeAutomaticDoubleToDB,
   writeEndTurnToDB,
   writeNewGameStateToDB,
 } from "./Firebase";
@@ -50,6 +51,10 @@ export class Actions {
     _newDoublingCubeOwner: Player,
     _newGameStakes: number
   ): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async automaticDouble(): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
 
@@ -105,6 +110,15 @@ export class LocalGameActions extends Actions {
       })
     );
     this.dispatchFn(setState(GameState.PlayerRolling));
+  }
+
+  async automaticDouble(): Promise<void> {
+    this.dispatchFn(
+      setDoublingCubeData({
+        owner: null,
+        gameStakes: 2,
+      })
+    );
   }
 
   async forfeitButtonClicked(): Promise<void> {
@@ -172,6 +186,18 @@ export class NetworkedGameActions extends Actions {
     this.dispatchFn(setState(GameState.PlayerRolling));
 
     return await writeAcceptDoubleToDB(this.docRef, newDoublingCubeData);
+  }
+
+  async automaticDouble(): Promise<void> {
+    // Optimistically update local client.
+    this.dispatchFn(
+      setDoublingCubeData({
+        owner: null,
+        gameStakes: 2,
+      })
+    );
+
+    return await writeAutomaticDoubleToDB(this.docRef);
   }
 
   async forfeitButtonClicked(): Promise<void> {

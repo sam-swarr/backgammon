@@ -31,7 +31,7 @@ const OpeningDiceRoll: FunctionComponent = () => {
           setForceReroll(true);
           setTimeout(() => {
             if (currOpeningRoll.length === 4) {
-              // TODO: send automatic double dispatch
+              actions.automaticDouble();
               setInitialRollCounter(initialRollCounter + 1);
               setForceReroll(false);
               if (actions.isHostClient()) {
