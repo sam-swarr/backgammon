@@ -4,6 +4,8 @@ import cx from "classnames";
 import Checker, { CheckerStatus } from "./Checker";
 import { Color, MovementDirection, Player, PointState } from "./Types";
 import { Animation } from "./Animations";
+import { useAppSelector } from "./store/hooks";
+import DoublingCube from "./DoublingCube";
 
 type HomeProps = {
   homeState: PointState;
@@ -32,6 +34,8 @@ const Home: FunctionComponent<HomeProps> = ({
   playerMovementDirection,
   playerPerspective,
 }: HomeProps) => {
+  const [doublingCubeData] = useAppSelector((state) => [state.doublingCube]);
+
   const playerOneCheckers = [];
   for (let i = 0; i < homeState[Player.One]; i++) {
     let anim = currAnimations.find((a) => {
@@ -74,6 +78,11 @@ const Home: FunctionComponent<HomeProps> = ({
     );
   }
 
+  let doublingCube = null;
+  if (doublingCubeData.owner === null) {
+    doublingCube = <DoublingCube />;
+  }
+
   return (
     <div
       className={cx("Game-board-home", {
@@ -94,7 +103,7 @@ const Home: FunctionComponent<HomeProps> = ({
       >
         {playerTwoCheckers}
       </div>
-      <div className="Game-board-home-spacer" />
+      <div className="Game-board-home-spacer">{doublingCube}</div>
       <div
         className={cx("Player-one-home-checkers", {
           highlighted: isHighlighted && currentPlayer === Player.One,

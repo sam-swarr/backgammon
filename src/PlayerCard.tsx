@@ -5,6 +5,7 @@ import Checker, { CheckerStatus } from "./Checker";
 import { Color, MovementDirection, Player } from "./Types";
 import { useAppSelector } from "./store/hooks";
 import { pipCount } from "./store/gameBoardSlice";
+import DoublingCube from "./DoublingCube";
 
 export enum PlayerCardSide {
   Top = "TOP",
@@ -20,16 +21,20 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   side,
   playerPerspective,
 }: PlayerCardProps) => {
-  const [gameBoardState, settings, currentPlayer] = useAppSelector((state) => [
-    state.gameBoard,
-    state.settings,
-    state.currentPlayer,
-  ]);
+  const [gameBoardState, settings, currentPlayer, doublingCubeData] =
+    useAppSelector((state) => [
+      state.gameBoard,
+      state.settings,
+      state.currentPlayer,
+      state.doublingCube,
+    ]);
   let actions = useContext(ActionsContext);
 
   let playerOneColor = settings.playerOneColor;
   let playerTwoColor =
     playerOneColor === Color.White ? Color.Black : Color.White;
+
+  let doublingCube = null;
 
   let playerName = "";
   let pips = 167;
@@ -42,6 +47,9 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     }
     pips = pipCount(gameBoardState, Player.One);
     color = playerPerspective === Player.One ? playerOneColor : playerTwoColor;
+    if (doublingCubeData.owner === playerPerspective) {
+      doublingCube = <DoublingCube />;
+    }
   } else {
     if (actions instanceof LocalGameActions) {
       playerName = playerPerspective === Player.One ? "Player 2" : "Player 1";
@@ -50,6 +58,12 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     }
     pips = pipCount(gameBoardState, Player.Two);
     color = playerPerspective === Player.Two ? playerOneColor : playerTwoColor;
+    if (
+      doublingCubeData.owner !== null &&
+      doublingCubeData.owner !== playerPerspective
+    ) {
+      doublingCube = <DoublingCube />;
+    }
   }
 
   let playerScore = 0;
@@ -87,6 +101,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
           </div>
         </div>
       </div>
+      <div className={"Player-card-doubling-cube-wrapper"}>{doublingCube}</div>
     </div>
   );
 };
