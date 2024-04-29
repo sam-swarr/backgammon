@@ -6,6 +6,7 @@ import { Color, MovementDirection, Player } from "./Types";
 import { useAppSelector } from "./store/hooks";
 import { pipCount } from "./store/gameBoardSlice";
 import DoublingCube from "./DoublingCube";
+import { GameState } from "./store/gameStateSlice";
 
 export enum PlayerCardSide {
   Top = "TOP",
@@ -21,12 +22,13 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   side,
   playerPerspective,
 }: PlayerCardProps) => {
-  const [gameBoardState, settings, currentPlayer, doublingCubeData] =
+  const [gameBoardState, settings, currentPlayer, doublingCubeData, gameState] =
     useAppSelector((state) => [
       state.gameBoard,
       state.settings,
       state.currentPlayer,
       state.doublingCube,
+      state.gameState,
     ]);
   let actions = useContext(ActionsContext);
 
@@ -78,9 +80,13 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
           (settings.movementDirection === MovementDirection.CounterClockwise &&
             playerPerspective === Player.Two),
         current:
-          (side === PlayerCardSide.Bottom &&
+          (gameState === GameState.PlayerMoving ||
+            gameState === GameState.PlayerOfferingDouble ||
+            gameState === GameState.PlayerRolling) &&
+          ((side === PlayerCardSide.Bottom &&
             currentPlayer === playerPerspective) ||
-          (side === PlayerCardSide.Top && currentPlayer !== playerPerspective),
+            (side === PlayerCardSide.Top &&
+              currentPlayer !== playerPerspective)),
       })}
     >
       <div className={"Player-card-checker-wrapper"}>
