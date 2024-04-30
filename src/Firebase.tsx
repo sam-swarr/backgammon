@@ -224,6 +224,26 @@ export async function writeEndTurnToDB(
   );
 }
 
+export async function writeGameOverToDB(
+  docRef: DocumentReference,
+  newGameBoardState: GameBoardState,
+  winningGameState:
+    | GameState.GameOver
+    | GameState.GameOverGammon
+    | GameState.GameOverBackgammon,
+  networkedMoves: NetworkedMovesPayload
+) {
+  return await setDoc(
+    docRef,
+    {
+      gameBoard: newGameBoardState,
+      gameState: winningGameState,
+      networkedMoves,
+    },
+    { merge: true }
+  );
+}
+
 export async function writeAcceptDoubleToDB(
   docRef: DocumentReference,
   newDoublingCubeData: DoublingCubeData

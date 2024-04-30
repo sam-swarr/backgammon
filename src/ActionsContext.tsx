@@ -5,6 +5,7 @@ import {
   writeAcceptDoubleToDB,
   writeAutomaticDoubleToDB,
   writeEndTurnToDB,
+  writeGameOverToDB,
   writeNewGameStateToDB,
 } from "./Firebase";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
@@ -16,6 +17,7 @@ import { GameBoardState, Move, Player } from "./Types";
 import { genAnimationID } from "./Utils";
 import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
 import { setDoublingCubeData } from "./store/doublingCubeSlice";
+import { setShowGameOverDialog } from "./store/settingsSlice";
 
 export class Actions {
   /**
@@ -66,6 +68,18 @@ export class Actions {
     _newGameBoardState: GameBoardState,
     _newCurrentPlayer: Player,
     _movesToSubmit: Move[]
+  ): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async gameOver(
+    _newGameBoardState: GameBoardState,
+    _winningGameState:
+      | GameState.GameOver
+      | GameState.GameOverGammon
+      | GameState.GameOverBackgammon,
+    _losingPlayer: Player,
+    _winningMoves: Move[]
   ): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
@@ -138,6 +152,22 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(setGameBoardState(newGameBoardState));
     this.dispatchFn(setCurrentPlayer(newCurrentPlayer));
     this.dispatchFn(rollDice());
+  }
+
+  async gameOver(
+    newGameBoardState: GameBoardState,
+    winningGameState:
+      | GameState.GameOver
+      | GameState.GameOverGammon
+      | GameState.GameOverBackgammon,
+    _losingPlayer: Player,
+    _winningMoves: Move[]
+  ): Promise<void> {
+    this.dispatchFn(clearProvisionalMoves());
+    this.dispatchFn(clearLastPointClicked());
+    this.dispatchFn(setState(winningGameState));
+    this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setShowGameOverDialog(true));
   }
 }
 
@@ -237,6 +267,39 @@ export class NetworkedGameActions extends Actions {
       this.docRef,
       newGameBoardState,
       newCurrentPlayer,
+      networkedMoves
+    );
+  }
+
+  async gameOver(
+    newGameBoardState: GameBoardState,
+    winningGameState:
+      | GameState.GameOver
+      | GameState.GameOverGammon
+      | GameState.GameOverBackgammon,
+    losingPlayer: Player,
+    winningMoves: Move[]
+  ): Promise<void> {
+    let networkedMoves: NetworkedMovesPayload = {
+      animateFor: losingPlayer,
+      id: genAnimationID(),
+      moves: winningMoves,
+    };
+
+    this.dispatchFn(clearProvisionalMoves());
+    this.dispatchFn(clearLastPointClicked());
+
+    // Optimistically write these changes to the local store first so that
+    // local client gets a fast update. The same changes will propagate to the
+    // other client via the DB write after this.
+    this.dispatchFn(setState(winningGameState));
+    this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setShowGameOverDialog(true));
+
+    return await writeGameOverToDB(
+      this.docRef,
+      newGameBoardState,
+      winningGameState,
       networkedMoves
     );
   }

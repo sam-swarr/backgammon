@@ -209,6 +209,35 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     dispatch(setGameBoardState(gameBoardState));
     dispatch(dequeueAnimatableMove());
     setCurrAnimations([]);
+
+    // Check to see if the move that just finished animating causes the game to end.
+    const gameResult = didPlayerWin(gameBoardState, currentPlayer);
+    if (gameResult === GameResult.NotOver) {
+      return;
+    } else {
+      // If this is the client of the winning player, call the gameOver action which will
+      // write the changes to the DB and display the gameOver dialog locally for the winning
+      // player.
+      if (isCurrentPlayer(players, currentPlayer, actions)) {
+        let winningGameState = GameState.GameOver;
+        if (gameResult === GameResult.PlayerWonGammon) {
+          winningGameState = GameState.GameOverGammon;
+        } else if (gameResult === GameResult.PlayerWonBackgammon) {
+          winningGameState = GameState.GameOverBackgammon;
+        }
+        actions.gameOver(
+          gameBoardState,
+          winningGameState,
+          currentPlayer === Player.One ? Player.Two : Player.One,
+          provisionalMoves
+        );
+      }
+      // Else this is the client of the losing player. Now that the animations are complete,
+      // show the gameOver dialog.
+      else {
+        dispatch(setShowGameOverDialog(true));
+      }
+    }
   };
 
   if (currAnimatableMove != null && currAnimations.length === 0) {
@@ -235,35 +264,6 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     }, CHECKER_ANIMATION_PULSE_TIMER_MS);
     return () => clearInterval(interval);
   }, [checkerPulse]);
-
-  // Define useEffect function to check for game win, which will run immediately after
-  // render (since we can't be dispatching state updates while in the render path).
-  // We define it here so it'll capture the board state after applying provisional moves.
-  useEffect(() => {
-    const gameResult = didPlayerWin(gameBoardState, currentPlayer);
-    switch (gameResult) {
-      case GameResult.NotOver:
-        break;
-
-      case GameResult.PlayerWon:
-        dispatch(setState(GameState.GameOver));
-        dispatch(setShowGameOverDialog(true));
-        break;
-
-      case GameResult.PlayerWonGammon:
-        dispatch(setState(GameState.GameOverGammon));
-        dispatch(setShowGameOverDialog(true));
-        break;
-
-      case GameResult.PlayerWonBackgammon:
-        dispatch(setState(GameState.GameOverBackgammon));
-        dispatch(setShowGameOverDialog(true));
-        break;
-
-      default:
-        console.error("Unhandled GameResult: " + gameResult);
-    }
-  }, [gameBoardState, currentPlayer, dispatch]);
 
   const isPlayerActivelyMoving =
     gameState === GameState.PlayerMoving &&
