@@ -7,7 +7,7 @@ import {
   didPlayerWin,
   setGameBoardState,
 } from "./store/gameBoardSlice";
-import { GameState, setState } from "./store/gameStateSlice";
+import { GameState } from "./store/gameStateSlice";
 import {
   clearLastPointClicked,
   setLastPointClicked,

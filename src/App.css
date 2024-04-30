@@ -587,18 +587,24 @@
   background-image: url(checker-home-dark.svg);
 }
 
-.Player-one-home-checkers {
+.Player-one-home-checkers, .Player-two-home-checkers.p2 {
   justify-content: flex-end;
 }
 
+.Player-one-home-checkers.p2 {
+  justify-content: flex-start;
+}
+
 .Player-one-home-checkers.highlighted {
-  background-color: #2ac4b154;
+  background: url(stripes.svg);
+  background-size: cover;
   border-top-left-radius: 1vh;
   border-top-right-radius: 1vh;
 }
 
 .Player-two-home-checkers.highlighted {
-  background-color: #2ac4b154;
+  background: url(stripes.svg);
+  background-size: cover;
   border-bottom-left-radius: 1vh;
   border-bottom-right-radius: 1vh;
 }
@@ -1087,7 +1093,7 @@
   align-items: center;
   color: #b8b8b8;
   display: flex;
-  font-size: 0.8em;
+  font-size: 0.7em;
   height: 12%;
   left: 10%;
   justify-content: center;

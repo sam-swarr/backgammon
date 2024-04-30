@@ -83,6 +83,28 @@ const Home: FunctionComponent<HomeProps> = ({
     doublingCube = <DoublingCube />;
   }
 
+  const playerOneHome = (
+    <div
+      className={cx("Player-one-home-checkers", {
+        highlighted: isHighlighted && currentPlayer === Player.One,
+        p2: playerPerspective === Player.Two,
+      })}
+    >
+      {playerOneCheckers}
+    </div>
+  );
+
+  const playerTwoHome = (
+    <div
+      className={cx("Player-two-home-checkers", {
+        highlighted: isHighlighted && currentPlayer === Player.Two,
+        p2: playerPerspective === Player.Two,
+      })}
+    >
+      {playerTwoCheckers}
+    </div>
+  );
+
   return (
     <div
       className={cx("Game-board-home", {
@@ -96,21 +118,9 @@ const Home: FunctionComponent<HomeProps> = ({
         clickHandler("HOME");
       }}
     >
-      <div
-        className={cx("Player-two-home-checkers", {
-          highlighted: isHighlighted && currentPlayer === Player.Two,
-        })}
-      >
-        {playerTwoCheckers}
-      </div>
+      {playerPerspective === Player.One ? playerTwoHome : playerOneHome}
       <div className="Game-board-home-spacer">{doublingCube}</div>
-      <div
-        className={cx("Player-one-home-checkers", {
-          highlighted: isHighlighted && currentPlayer === Player.One,
-        })}
-      >
-        {playerOneCheckers}
-      </div>
+      {playerPerspective === Player.One ? playerOneHome : playerTwoHome}
     </div>
   );
 };

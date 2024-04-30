@@ -47,7 +47,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     } else {
       playerName = "You";
     }
-    pips = pipCount(gameBoardState, Player.One);
+    pips = pipCount(gameBoardState, playerPerspective);
     color = playerPerspective === Player.One ? playerOneColor : playerTwoColor;
     if (doublingCubeData.owner === playerPerspective) {
       doublingCube = <DoublingCube />;
@@ -58,7 +58,10 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     } else {
       playerName = "Opponent";
     }
-    pips = pipCount(gameBoardState, Player.Two);
+    pips = pipCount(
+      gameBoardState,
+      playerPerspective === Player.One ? Player.Two : Player.One
+    );
     color = playerPerspective === Player.Two ? playerOneColor : playerTwoColor;
     if (
       doublingCubeData.owner !== null &&

@@ -240,10 +240,18 @@ function calculateDistanceOnYAxis(
   } else if (point === "HOME") {
     if (checkerOwner === Player.One) {
       // Player One's home checkers are stacked on bottom half of home from bottom edge upward.
-      return BOARD_HEIGHT - CHECKER_HEIGHT;
+      if (playerPerspective === Player.One) {
+        return BOARD_HEIGHT - CHECKER_HEIGHT;
+      } else {
+        return 0;
+      }
     } else {
       // Player Two's home checkers are stacked on top half of home from top edge downward.
-      return 0;
+      if (playerPerspective === Player.One) {
+        return 0;
+      } else {
+        return BOARD_HEIGHT - CHECKER_HEIGHT;
+      }
     }
   } else {
     if (
