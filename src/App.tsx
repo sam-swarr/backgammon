@@ -27,20 +27,25 @@ const App: FunctionComponent<AppProps> = () => {
       path: "/local",
       element: (
         <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
+          <SettingsMenuButton />
           <GameRoom playerPerspective={Player.One} />
         </ActionsContext.Provider>
       ),
     },
     {
       path: "/:roomCode",
-      element: <NetworkedGameRoom />,
+      element: (
+        <div>
+          <SettingsMenuButton />
+          <NetworkedGameRoom />
+        </div>
+      ),
       loader: NetworkedGameRoomLoader,
     },
   ]);
 
   return (
     <div className={cx("App-wrapper")}>
-      <SettingsMenuButton />
       <GameOverDialog />
       <RouterProvider router={router} />
     </div>

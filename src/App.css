@@ -15,14 +15,14 @@
 
 .App-wrapper {
   align-items: center;
-  background-color: #06080b;
+  background: linear-gradient(to bottom, #3B4587, #151516) border-box;
   display: flex;
   flex-direction: column;
   font-family: 'Barlow', sans-serif;
+  min-height: 300px;
+  min-width: 400px;
   height: 100vh;
   justify-content: center;
-  min-width: 800px;
-  min-height: 500px;
   width: 100vw;
 }
 
@@ -122,61 +122,81 @@
 
 .Main-menu-wrapper {
   align-items: center;
-  background-color: #282c34;
   color: white;
   display: flex;
   flex-direction: column;
-  height: 46.3vw;
-  justify-content: center;
-  min-height: 46.3vw;
-  min-width: 100vw;
+  height: 60%;
+  min-height: 300px;
+  min-width: 400px;
+  width: 60%;
 }
 
 .Title-wrapper {
-  text-shadow: 4px 4px 6px black;
+  background-image: url("backgammon-title.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  container: title-container / inline-size;
+  filter: drop-shadow(0 1vh 0.3vh rgba(0, 0, 0, 0.35));
+  text-align: center;
+  vertical-align: middle;
+  height: 25%;
+  width: 80%;
 }
 
-@media screen and (orientation: landscape) {
-  .Title-wrapper {
-    font-size: 5vw;
-    margin-bottom: 10vh;
-  }
+.Title-text {
+  font-size: 3.5em;
 }
 
-@media screen and (orientation: portrait) {
-  .Title-wrapper {
-    font-size: 10vw;
-    margin-bottom: 4vh;
+@container title-container (min-width: 400px) {
+  .Title-text {
+    font-size: max(3.5em, 3.5em + 4cqi);
   }
 }
 
 .Menu-button-wrapper {
+  container: menu-button-wrapper / inline-size;
   display: flex;
   flex-direction: column;
+  height: 50%;
+  justify-content: space-around;
+  width: 60%;
 }
 
 .Local-multiplayer-button, .Online-multiplayer-button {
-  background-color: rgb(111 143 204);
-  border-color: rgb(52 89 132);
-  border-radius: 1vw;
-  border-width: 0.5vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  display: flex;
+  filter: drop-shadow(0 1vh 0.3vh rgba(0, 0, 0, 0.35));
   font-family: 'Barlow', sans-serif;
   font-size: max(2vh, 2vw);
-  margin: 2vh;
+  height: 40%;
+  transition: 0.2s;
+  width: 100%;
 }
 
-@media screen and (orientation: landscape) {
-  .Local-multiplayer-button, .Online-multiplayer-button {
-    height: 15vh;
-    width: 25vw;
-  }
+.Local-multiplayer-button {
+  background-image: url(local-multiplayer-button.svg);
 }
 
-@media screen and (orientation: portrait) {
-  .Local-multiplayer-button, .Online-multiplayer-button {
-    height: 9vh;
-    width: 50vw;
-  }
+.Online-multiplayer-button {
+  background-image: url(online-multiplayer-button.svg);
+}
+
+.Local-multiplayer-button:hover,
+.Local-multiplayer-button:active,
+.Online-multiplayer-button:hover,
+.Online-multiplayer-button:active {
+  transform: scale(105%);
+}
+
+.Credits-text {
+  color: #6B7195;
+  font-size: 0.6em;
+  text-align: right;
+  position: absolute;
+  right: 1%;
+  bottom: 1%;
 }
 
 .Player-card-wrapper {

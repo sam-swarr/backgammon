@@ -23,20 +23,20 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
 
   return (
     <div className={"Main-menu-wrapper"}>
-      <div className={"Title-wrapper"}>Backgammon</div>
+      <div className={"Title-wrapper"}>
+        <div className={"Title-text"}></div>
+      </div>
       <div className={"Menu-button-wrapper"}>
-        <button
-          className={"Local-multiplayer-button"}
-          onClick={createLocalGame}
-        >
-          Local Multiplayer
-        </button>
-        <button
+        <div className={"Local-multiplayer-button"} onClick={createLocalGame} />
+        <div
           className={"Online-multiplayer-button"}
           onClick={createOnlineLobby}
-        >
-          Online Multiplayer
-        </button>
+        />
+      </div>
+      <div className={"Credits-text"}>
+        <div>Backgammon v 1.0.0.7bc0921</div>
+        <div>by Sam Swarr (sam-swarr.github.io)</div>
+        <div>font Barlow by Jeremy Tribby</div>
       </div>
     </div>
   );
