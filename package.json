@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.24.1"
+    "@babel/preset-typescript": "^7.24.1",
+    "sass": "^1.76.0"
   }
 }

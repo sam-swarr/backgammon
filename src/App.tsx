@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import cx from "classnames";
-import "./App.css";
+import "./App.scss";
 
 import MainMenu from "./MainMenu";
 import SettingsMenuButton from "./SettingsMenuButton";
@@ -44,8 +44,20 @@ const App: FunctionComponent<AppProps> = () => {
     },
   ]);
 
+  const initialFloatingCircles = new Array(50);
+  for (let i = 0; i < 50; i++) {
+    initialFloatingCircles.push(<div className={"Initial-floating-circle"} />);
+  }
+
+  const floatingCircles = new Array(50);
+  for (let i = 0; i < 50; i++) {
+    floatingCircles.push(<div className={"Floating-circle"} />);
+  }
+
   return (
     <div className={cx("App-wrapper")}>
+      <div>{initialFloatingCircles}</div>
+      <div>{floatingCircles}</div>
       <GameOverDialog />
       <RouterProvider router={router} />
     </div>

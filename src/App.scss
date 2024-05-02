@@ -22,6 +22,8 @@
   min-height: 300px;
   min-width: 400px;
   height: 100vh;
+  overflow: hidden;
+  position: relative;
   justify-content: center;
   width: 100vw;
 }
@@ -368,6 +370,7 @@
   height: 100%;
   justify-content: space-around;
   width: 4%;
+  z-index: 1;
 }
 
 .Game-board-home {
@@ -1120,4 +1123,103 @@
   top: 44%;
   width: 80%;
   z-index: 5;
+}
+
+/*****************************
+  Floating circles background
+*****************************/
+@function random_range($min, $max) {
+  $rand: random();
+  $random_range: $min + floor($rand * (($max - $min) + 1));
+  @return $random_range;
+}
+
+@function sample($list) {
+  @return nth($list, random(length($list)));
+}
+
+$floating-circle-count: 50;
+
+// Initial floating circles start on screen with a randomized non-zero opacity,
+// then animate once and finish with 0 opacity. By that time, the regular
+// floating circles will have begun to animate indefinitely. This way, floating
+// circles are visible immediately on page load.
+.Initial-floating-circle {
+  position: absolute;
+  left: var(--left-offset);
+  bottom: var(--bottom-offset);
+  display: block;
+  width: var(--radius);
+  height: var(--radius);
+  border-radius: 50%;
+  background-color: #83919e24;
+  opacity: 0%;
+  animation: float-around-initial var(--animation-duration) 0s ease-in;
+
+  @keyframes float-around-initial {
+    0% {
+      opacity: var(--starting-opacity);
+    }
+    50% {
+      opacity: var(--max-opacity);
+    }
+    100% {
+      transform: translateX(var(--float-x)) translateY(var(--float-y));
+      opacity: 0%;
+    }
+  }
+
+  @for $i from 0 through $floating-circle-count {
+    &:nth-child(#{$i}) {
+      --bottom-offset: #{random_range(-10%, 110%)};
+      --left-offset: #{random_range(0vw, 100vw)};
+      --radius: #{random_range(3vw, 6vw)};
+      --animation-duration: #{random_range(10s, 30s)};
+      --float-y: #{random_range(-30vh, 30vh)};
+      --float-x: #{random_range(-30vw, 30vw)};
+      --starting-opacity: #{random_range(10%, 50%)};
+      --max-opacity: #{random_range(40%, 80%)};
+    }
+  }
+}
+
+// These floating circles begin to appear and animate indefinitely as the initial
+// floating circles finish their one-time animation.
+.Floating-circle {
+  position: absolute;
+  left: var(--left-offset);
+  bottom: var(--bottom-offset);
+  display: block;
+  width: var(--radius);
+  height: var(--radius);
+  border-radius: 50%;
+  background-color: #83919e24;
+  opacity: 0%;
+  animation: float-around var(--animation-duration) var(--delay) ease-in infinite;
+
+  @keyframes float-around {
+    0% {
+      opacity: 0%;
+    }
+    50% {
+      opacity: var(--max-opacity);
+    }
+    100% {
+      transform: translateX(var(--float-x)) translateY(var(--float-y));
+      opacity: 0%;
+    }
+  }
+
+  @for $i from 0 through $floating-circle-count {
+    &:nth-child(#{$i}) {
+      --delay: #{random_range(10s, 30s)};
+      --bottom-offset: #{random_range(-10%, 110%)};
+      --left-offset: #{random_range(0vw, 100vw)};
+      --radius: #{random_range(3vw, 6vw)};
+      --animation-duration: #{random_range(10s, 30s)};
+      --float-y: #{random_range(-30vh, 30vh)};
+      --float-x: #{random_range(-30vw, 30vw)};
+      --max-opacity: #{random_range(30%, 70%)};
+    }
+  }
 }
