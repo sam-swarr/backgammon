@@ -9,15 +9,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NetworkedGameRoom, {
   loader as NetworkedGameRoomLoader,
 } from "./NetworkedGameRoom";
-import { ActionsContext, LocalGameActions } from "./ActionsContext";
-import { useAppDispatch } from "./store/hooks";
-import GameRoom from "./GameRoom";
-import { Player } from "./Types";
+import LocalGameRoom from "./LocalGameRoom";
 
 type AppProps = {};
 
 const App: FunctionComponent<AppProps> = () => {
-  const dispatch = useAppDispatch();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -25,12 +21,7 @@ const App: FunctionComponent<AppProps> = () => {
     },
     {
       path: "/local",
-      element: (
-        <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
-          <SettingsMenuButton />
-          <GameRoom playerPerspective={Player.One} />
-        </ActionsContext.Provider>
-      ),
+      element: <LocalGameRoom />,
     },
     {
       path: "/:roomCode",
@@ -46,12 +37,14 @@ const App: FunctionComponent<AppProps> = () => {
 
   const initialFloatingCircles = new Array(50);
   for (let i = 0; i < 50; i++) {
-    initialFloatingCircles.push(<div className={"Initial-floating-circle"} />);
+    initialFloatingCircles.push(
+      <div key={i} className={"Initial-floating-circle"} />
+    );
   }
 
   const floatingCircles = new Array(50);
   for (let i = 0; i < 50; i++) {
-    floatingCircles.push(<div className={"Floating-circle"} />);
+    floatingCircles.push(<div key={i} className={"Floating-circle"} />);
   }
 
   return (

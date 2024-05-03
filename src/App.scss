@@ -200,6 +200,108 @@
   bottom: 1%;
 }
 
+.Match-settings-menu-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+  min-height: 300px;
+  min-width: 400px;
+  width: 60%;
+}
+
+.Match-settings-title-wrapper {
+  background-image: url("match-settings-title.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
+  vertical-align: middle;
+  height: 20%;
+  width: 35%;
+}
+
+.Match-points-settings-row {
+  align-items: center;
+  display: flex;
+  height: 15%;
+  width: 100%;
+}
+
+.Play-to-wrapper {
+  background-image: url("play-to.svg");
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
+  vertical-align: middle;
+  height: 60%;
+  width: 14%;
+}
+
+.Match-points-buttons-wrapper {
+  display: flex;
+  height: 100%;
+  width: 60%;
+}
+
+.Match-points-button {
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 15%;
+}
+
+.Match-points-button:hover, .Match-points-button:active {
+  transform: scale(105%);
+}
+
+.Match-points-button.one {
+  background-image: url("match-point-button-1-deselected.svg");
+}
+
+.Match-points-button.one.selected {
+  background-image: url("match-point-button-1-selected.svg");
+}
+
+.Match-points-button.three {
+  background-image: url("match-point-button-3-deselected.svg");
+}
+
+.Match-points-button.three.selected {
+  background-image: url("match-point-button-3-selected.svg");
+}
+
+.Match-points-button.five {
+  background-image: url("match-point-button-5-deselected.svg");
+}
+
+.Match-points-button.five.selected {
+  background-image: url("match-point-button-5-selected.svg");
+}
+
+.Match-points-button.seven {
+  background-image: url("match-point-button-7-deselected.svg");
+}
+
+.Match-points-button.seven.selected {
+  background-image: url("match-point-button-7-selected.svg");
+}
+
+.Match-points-button.nine {
+  background-image: url("match-point-button-9-deselected.svg");
+}
+
+.Match-points-button.nine.selected {
+  background-image: url("match-point-button-9-selected.svg");
+}
+
+.Match-points-button.eleven {
+  background-image: url("match-point-button-11-deselected.svg");
+}
+
+.Match-points-button.eleven.selected {
+  background-image: url("match-point-button-11-selected.svg");
+}
+
 .Player-card-wrapper {
   background: #0F142F;
   border: 5px solid #22274a;
@@ -1157,6 +1259,7 @@ $floating-circle-count: 50;
   height: var(--radius);
   border-radius: 50%;
   background-color: #83919e24;
+  pointer-events: none;
   opacity: 0%;
   animation: float-around-initial var(--animation-duration) 0s ease-in;
 
@@ -1198,6 +1301,7 @@ $floating-circle-count: 50;
   height: var(--radius);
   border-radius: 50%;
   background-color: #83919e24;
+  pointer-events: none;
   opacity: 0%;
   animation: float-around var(--animation-duration) var(--delay) ease-in infinite;
 

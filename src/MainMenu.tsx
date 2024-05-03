@@ -4,6 +4,7 @@ import { createLobby } from "./Firebase";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
 import { resetStoreForLocalGame } from "./Utils";
+import { setShowMatchSetupScreen } from "./store/settingsSlice";
 
 type MainMenuProps = {};
 
@@ -13,6 +14,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
 
   const createLocalGame = function () {
     resetStoreForLocalGame(dispatch);
+    dispatch(setShowMatchSetupScreen(true));
     navigate("/local");
   };
 

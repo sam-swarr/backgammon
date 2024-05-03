@@ -137,9 +137,6 @@ export async function createLobby(): Promise<CreateLobbyResult> {
 
   const docRef = await addDoc(collection(db, "lobbies"), initialGameData);
 
-  console.log("Document written with ID: ", docRef.id);
-  console.log("Created room: " + roomCode);
-
   return {
     roomCode,
     docRef,
