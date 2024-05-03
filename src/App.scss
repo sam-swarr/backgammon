@@ -219,7 +219,7 @@
   width: 35%;
 }
 
-.Match-points-settings-row, .Doubling-cube-settings-row {
+.Match-points-settings-row, .Doubling-cube-settings-row, .Url-copy-row {
   align-items: center;
   display: flex;
   height: 15%;
@@ -245,6 +245,109 @@
   vertical-align: middle;
   height: 60%;
   width: 24%;
+}
+
+.Url-title-wrapper {
+  background-image: url("url-title.svg");
+  background-position-y: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
+  vertical-align: middle;
+  height: 40%;
+  width: 14%;
+}
+
+.Url-form-wrapper {
+  align-items: flex-start;
+  container: url-form-container / inline-size;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 80%;
+}
+
+.Url-form .form-control {
+  color: #dcd4d4;
+  background-color: #474747;
+  font-size: 1em;
+}
+
+.Url-form-text {
+  background-color: #332E2E;
+  border-radius: 1vw;
+  border: solid #dcd4d4;
+  color: #dcd4d4;
+  padding: 1vh 1vw 1vh 1vw;
+}
+
+.Url-form-subtext {
+  color: #dcd4d4;
+  margin-left: 1vw;
+  font-size: 0.8em;
+}
+
+@container url-form-container (min-width: 600px) {
+  .Url-form-text {
+    font-size: 1.5em;
+  }
+
+  .Url-form-subtext {
+    font-size: 1.1em;
+  }
+}
+
+.Url-form-text-and-copy {
+  align-items: center;
+  display: flex;
+  width: 100%
+}
+
+.Url-form-copy {
+  background-image: url("copy-icon.svg");
+  background-position-y: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  margin-left: 2%;
+  height: 80%;
+  transition: 0.2s;
+  width: 8%;
+}
+
+.Url-form-copy.highlight {
+  background-image: url("copy-icon-clicked.svg");
+}
+
+.Url-form-copy:hover, .Url-form-copy:active {
+  transform: scale(105%);
+}
+
+.Start-game-button-row {
+  align-items: center;
+  display: flex;
+  height: 15%;
+  justify-content: center;
+  margin-top: 8%;
+  width: 100%;
+}
+
+.Start-game-button {
+  background: linear-gradient(to right, #3F3217, #564112);
+  border-color: #816c3d;
+  border-radius: 1em;
+  border-style: double;
+  border-width: 0.2em;
+  color: #b8b8b8;
+  font-weight: bold;
+  font-family: 'Barlow', sans-serif;
+  font-size: max(1.5vh, 1.5vw);
+  padding: 0.5vh;
+  text-align: center;
+  transition: 0.2s;
+  width: 10vw;
+}
+
+.Start-game-button:hover {
+  transform: scale(105%);
 }
 
 .Doubling-cube-toggle-form {
