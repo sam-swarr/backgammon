@@ -1,8 +1,10 @@
 import { FunctionComponent, useState } from "react";
 import cx from "classnames";
+import Form from "react-bootstrap/Form";
 
 const MatchSettingsMenu: FunctionComponent = () => {
   const [matchPointsValue, setMatchPointsValue] = useState(5);
+  const [enableDoubling, setEnableDoubling] = useState(true);
 
   return (
     <div className={"Match-settings-menu-wrapper"}>
@@ -47,6 +49,27 @@ const MatchSettingsMenu: FunctionComponent = () => {
             onClick={() => setMatchPointsValue(11)}
           />
         </div>
+      </div>
+      <div className={"Doubling-cube-settings-row"}>
+        <div className={"Doubling-cube-text-wrapper"} />
+        <Form className={"Doubling-cube-toggle-form"}>
+          <div
+            className={cx("Doubling-cube-toggle-off", {
+              enabled: !enableDoubling,
+            })}
+          />
+          <Form.Check
+            type={"switch"}
+            className={"Doubling-cube-toggle"}
+            onChange={(e) => setEnableDoubling(e.target.checked)}
+            checked={enableDoubling}
+          />
+          <div
+            className={cx("Doubling-cube-toggle-on", {
+              enabled: enableDoubling,
+            })}
+          />
+        </Form>
       </div>
     </div>
   );

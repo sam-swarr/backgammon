@@ -219,20 +219,77 @@
   width: 35%;
 }
 
-.Match-points-settings-row {
+.Match-points-settings-row, .Doubling-cube-settings-row {
   align-items: center;
   display: flex;
   height: 15%;
+  margin-top: 4%;
   width: 100%;
 }
 
 .Play-to-wrapper {
   background-image: url("play-to.svg");
+  background-position-y: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
   vertical-align: middle;
   height: 60%;
   width: 14%;
+}
+
+.Doubling-cube-text-wrapper {
+  background-image: url("allow-doubling.svg");
+  background-position-y: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
+  vertical-align: middle;
+  height: 60%;
+  width: 24%;
+}
+
+.Doubling-cube-toggle-form {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  margin-left: 4%;
+  width: 50%;
+}
+
+.Doubling-cube-toggle-off, .Doubling-cube-toggle-on {
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 30%;
+  width: 15%;
+}
+
+.Doubling-cube-toggle-off {
+  background-image: url("off-disabled.svg");
+}
+
+.Doubling-cube-toggle-on {
+  background-image: url("on-disabled.svg");
+}
+
+.Doubling-cube-toggle-off.enabled {
+  background-image: url("off-enabled.svg");
+}
+
+.Doubling-cube-toggle-on.enabled {
+  background-image: url("on-enabled.svg");
+}
+
+.Doubling-cube-toggle.form-switch {
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.Doubling-cube-toggle .form-check-input {
+  height: 4vh;
+  width: 6vw;
+}
+
+.Doubling-cube-toggle .form-check-input:checked {
+  background-color: #4488ec;
 }
 
 .Match-points-buttons-wrapper {
@@ -246,6 +303,7 @@
   background-repeat: no-repeat;
   height: 100%;
   cursor: pointer;
+  margin-left: 2%;
   transition: 0.2s;
   width: 15%;
 }
