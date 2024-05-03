@@ -307,6 +307,10 @@
   color: #b8b8b8;
 }
 
+.Game-area-wrapper {
+  filter: drop-shadow(0 0 0.5vh #000000);
+}
+
 .Game-board-half {
   background-image: url(board-background.svg);
   background-size: cover;
