@@ -14,7 +14,7 @@ const WipeTransition = () => {
         dispatch(setWipeTransition(false));
       }, 200);
     }
-  }, [wipeTransition]);
+  }, [dispatch, wipeTransition]);
 
   return (
     <div>
