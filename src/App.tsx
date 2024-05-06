@@ -3,7 +3,6 @@ import cx from "classnames";
 import "./App.scss";
 
 import MainMenu from "./MainMenu";
-import SettingsMenuButton from "./SettingsMenuButton";
 import GameOverDialog from "./GameOverDialog";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NetworkedGameRoom, {
@@ -25,12 +24,7 @@ const App: FunctionComponent<AppProps> = () => {
     },
     {
       path: "/:roomCode",
-      element: (
-        <div>
-          <SettingsMenuButton />
-          <NetworkedGameRoom />
-        </div>
-      ),
+      element: <NetworkedGameRoom />,
       loader: NetworkedGameRoomLoader,
     },
   ]);

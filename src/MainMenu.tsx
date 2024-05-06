@@ -20,6 +20,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
 
   const createOnlineLobby = async function () {
     const createLobbyResult = await createLobby();
+    dispatch(setShowMatchSetupScreen(true));
     navigate("/" + createLobbyResult.roomCode);
   };
 

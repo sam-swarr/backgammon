@@ -6,6 +6,7 @@ import {
   writeAutomaticDoubleToDB,
   writeEndTurnToDB,
   writeGameOverToDB,
+  writeMatchSettingsToDB,
   writeNewGameStateToDB,
 } from "./Firebase";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
@@ -16,8 +17,15 @@ import { setGameBoardState } from "./store/gameBoardSlice";
 import { GameBoardState, Move, Player } from "./Types";
 import { genAnimationID } from "./Utils";
 import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
-import { setDoublingCubeData } from "./store/doublingCubeSlice";
-import { setShowGameOverDialog } from "./store/settingsSlice";
+import {
+  InitialDoublingCubeState,
+  setDoublingCubeData,
+} from "./store/doublingCubeSlice";
+import {
+  setShowGameOverDialog,
+  setShowMatchSetupScreen,
+} from "./store/settingsSlice";
+import { setPointsRequiredToWin } from "./store/matchScoreSlice";
 
 export class Actions {
   /**
@@ -80,6 +88,13 @@ export class Actions {
       | GameState.GameOverBackgammon,
     _losingPlayer: Player,
     _winningMoves: Move[]
+  ): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async updateMatchSettings(
+    _matchPoints: number,
+    _enableDoubling: boolean
   ): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
@@ -170,6 +185,20 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(setState(winningGameState));
     this.dispatchFn(setGameBoardState(newGameBoardState));
     this.dispatchFn(setShowGameOverDialog(true));
+  }
+
+  async updateMatchSettings(
+    pointsRequiredToWin: number,
+    enableDoubling: boolean
+  ): Promise<void> {
+    this.dispatchFn(setPointsRequiredToWin(pointsRequiredToWin));
+    this.dispatchFn(
+      setDoublingCubeData({
+        ...InitialDoublingCubeState,
+        enabled: enableDoubling,
+      })
+    );
+    this.dispatchFn(setShowMatchSetupScreen(false));
   }
 }
 
@@ -305,6 +334,29 @@ export class NetworkedGameActions extends Actions {
       newGameBoardState,
       winningGameState,
       networkedMoves
+    );
+  }
+
+  async updateMatchSettings(
+    pointsRequiredToWin: number,
+    enableDoubling: boolean
+  ): Promise<void> {
+    // Optimistically write these changes to the local store first so that
+    // local client gets a fast update. The same changes will propagate to the
+    // other client via the DB write after this.
+    this.dispatchFn(setPointsRequiredToWin(pointsRequiredToWin));
+    this.dispatchFn(
+      setDoublingCubeData({
+        ...InitialDoublingCubeState,
+        enabled: enableDoubling,
+      })
+    );
+    this.dispatchFn(setShowMatchSetupScreen(false));
+
+    return await writeMatchSettingsToDB(
+      this.docRef,
+      pointsRequiredToWin,
+      enableDoubling
     );
   }
 }

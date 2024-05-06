@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 import { useLoaderData } from "react-router-dom";
-import { useAppDispatch } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   FirestoreGameData,
   findLobby,
@@ -30,6 +30,11 @@ import { setDoublingCubeData } from "./store/doublingCubeSlice";
 import { setMatchScore } from "./store/matchScoreSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
 import { Player } from "./Types";
+import {
+  default as MatchSettingsMenu,
+  MatchPointValue,
+} from "./MatchSettingsMenu";
+import SettingsMenuButton from "./SettingsMenuButton";
 
 type LoaderData = {
   roomCode: string;
@@ -41,8 +46,11 @@ export function loader({ params }: any): LoaderData {
 
 const NetworkedGameRoom: FunctionComponent = () => {
   const { roomCode } = useLoaderData() as LoaderData;
-
+  const [settings] = useAppSelector((state) => [state.settings]);
   const dispatch = useAppDispatch();
+
+  const [matchPointsValue, setMatchPointsValue] = useState<MatchPointValue>(5);
+  const [enableDoubling, setEnableDoubling] = useState(true);
 
   // We wrap the _gameActions state inside a Ref and use the Ref instead.
   // That's because if we just used a normal state variable, the onSnapshot()
@@ -118,15 +126,50 @@ const NetworkedGameRoom: FunctionComponent = () => {
   }, [dispatch, roomCode]);
 
   if (gameActionsRef.current == null) {
+    // Even if we don't have a NetworkedGameActions instance set up yet, we can still
+    // display the match setup screen to the host while the DB loads. The Start Game
+    // button will not do anything until the DB load finishes, but the latency here should
+    // be very low and not noticeable.
+    if (settings.showMatchSetupScreen) {
+      return (
+        <MatchSettingsMenu
+          matchPointsValue={matchPointsValue}
+          enableDoubling={enableDoubling}
+          onMatchPointsChanged={(newValue) => setMatchPointsValue(newValue)}
+          onEnableDoublingChanged={(enabled) => setEnableDoubling(enabled)}
+          roomCode={roomCode}
+        />
+      );
+    }
+    // TODO: add spinner
     return null;
   } else {
+    let contents = null;
+    if (settings.showMatchSetupScreen) {
+      contents = (
+        <MatchSettingsMenu
+          matchPointsValue={matchPointsValue}
+          enableDoubling={enableDoubling}
+          onMatchPointsChanged={(newValue) => setMatchPointsValue(newValue)}
+          onEnableDoublingChanged={(enabled) => setEnableDoubling(enabled)}
+          roomCode={roomCode}
+        />
+      );
+    } else {
+      contents = (
+        <div>
+          <SettingsMenuButton />
+          <GameRoom
+            playerPerspective={
+              gameActionsRef.current.isHostClient() ? Player.One : Player.Two
+            }
+          />
+        </div>
+      );
+    }
     return (
       <ActionsContext.Provider value={gameActionsRef.current}>
-        <GameRoom
-          playerPerspective={
-            gameActionsRef.current.isHostClient() ? Player.One : Player.Two
-          }
-        />
+        {contents}
       </ActionsContext.Provider>
     );
   }

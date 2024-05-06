@@ -267,3 +267,24 @@ export async function writeAutomaticDoubleToDB(docRef: DocumentReference) {
     { merge: true }
   );
 }
+
+export async function writeMatchSettingsToDB(
+  docRef: DocumentReference,
+  pointsRequiredToWin: number,
+  enableDoubling: boolean
+) {
+  return await setDoc(
+    docRef,
+    {
+      matchScore: {
+        pointsRequiredToWin: pointsRequiredToWin,
+      },
+      doublingCube: {
+        owner: null,
+        gameStakes: 1,
+        enabled: enableDoubling,
+      },
+    },
+    { merge: true }
+  );
+}

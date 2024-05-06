@@ -1,22 +1,38 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useContext, useState } from "react";
 import cx from "classnames";
 import Form from "react-bootstrap/Form";
+import { ActionsContext } from "./ActionsContext";
 
+export type MatchPointValue = 1 | 3 | 5 | 7 | 9 | 11;
+
+// Note that we pass matchPointsValue, enableDoubling, and their respective
+// callbacks from above rather than keep track of the state internally. This is
+// because in networked mode, we want to render the match settings as soon as possible
+// before the DB load even finishes. When the load does finish, we then wrap the
+// MatchSettingsMenu in the NetworkedGameActions context. If the state was tracked
+// internally, it would reset at this point which is why we want the parent component
+// to track and manage the state.
 type MatchSettingsMenuProps = {
-  showUrl: boolean;
+  roomCode: string | null;
+  matchPointsValue: MatchPointValue;
+  enableDoubling: boolean;
+  onMatchPointsChanged: (m: MatchPointValue) => void;
+  onEnableDoublingChanged: (e: boolean) => void;
 };
 
 const MatchSettingsMenu: FunctionComponent<MatchSettingsMenuProps> = ({
-  showUrl,
+  roomCode,
+  matchPointsValue,
+  enableDoubling,
+  onMatchPointsChanged,
+  onEnableDoublingChanged,
 }) => {
-  const [matchPointsValue, setMatchPointsValue] = useState(5);
-  const [enableDoubling, setEnableDoubling] = useState(true);
+  const actions = useContext(ActionsContext);
   const [showCopyHighlight, setShowCopyHighlight] = useState(false);
 
-  const url = "sam-swarr.github.io/backgammon/ABCD";
-
   let urlRow = null;
-  if (showUrl) {
+  if (roomCode !== null) {
+    const url = "sam-swarr.github.io/backgammon/" + roomCode;
     urlRow = (
       <div className={"Url-copy-row"}>
         <div className={"Url-title-wrapper"} />
@@ -54,37 +70,37 @@ const MatchSettingsMenu: FunctionComponent<MatchSettingsMenuProps> = ({
             className={cx("Match-points-button", "one", {
               selected: matchPointsValue === 1,
             })}
-            onClick={() => setMatchPointsValue(1)}
+            onClick={() => onMatchPointsChanged(1)}
           />
           <div
             className={cx("Match-points-button", "three", {
               selected: matchPointsValue === 3,
             })}
-            onClick={() => setMatchPointsValue(3)}
+            onClick={() => onMatchPointsChanged(3)}
           />
           <div
             className={cx("Match-points-button", "five", {
               selected: matchPointsValue === 5,
             })}
-            onClick={() => setMatchPointsValue(5)}
+            onClick={() => onMatchPointsChanged(5)}
           />
           <div
             className={cx("Match-points-button", "seven", {
               selected: matchPointsValue === 7,
             })}
-            onClick={() => setMatchPointsValue(7)}
+            onClick={() => onMatchPointsChanged(7)}
           />
           <div
             className={cx("Match-points-button", "nine", {
               selected: matchPointsValue === 9,
             })}
-            onClick={() => setMatchPointsValue(9)}
+            onClick={() => onMatchPointsChanged(9)}
           />
           <div
             className={cx("Match-points-button", "eleven", {
               selected: matchPointsValue === 11,
             })}
-            onClick={() => setMatchPointsValue(11)}
+            onClick={() => onMatchPointsChanged(11)}
           />
         </div>
       </div>
@@ -99,7 +115,7 @@ const MatchSettingsMenu: FunctionComponent<MatchSettingsMenuProps> = ({
           <Form.Check
             type={"switch"}
             className={"Doubling-cube-toggle"}
-            onChange={(e) => setEnableDoubling(e.target.checked)}
+            onChange={(e) => onEnableDoublingChanged(e.target.checked)}
             checked={enableDoubling}
           />
           <div
@@ -114,7 +130,7 @@ const MatchSettingsMenu: FunctionComponent<MatchSettingsMenuProps> = ({
         <button
           className={"Start-game-button"}
           onClick={() => {
-            //TODO
+            actions.updateMatchSettings(matchPointsValue, enableDoubling);
           }}
         >
           Start Game

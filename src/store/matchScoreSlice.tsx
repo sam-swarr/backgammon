@@ -20,6 +20,13 @@ export const matchScoreSlice = createSlice({
     setMatchScore: (_, action: { type: string; payload: MatchScore }) => {
       return action.payload;
     },
+    setPointsRequiredToWin: (
+      state,
+      action: { type: string; payload: number }
+    ) => {
+      state.pointsRequiredToWin = action.payload;
+      return state;
+    },
     resetMatchScore: () => {
       return InitialMatchScoreState;
     },
@@ -27,6 +34,7 @@ export const matchScoreSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setMatchScore, resetMatchScore } = matchScoreSlice.actions;
+export const { setMatchScore, setPointsRequiredToWin, resetMatchScore } =
+  matchScoreSlice.actions;
 
 export default matchScoreSlice.reducer;
