@@ -141,8 +141,8 @@ const NetworkedGameRoom: FunctionComponent = () => {
         />
       );
     }
-    // TODO: add spinner
-    return null;
+    // Show a spinner while data loads
+    return <div className={"Networked-gameboard-spinner"} />;
   } else {
     let contents = null;
     if (settings.showMatchSetupScreen) {

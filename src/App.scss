@@ -121,6 +121,18 @@
   width: 72vw;
 }
 
+.Networked-gameboard-spinner {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  background-image: url("online-multiplayer-button-spinner.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 20%;
+  width: 20%;
+}
+
 .Main-menu-wrapper {
   align-items: center;
   color: white;
