@@ -16,6 +16,11 @@ const OfferDoubleButton: FunctionComponent = () => {
   );
   const actions = useContext(ActionsContext);
 
+  // Return early if doubling is disabled for this match.
+  if (!doublingCubeData.enabled) {
+    return null;
+  }
+
   // Return early here since further logic requires `players` data
   // to be fully set, which won't occur until these states have been
   // reached.
