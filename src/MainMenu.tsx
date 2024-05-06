@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
 import { resetStoreForLocalGame } from "./Utils";
 import { setShowMatchSetupScreen } from "./store/settingsSlice";
+import { setWipeTransition } from "./store/wipeTransitionSlice";
 
 type MainMenuProps = {};
 
@@ -21,6 +22,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
     }
     resetStoreForLocalGame(dispatch);
     dispatch(setShowMatchSetupScreen(true));
+    dispatch(setWipeTransition(true));
     navigate("/local");
   };
 
@@ -31,6 +33,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
     setIsCreatingMultiplayerLobby(true);
     const createLobbyResult = await createLobby();
     dispatch(setShowMatchSetupScreen(true));
+    dispatch(setWipeTransition(true));
     navigate("/" + createLobbyResult.roomCode);
   };
 

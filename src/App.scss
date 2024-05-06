@@ -1517,3 +1517,51 @@ $floating-circle-count: 50;
     }
   }
 }
+
+.Wipe-transition {
+  animation-name: wipe;
+  animation-duration: 200ms;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  background-color: #000000a7;
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 100%;
+}
+
+@keyframes wipe {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.Wipe-fade {
+  animation-name: fade;
+  animation-duration: 200ms;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  background-color: #ffffff00;
+  position: absolute;
+  z-index: 8;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes fade {
+  from {
+    background-color: #ffffff56;
+  }
+  to {
+    background-color: #ffffff00;
+  }
+}

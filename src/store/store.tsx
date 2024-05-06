@@ -11,6 +11,7 @@ import playersSliceReducer from "./playersSlice";
 import animatableMovesReducer from "./animatableMovesSlice";
 import doublingCubeReducer from "./doublingCubeSlice";
 import matchScoreReducer from "./matchScoreSlice";
+import wipeTransitionReducer from "./wipeTransitionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     animatableMoves: animatableMovesReducer,
     doublingCube: doublingCubeReducer,
     matchScore: matchScoreReducer,
+    wipeTransition: wipeTransitionReducer,
   },
 });
 

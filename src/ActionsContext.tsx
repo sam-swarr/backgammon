@@ -26,6 +26,7 @@ import {
   setShowMatchSetupScreen,
 } from "./store/settingsSlice";
 import { setPointsRequiredToWin } from "./store/matchScoreSlice";
+import { setWipeTransition } from "./store/wipeTransitionSlice";
 
 export class Actions {
   /**
@@ -199,6 +200,7 @@ export class LocalGameActions extends Actions {
       })
     );
     this.dispatchFn(setShowMatchSetupScreen(false));
+    this.dispatchFn(setWipeTransition(true));
   }
 }
 
@@ -352,6 +354,7 @@ export class NetworkedGameActions extends Actions {
       })
     );
     this.dispatchFn(setShowMatchSetupScreen(false));
+    this.dispatchFn(setWipeTransition(true));
 
     return await writeMatchSettingsToDB(
       this.docRef,

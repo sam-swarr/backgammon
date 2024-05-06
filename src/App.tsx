@@ -9,6 +9,7 @@ import NetworkedGameRoom, {
   loader as NetworkedGameRoomLoader,
 } from "./NetworkedGameRoom";
 import LocalGameRoom from "./LocalGameRoom";
+import WipeTransition from "./WipeTransition";
 
 type AppProps = {};
 
@@ -43,6 +44,7 @@ const App: FunctionComponent<AppProps> = () => {
 
   return (
     <div className={cx("App-wrapper")}>
+      <WipeTransition />
       <div>{initialFloatingCircles}</div>
       <div>{floatingCircles}</div>
       <GameOverDialog />
