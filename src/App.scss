@@ -191,6 +191,18 @@
   transform: scale(105%);
 }
 
+.Online-multiplayer-button-spinner {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  background-image: url("online-multiplayer-button-spinner.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 40%;
+  width: 100%;
+}
+
 .Credits-text {
   color: #6B7195;
   font-size: 0.6em;

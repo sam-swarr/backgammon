@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 import { createLobby } from "./Firebase";
 import { useNavigate } from "react-router-dom";
@@ -12,17 +12,36 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const createLocalGame = function () {
+  const [isCreatingMultiplayerLobby, setIsCreatingMultiplayerLobby] =
+    useState(false);
+
+  const createLocalGame = () => {
+    if (isCreatingMultiplayerLobby) {
+      return;
+    }
     resetStoreForLocalGame(dispatch);
     dispatch(setShowMatchSetupScreen(true));
     navigate("/local");
   };
 
-  const createOnlineLobby = async function () {
+  const createOnlineLobby = async () => {
+    if (isCreatingMultiplayerLobby) {
+      return;
+    }
+    setIsCreatingMultiplayerLobby(true);
     const createLobbyResult = await createLobby();
     dispatch(setShowMatchSetupScreen(true));
     navigate("/" + createLobbyResult.roomCode);
   };
+
+  let onlineButtonOrSpinner = (
+    <div className={"Online-multiplayer-button"} onClick={createOnlineLobby} />
+  );
+  if (isCreatingMultiplayerLobby) {
+    onlineButtonOrSpinner = (
+      <div className={"Online-multiplayer-button-spinner"} />
+    );
+  }
 
   return (
     <div className={"Main-menu-wrapper"}>
@@ -31,10 +50,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
       </div>
       <div className={"Menu-button-wrapper"}>
         <div className={"Local-multiplayer-button"} onClick={createLocalGame} />
-        <div
-          className={"Online-multiplayer-button"}
-          onClick={createOnlineLobby}
-        />
+        {onlineButtonOrSpinner}
       </div>
       <div className={"Credits-text"}>
         <div>Backgammon v 1.0.0.7bc0921</div>
