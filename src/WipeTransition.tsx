@@ -12,7 +12,7 @@ const WipeTransition = () => {
     if (wipeTransition) {
       setTimeout(() => {
         dispatch(setWipeTransition(false));
-      }, 200);
+      }, 300);
     }
   }, [dispatch, wipeTransition]);
 
