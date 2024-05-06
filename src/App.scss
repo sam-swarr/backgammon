@@ -206,7 +206,7 @@
   height: 60%;
   min-height: 300px;
   min-width: 400px;
-  width: 60%;
+  width: 45%;
 }
 
 .Match-settings-title-wrapper {
@@ -277,13 +277,14 @@
   border-radius: 1vw;
   border: solid #dcd4d4;
   color: #dcd4d4;
+  font-size: 0.9em;
   padding: 1vh 1vw 1vh 1vw;
 }
 
 .Url-form-subtext {
   color: #dcd4d4;
   margin-left: 1vw;
-  font-size: 0.8em;
+  font-size: 0.7em;
 }
 
 @container url-form-container (min-width: 600px) {
@@ -292,7 +293,7 @@
   }
 
   .Url-form-subtext {
-    font-size: 1.1em;
+    font-size: 1em;
   }
 }
 

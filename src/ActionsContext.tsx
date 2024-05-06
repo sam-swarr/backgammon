@@ -122,6 +122,7 @@ export class LocalGameActions extends Actions {
       setDoublingCubeData({
         owner: newDoublingCubeOwner,
         gameStakes: newGameStakes,
+        enabled: true,
       })
     );
     this.dispatchFn(setState(GameState.PlayerRolling));
@@ -132,6 +133,7 @@ export class LocalGameActions extends Actions {
       setDoublingCubeData({
         owner: null,
         gameStakes: 2,
+        enabled: true,
       })
     );
   }
@@ -212,6 +214,7 @@ export class NetworkedGameActions extends Actions {
     const newDoublingCubeData = {
       owner: newDoublingCubeOwner,
       gameStakes: newGameStakes,
+      enabled: true,
     };
 
     // Optimistically update local client.
@@ -227,6 +230,7 @@ export class NetworkedGameActions extends Actions {
       setDoublingCubeData({
         owner: null,
         gameStakes: 2,
+        enabled: true,
       })
     );
 

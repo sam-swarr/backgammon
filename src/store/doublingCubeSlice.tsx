@@ -4,11 +4,13 @@ import { Player } from "../Types";
 export type DoublingCubeData = {
   owner: Player | null;
   gameStakes: number;
+  enabled: boolean;
 };
 
 export const InitialDoublingCubeState: DoublingCubeData = {
   owner: null,
   gameStakes: 1,
+  enabled: true,
 };
 
 export const doublingCubeSlice = createSlice({

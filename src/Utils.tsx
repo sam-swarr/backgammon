@@ -15,6 +15,8 @@ import { clearLastPointClicked } from "./store/lastPointClickedSlice";
 import { performInitialRolls } from "./store/dice";
 import { setDiceState } from "./store/diceSlice";
 import { setCurrentPlayer } from "./store/currentPlayerSlice";
+import { resetDoublingCubeData } from "./store/doublingCubeSlice";
+import { resetMatchScore } from "./store/matchScoreSlice";
 
 /**
  * Certain actions or pieces of UI should only be performed or shown to
@@ -92,4 +94,6 @@ export function resetStoreForLocalGame(dispatchFn: Function): void {
   dispatchFn(clearProvisionalMoves());
   dispatchFn(clearLastPointClicked());
   dispatchFn(resetAnimatableMoves());
+  dispatchFn(resetDoublingCubeData());
+  dispatchFn(resetMatchScore());
 }

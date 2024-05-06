@@ -2,12 +2,47 @@ import { FunctionComponent, useState } from "react";
 import cx from "classnames";
 import Form from "react-bootstrap/Form";
 
-const MatchSettingsMenu: FunctionComponent = () => {
+type MatchSettingsMenuProps = {
+  showUrl: boolean;
+};
+
+const MatchSettingsMenu: FunctionComponent<MatchSettingsMenuProps> = ({
+  showUrl,
+}) => {
   const [matchPointsValue, setMatchPointsValue] = useState(5);
   const [enableDoubling, setEnableDoubling] = useState(true);
   const [showCopyHighlight, setShowCopyHighlight] = useState(false);
 
   const url = "sam-swarr.github.io/backgammon/ABCD";
+
+  let urlRow = null;
+  if (showUrl) {
+    urlRow = (
+      <div className={"Url-copy-row"}>
+        <div className={"Url-title-wrapper"} />
+        <div className={"Url-form-wrapper"}>
+          <div className={"Url-form-text-and-copy"}>
+            <div className={"Url-form-text"}>{url}</div>
+            <div
+              className={cx("Url-form-copy", {
+                highlight: showCopyHighlight,
+              })}
+              onClick={() => {
+                navigator.clipboard.writeText(url);
+                setShowCopyHighlight(true);
+                setTimeout(() => {
+                  setShowCopyHighlight(false);
+                }, 300);
+              }}
+            />
+          </div>
+          <div className={"Url-form-subtext"}>
+            Have your friend connect to this address
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={"Match-settings-menu-wrapper"}>
@@ -74,31 +109,16 @@ const MatchSettingsMenu: FunctionComponent = () => {
           />
         </Form>
       </div>
-      <div className={"Url-copy-row"}>
-        <div className={"Url-title-wrapper"} />
-        <div className={"Url-form-wrapper"}>
-          <div className={"Url-form-text-and-copy"}>
-            <div className={"Url-form-text"}>{url}</div>
-            <div
-              className={cx("Url-form-copy", {
-                highlight: showCopyHighlight,
-              })}
-              onClick={() => {
-                navigator.clipboard.writeText(url);
-                setShowCopyHighlight(true);
-                setTimeout(() => {
-                  setShowCopyHighlight(false);
-                }, 300);
-              }}
-            />
-          </div>
-          <div className={"Url-form-subtext"}>
-            Have your friend connect to this address
-          </div>
-        </div>
-      </div>
+      {urlRow}
       <div className={"Start-game-button-row"}>
-        <button className={"Start-game-button"}>Start Game</button>
+        <button
+          className={"Start-game-button"}
+          onClick={() => {
+            //TODO
+          }}
+        >
+          Start Game
+        </button>
       </div>
     </div>
   );

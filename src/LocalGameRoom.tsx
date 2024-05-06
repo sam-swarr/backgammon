@@ -11,16 +11,22 @@ const LocalGameRoom: FunctionComponent = () => {
   const [settings] = useAppSelector((state) => [state.settings]);
   const dispatch = useAppDispatch();
 
+  let contents = null;
   if (settings.showMatchSetupScreen) {
-    return <MatchSettingsMenu />;
+    contents = <MatchSettingsMenu showUrl={false} />;
   } else {
-    return (
-      <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
+    contents = (
+      <div>
         <SettingsMenuButton />
         <GameRoom playerPerspective={Player.One} />
-      </ActionsContext.Provider>
+      </div>
     );
   }
+  return (
+    <ActionsContext.Provider value={new LocalGameActions(dispatch)}>
+      {contents}
+    </ActionsContext.Provider>
+  );
 };
 
 export default LocalGameRoom;
