@@ -11,7 +11,7 @@ import {
   signIn,
 } from "./Firebase";
 import { onSnapshot } from "firebase/firestore";
-import { setState } from "./store/gameStateSlice";
+import { GameState, setState } from "./store/gameStateSlice";
 import { setPlayersState } from "./store/playersSlice";
 import {
   Actions,
@@ -35,6 +35,7 @@ import {
   MatchPointValue,
 } from "./MatchSettingsMenu";
 import SettingsMenuButton from "./SettingsMenuButton";
+import { setShowGameOverDialog } from "./store/settingsSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -110,6 +111,14 @@ const NetworkedGameRoom: FunctionComponent = () => {
             }
             isHost = false;
           }
+          // In this case, we're reconnecting to an existing lobby. Assign isHost
+          // if the player reconnecting is Player.One.
+          else {
+            let uid = getCurrentUser().uid;
+            isHost =
+              data.players.playerOne != null &&
+              data.players.playerOne.uid === uid;
+          }
 
           // This is the first DB read for this session, so update the gameBoardState directly
           // (since this could be a client reconnecting mid-game). From here on, the client
@@ -118,6 +127,16 @@ const NetworkedGameRoom: FunctionComponent = () => {
           if (gameActionsRef.current == null) {
             dispatch(setGameBoardState(data.gameBoard));
             setGameActions(new NetworkedGameActions(isHost, dispatch, docRef));
+
+            // If we're reconnecting to a game that's in a game over state, trigger
+            // the Game Over dialog again.
+            if (
+              data.gameState === GameState.GameOver ||
+              data.gameState === GameState.GameOverGammon ||
+              data.gameState === GameState.GameOverBackgammon
+            ) {
+              dispatch(setShowGameOverDialog(true));
+            }
           }
         });
       }
