@@ -22,14 +22,21 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   side,
   playerPerspective,
 }: PlayerCardProps) => {
-  const [gameBoardState, settings, currentPlayer, doublingCubeData, gameState] =
-    useAppSelector((state) => [
-      state.gameBoard,
-      state.settings,
-      state.currentPlayer,
-      state.doublingCube,
-      state.gameState,
-    ]);
+  const [
+    gameBoardState,
+    settings,
+    currentPlayer,
+    doublingCubeData,
+    gameState,
+    matchScore,
+  ] = useAppSelector((state) => [
+    state.gameBoard,
+    state.settings,
+    state.currentPlayer,
+    state.doublingCube,
+    state.gameState,
+    state.matchScore,
+  ]);
   let actions = useContext(ActionsContext);
 
   let playerOneColor = settings.playerOneColor;
@@ -41,6 +48,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   let playerName = "";
   let pips = 167;
   let color = Color.Black;
+  let playerScore = 0;
   if (side === PlayerCardSide.Bottom) {
     if (actions instanceof LocalGameActions) {
       playerName = playerPerspective === Player.One ? "Player 1" : "Player 2";
@@ -52,6 +60,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     if (doublingCubeData.owner === playerPerspective) {
       doublingCube = <DoublingCube />;
     }
+    playerScore = matchScore[playerPerspective];
   } else {
     if (actions instanceof LocalGameActions) {
       playerName = playerPerspective === Player.One ? "Player 2" : "Player 1";
@@ -69,9 +78,11 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     ) {
       doublingCube = <DoublingCube />;
     }
+    playerScore =
+      playerPerspective === Player.One
+        ? matchScore[Player.Two]
+        : matchScore[Player.One];
   }
-
-  let playerScore = 0;
 
   return (
     <div
@@ -106,7 +117,12 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
         <div className={"Player-score-wrapper"}>
           <div className={"Player-pip-count-wrapper"}>{"Pips: " + pips}</div>
           <div className={"Player-points-wrapper"}>
-            {"Points: " + playerScore}
+            {"Points: " + playerScore + " of "}
+            {
+              <span className={"Player-card-total-match-points"}>
+                {matchScore.pointsRequiredToWin}
+              </span>
+            }
           </div>
         </div>
       </div>
