@@ -72,7 +72,10 @@ export function genAnimationID(): number {
   return currID++ % Number.MAX_SAFE_INTEGER;
 }
 
-export function resetStoreForLocalGame(dispatchFn: Function): void {
+export function resetLocalStore(
+  dispatchFn: Function,
+  shouldResetMatchScore: boolean
+): void {
   const newRolls = performInitialRolls();
   const newDiceState = {
     initialRolls: newRolls,
@@ -95,5 +98,7 @@ export function resetStoreForLocalGame(dispatchFn: Function): void {
   dispatchFn(clearLastPointClicked());
   dispatchFn(resetAnimatableMoves());
   dispatchFn(resetDoublingCubeData());
-  dispatchFn(resetMatchScore());
+  if (shouldResetMatchScore) {
+    dispatchFn(resetMatchScore());
+  }
 }

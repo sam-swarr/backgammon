@@ -228,6 +228,7 @@ export async function writeGameOverToDB(
     | GameState.GameOver
     | GameState.GameOverGammon
     | GameState.GameOverBackgammon,
+  newMatchScore: MatchScore,
   networkedMoves: NetworkedMovesPayload
 ) {
   return await setDoc(
@@ -236,6 +237,7 @@ export async function writeGameOverToDB(
       gameBoard: newGameBoardState,
       gameState: winningGameState,
       networkedMoves,
+      matchScore: newMatchScore,
     },
     { merge: true }
   );
@@ -283,6 +285,31 @@ export async function writeMatchSettingsToDB(
         owner: null,
         gameStakes: 1,
         enabled: enableDoubling,
+      },
+    },
+    { merge: true }
+  );
+}
+
+export async function writeNewGameStartToDB(docRef: DocumentReference) {
+  const initialRolls = performInitialRolls();
+  const startingRoll = initialRolls[Object.keys(initialRolls).length - 1];
+
+  return await setDoc(
+    docRef,
+    {
+      gameBoard: STARTING_BOARD_STATE,
+      gameState: GameState.WaitingToBegin,
+      currentPlayer:
+        startingRoll[0] > startingRoll[1] ? Player.One : Player.Two,
+      dice: {
+        initialRolls: initialRolls,
+        currentRoll: startingRoll,
+      },
+      networkedMoves: null,
+      doublingCube: {
+        owner: null,
+        gameStakes: 1,
       },
     },
     { merge: true }

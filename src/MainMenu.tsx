@@ -3,7 +3,7 @@ import { FunctionComponent, useState } from "react";
 import { createLobby } from "./Firebase";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./store/hooks";
-import { resetStoreForLocalGame } from "./Utils";
+import { resetLocalStore } from "./Utils";
 import { setShowMatchSetupScreen } from "./store/settingsSlice";
 import { setWipeTransition } from "./store/wipeTransitionSlice";
 
@@ -20,7 +20,7 @@ const MainMenu: FunctionComponent<MainMenuProps> = () => {
     if (isCreatingMultiplayerLobby) {
       return;
     }
-    resetStoreForLocalGame(dispatch);
+    resetLocalStore(dispatch, true);
     dispatch(setShowMatchSetupScreen(true));
     dispatch(setWipeTransition(true));
     navigate("/local");

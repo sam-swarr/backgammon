@@ -3,7 +3,6 @@ import cx from "classnames";
 import "./App.scss";
 
 import MainMenu from "./MainMenu";
-import GameOverDialog from "./GameOverDialog";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NetworkedGameRoom, {
   loader as NetworkedGameRoomLoader,
@@ -47,7 +46,6 @@ const App: FunctionComponent<AppProps> = () => {
       <WipeTransition />
       <div>{initialFloatingCircles}</div>
       <div>{floatingCircles}</div>
-      <GameOverDialog />
       <RouterProvider router={router} />
     </div>
   );

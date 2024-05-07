@@ -979,26 +979,76 @@
   top: 2%;
 }
 
-.Settings-menu .modal-content {
+.Settings-menu .modal-content, .Game-over-dialog .modal-content {
   background-color: #abafc2;
   border: 0.5vw solid #636781;
   border-radius: 1vw;
   font-family: 'Barlow', sans-serif;
 }
 
-.Settings-menu .modal-header {
+.Game-over-dialog {
+  text-align: center;
+}
+
+.Game-over-dialog .modal-title {
+  font-size: 2em;
+}
+
+.Settings-menu .modal-header, .Game-over-dialog .modal-header {
   border-bottom: 1px solid rgb(78, 96, 124);
 }
 
-.Settings-menu .modal-footer {
+.Game-over-dialog .modal-header {
+  display: block;
+}
+
+.Game-over-dialog-winner-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 4%;
+}
+
+.Game-over-dialog-winner-checker-wrapper {
+  display: flex;
+  height: 3.5em;
+  width: 12.6%;
+}
+
+.Game-over-dialog-winner-checker-wrapper.left {
+  justify-content: flex-end;
+}
+
+.Game-over-dialog-winner-text {
+  font-size: 1.2em;
+  font-weight: bold;
+  width: 70%;
+}
+
+.Game-over-dialog-gammon-text {
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.Game-over-dialog-winner-checker-wrapper .Checker {
+  height: 100%;
+  width: 100%;
+}
+
+.Game-over-dialog .modal-footer {
+  justify-content: center;
+}
+
+.Settings-menu .modal-footer, .Game-over-dialog .modal-footer {
   border-top: 1px solid rgb(78, 96, 124);
 }
 
-.Settings-menu .modal-body {
+.Settings-menu .modal-body, .Game-over-dialog .modal-body {
   padding: 0;
 }
 
-.Settings-menu .modal-footer .btn {
+.Settings-menu .modal-footer .btn, .Game-over-dialog .modal-footer .btn {
   background-color: #354e74;
   border-color: rgb(24 38 61);
   border-width: 0.2vh;
@@ -1145,35 +1195,6 @@
     height: 3vh;
     width: 3vh;
   }
-}
-
-.Game-over-dialog .modal-content {
-  background-color:rgb(132, 171, 203);
-  border: 0.5vw solid rgb(78, 96, 124);
-  font-family: 'Barlow', sans-serif;
-}
-
-.Game-over-dialog .modal-header {
-  border-bottom: 1px solid rgb(78, 96, 124);
-  justify-content: center;
-}
-
-.Game-over-dialog .modal-title {
-  font-size: 3.5vw;
-}
-
-.Game-over-dialog .modal-body {
-  text-align: center;
-}
-
-.Game-over-dialog .modal-footer {
-  border-top: 1px solid rgb(78, 96, 124);
-  justify-content: center;
-}
-
-.Game-over-dialog .modal-footer .btn {
-  background-color: #4e607c;
-  border-color: rgb(78, 96, 124);
 }
 
 /********

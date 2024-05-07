@@ -3,6 +3,7 @@ import GameBoard from "./GameBoard";
 import { Player } from "./Types";
 import PlayerCard, { PlayerCardSide } from "./PlayerCard";
 import SettingsMenu from "./SettingsMenu";
+import GameOverDialog from "./GameOverDialog";
 
 type GameRoomProps = {
   playerPerspective: Player;
@@ -14,6 +15,7 @@ const GameRoom: FunctionComponent<GameRoomProps> = ({
   return (
     <div className={"Game-area-wrapper"}>
       <SettingsMenu playerPerspective={playerPerspective} />
+      <GameOverDialog playerPerspective={playerPerspective} />
       <PlayerCard
         side={PlayerCardSide.Top}
         playerPerspective={playerPerspective}

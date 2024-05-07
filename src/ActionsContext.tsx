@@ -7,6 +7,7 @@ import {
   writeEndTurnToDB,
   writeGameOverToDB,
   writeMatchSettingsToDB,
+  writeNewGameStartToDB,
   writeNewGameStateToDB,
 } from "./Firebase";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
@@ -15,7 +16,7 @@ import { setCurrentPlayer } from "./store/currentPlayerSlice";
 import { rollDice } from "./store/diceSlice";
 import { setGameBoardState } from "./store/gameBoardSlice";
 import { GameBoardState, Move, Player } from "./Types";
-import { genAnimationID } from "./Utils";
+import { genAnimationID, resetLocalStore } from "./Utils";
 import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
 import {
   InitialDoublingCubeState,
@@ -25,7 +26,11 @@ import {
   setShowGameOverDialog,
   setShowMatchSetupScreen,
 } from "./store/settingsSlice";
-import { setPointsRequiredToWin } from "./store/matchScoreSlice";
+import {
+  MatchScore,
+  setMatchScore,
+  setPointsRequiredToWin,
+} from "./store/matchScoreSlice";
 import { setWipeTransition } from "./store/wipeTransitionSlice";
 
 export class Actions {
@@ -87,6 +92,7 @@ export class Actions {
       | GameState.GameOver
       | GameState.GameOverGammon
       | GameState.GameOverBackgammon,
+    _newMatchScore: MatchScore,
     _losingPlayer: Player,
     _winningMoves: Move[]
   ): Promise<void> {
@@ -97,6 +103,10 @@ export class Actions {
     _matchPoints: number,
     _enableDoubling: boolean
   ): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async nextGameButtonClicked(): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
 }
@@ -178,6 +188,7 @@ export class LocalGameActions extends Actions {
       | GameState.GameOver
       | GameState.GameOverGammon
       | GameState.GameOverBackgammon,
+    newMatchScore: MatchScore,
     _losingPlayer: Player,
     _winningMoves: Move[]
   ): Promise<void> {
@@ -185,6 +196,7 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(clearLastPointClicked());
     this.dispatchFn(setState(winningGameState));
     this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setMatchScore(newMatchScore));
     this.dispatchFn(setShowGameOverDialog(true));
   }
 
@@ -200,6 +212,12 @@ export class LocalGameActions extends Actions {
       })
     );
     this.dispatchFn(setShowMatchSetupScreen(false));
+    this.dispatchFn(setWipeTransition(true));
+  }
+
+  async nextGameButtonClicked(): Promise<void> {
+    resetLocalStore(this.dispatchFn, false);
+    this.dispatchFn(setShowGameOverDialog(false));
     this.dispatchFn(setWipeTransition(true));
   }
 }
@@ -312,6 +330,7 @@ export class NetworkedGameActions extends Actions {
       | GameState.GameOver
       | GameState.GameOverGammon
       | GameState.GameOverBackgammon,
+    newMatchScore: MatchScore,
     losingPlayer: Player,
     winningMoves: Move[]
   ): Promise<void> {
@@ -329,12 +348,14 @@ export class NetworkedGameActions extends Actions {
     // other client via the DB write after this.
     this.dispatchFn(setState(winningGameState));
     this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setMatchScore(newMatchScore));
     this.dispatchFn(setShowGameOverDialog(true));
 
     return await writeGameOverToDB(
       this.docRef,
       newGameBoardState,
       winningGameState,
+      newMatchScore,
       networkedMoves
     );
   }
@@ -361,6 +382,17 @@ export class NetworkedGameActions extends Actions {
       pointsRequiredToWin,
       enableDoubling
     );
+  }
+
+  async nextGameButtonClicked(): Promise<void> {
+    // Optimistically write these changes to the local store first so that
+    // local client gets a fast update. The same changes will propagate to the
+    // other client via the DB write after this.
+    resetLocalStore(this.dispatchFn, false);
+    this.dispatchFn(setShowGameOverDialog(false));
+    this.dispatchFn(setWipeTransition(true));
+
+    return await writeNewGameStartToDB(this.docRef);
   }
 }
 

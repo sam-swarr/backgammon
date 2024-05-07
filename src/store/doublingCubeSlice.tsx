@@ -23,8 +23,11 @@ export const doublingCubeSlice = createSlice({
     ) => {
       return action.payload;
     },
-    resetDoublingCubeData: () => {
-      return InitialDoublingCubeState;
+    resetDoublingCubeData: (state) => {
+      return {
+        ...InitialDoublingCubeState,
+        enabled: state.enabled,
+      };
     },
   },
 });

@@ -38,6 +38,7 @@ import {
 import RollButton from "./RollButton";
 import OfferDoubleButton from "./OfferDoubleButton";
 import { CHECKER_ANIMATION_PULSE_TIMER_MS } from "./Constants";
+import { MatchScore } from "./store/matchScoreSlice";
 
 enum BoardQuadrants {
   TopLeft = "TOP_LEFT",
@@ -158,6 +159,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     provisionalMoves,
     players,
     animatableMoves,
+    matchScore,
+    doublingCubeData,
   ] = useAppSelector((state) => [
     state.currentPlayer,
     state.settings,
@@ -168,6 +171,8 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     state.provisionalMoves,
     state.players,
     state.animatableMoves,
+    state.matchScore,
+    state.doublingCube,
   ]);
   const actions = useContext(ActionsContext);
 
@@ -220,14 +225,33 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
       // player.
       if (isCurrentPlayer(players, currentPlayer, actions)) {
         let winningGameState = GameState.GameOver;
+        let multiplier = 1;
         if (gameResult === GameResult.PlayerWonGammon) {
           winningGameState = GameState.GameOverGammon;
+          multiplier = 2;
         } else if (gameResult === GameResult.PlayerWonBackgammon) {
           winningGameState = GameState.GameOverBackgammon;
+          multiplier = 3;
         }
+
+        const pointsWon =
+          (doublingCubeData.enabled ? doublingCubeData.gameStakes : 1) *
+          multiplier;
+
+        const newMatchScore: MatchScore = {
+          [Player.One]:
+            matchScore[Player.One] +
+            (currentPlayer === Player.One ? pointsWon : 0),
+          [Player.Two]:
+            matchScore[Player.Two] +
+            (currentPlayer === Player.Two ? pointsWon : 0),
+          pointsRequiredToWin: matchScore.pointsRequiredToWin,
+        };
+
         actions.gameOver(
           gameBoardState,
           winningGameState,
+          newMatchScore,
           currentPlayer === Player.One ? Player.Two : Player.One,
           provisionalMoves
         );

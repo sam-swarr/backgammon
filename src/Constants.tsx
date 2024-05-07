@@ -4,8 +4,8 @@ export const STARTING_BOARD_STATE: GameBoardState = {
   pointsState: [
     // 0
     {
-      [Player.One]: 0,
-      [Player.Two]: 2,
+      [Player.One]: 2,
+      [Player.Two]: 0,
     },
     // 1
     {
@@ -29,7 +29,7 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     },
     // 5
     {
-      [Player.One]: 5,
+      [Player.One]: 0,
       [Player.Two]: 0,
     },
 
@@ -40,7 +40,7 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     },
     // 7
     {
-      [Player.One]: 3,
+      [Player.One]: 0,
       [Player.Two]: 0,
     },
     // 8
@@ -61,12 +61,12 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     // 11
     {
       [Player.One]: 0,
-      [Player.Two]: 5,
+      [Player.Two]: 0,
     },
 
     // 12
     {
-      [Player.One]: 5,
+      [Player.One]: 0,
       [Player.Two]: 0,
     },
     // 13
@@ -87,7 +87,7 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     // 16
     {
       [Player.One]: 0,
-      [Player.Two]: 3,
+      [Player.Two]: 0,
     },
     // 17
     {
@@ -98,7 +98,7 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     // 18
     {
       [Player.One]: 0,
-      [Player.Two]: 5,
+      [Player.Two]: 0,
     },
     // 19
     {
@@ -122,8 +122,8 @@ export const STARTING_BOARD_STATE: GameBoardState = {
     },
     // 23
     {
-      [Player.One]: 2,
-      [Player.Two]: 0,
+      [Player.One]: 0,
+      [Player.Two]: 2,
     },
   ],
   barState: {
