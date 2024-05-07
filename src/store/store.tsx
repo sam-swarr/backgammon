@@ -12,6 +12,7 @@ import animatableMovesReducer from "./animatableMovesSlice";
 import doublingCubeReducer from "./doublingCubeSlice";
 import matchScoreReducer from "./matchScoreSlice";
 import wipeTransitionReducer from "./wipeTransitionSlice";
+import readyForNextGameReducer from "./readyForNextGameSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     doublingCube: doublingCubeReducer,
     matchScore: matchScoreReducer,
     wipeTransition: wipeTransitionReducer,
+    readyForNextGame: readyForNextGameReducer,
   },
 });
 

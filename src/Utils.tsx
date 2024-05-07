@@ -102,3 +102,11 @@ export function resetLocalStore(
     dispatchFn(resetMatchScore());
   }
 }
+
+export function isGameOverState(gameState: GameState): boolean {
+  return (
+    gameState === GameState.GameOver ||
+    gameState === GameState.GameOverGammon ||
+    gameState === GameState.GameOverBackgammon
+  );
+}

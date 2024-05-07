@@ -24,7 +24,7 @@ import {
   enqueueNetworkedMoves,
   invalidateNetworkedMoves,
 } from "./store/animatableMovesSlice";
-import { getClientPlayer } from "./Utils";
+import { getClientPlayer, isGameOverState } from "./Utils";
 import GameRoom from "./GameRoom";
 import { setDoublingCubeData } from "./store/doublingCubeSlice";
 import { setMatchScore } from "./store/matchScoreSlice";
@@ -36,6 +36,7 @@ import {
 } from "./MatchSettingsMenu";
 import SettingsMenuButton from "./SettingsMenuButton";
 import { setShowGameOverDialog } from "./store/settingsSlice";
+import { setReadyForNextGameData } from "./store/readyForNextGameSlice";
 
 type LoaderData = {
   roomCode: string;
@@ -81,6 +82,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
           dispatch(setDiceState(data.dice));
           dispatch(setDoublingCubeData(data.doublingCube));
           dispatch(setMatchScore(data.matchScore));
+          dispatch(setReadyForNextGameData(data.readyForNextGame));
           if (
             data.networkedMoves != null &&
             getClientPlayer(data.players) === data.networkedMoves.animateFor
@@ -94,6 +96,11 @@ const NetworkedGameRoom: FunctionComponent = () => {
             } else {
               dispatch(enqueueNetworkedMoves(data.networkedMoves));
             }
+          }
+          // If we're transitioning back to WaitingForBegin (e.g. after both players ready up
+          // after previous game ended) then we should explicitly overwrite local gameBoardState.
+          if (data.gameState === GameState.WaitingToBegin) {
+            dispatch(setGameBoardState(data.gameBoard));
           }
 
           // Handle case where 2nd player is just joining for the first time
@@ -130,11 +137,7 @@ const NetworkedGameRoom: FunctionComponent = () => {
 
             // If we're reconnecting to a game that's in a game over state, trigger
             // the Game Over dialog again.
-            if (
-              data.gameState === GameState.GameOver ||
-              data.gameState === GameState.GameOverGammon ||
-              data.gameState === GameState.GameOverBackgammon
-            ) {
+            if (isGameOverState(data.gameState)) {
               dispatch(setShowGameOverDialog(true));
             }
           }

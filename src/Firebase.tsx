@@ -24,6 +24,10 @@ import { GameBoardState, Player } from "./Types";
 import { STARTING_BOARD_STATE } from "./Constants";
 import { NetworkedMovesPayload } from "./store/animatableMovesSlice";
 import {
+  InitialReadyForNextGameData,
+  ReadyForNextGameData,
+} from "./store/readyForNextGameSlice";
+import {
   DoublingCubeData,
   InitialDoublingCubeState,
 } from "./store/doublingCubeSlice";
@@ -99,6 +103,7 @@ export type FirestoreGameData = {
   roomCode: string;
   doublingCube: DoublingCubeData;
   matchScore: MatchScore;
+  readyForNextGame: ReadyForNextGameData;
   timeCreated: FieldValue;
 };
 
@@ -132,6 +137,7 @@ export async function createLobby(): Promise<CreateLobbyResult> {
     networkedMoves: null,
     doublingCube: InitialDoublingCubeState,
     matchScore: InitialMatchScoreState,
+    readyForNextGame: InitialReadyForNextGameData,
     timeCreated: serverTimestamp(),
   };
 
@@ -291,6 +297,19 @@ export async function writeMatchSettingsToDB(
   );
 }
 
+export async function writePlayerReadyForNextGameToDB(
+  docRef: DocumentReference,
+  newReadyForNextGameData: ReadyForNextGameData
+) {
+  return await setDoc(
+    docRef,
+    {
+      readyForNextGame: newReadyForNextGameData,
+    },
+    { merge: true }
+  );
+}
+
 export async function writeNewGameStartToDB(docRef: DocumentReference) {
   const initialRolls = performInitialRolls();
   const startingRoll = initialRolls[Object.keys(initialRolls).length - 1];
@@ -311,6 +330,7 @@ export async function writeNewGameStartToDB(docRef: DocumentReference) {
         owner: null,
         gameStakes: 1,
       },
+      readyForNextGame: InitialReadyForNextGameData,
     },
     { merge: true }
   );

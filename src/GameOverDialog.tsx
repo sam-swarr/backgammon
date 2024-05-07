@@ -3,10 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 import { Color, Player } from "./Types";
-import { useAppSelector } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { GameState } from "./store/gameStateSlice";
 import { ActionsContext, LocalGameActions } from "./ActionsContext";
 import Checker, { CheckerStatus } from "./Checker";
+import { useNavigate } from "react-router-dom";
+import { setWipeTransition } from "./store/wipeTransitionSlice";
+import { resetLocalStore } from "./Utils";
 
 type GameOverDialogProps = {
   playerPerspective: Player;
@@ -15,21 +18,37 @@ type GameOverDialogProps = {
 const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
   playerPerspective,
 }) => {
-  const [gameState, settings, currentPlayer, matchScore] = useAppSelector(
-    (state) => [
+  const [gameState, settings, currentPlayer, matchScore, readyForNextGameData] =
+    useAppSelector((state) => [
       state.gameState,
       state.settings,
       state.currentPlayer,
       state.matchScore,
-    ]
-  );
+      state.readyForNextGame,
+    ]);
   let actions = useContext(ActionsContext);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const startNextGame = () => {
-    actions.nextGameButtonClicked();
+    if (actions.isHostClient()) {
+      actions.nextGameButtonClicked({
+        ...readyForNextGameData,
+        [Player.One]: true,
+      });
+    } else {
+      actions.nextGameButtonClicked({
+        ...readyForNextGameData,
+        [Player.Two]: true,
+      });
+    }
   };
 
-  const returnToMenu = () => {};
+  const returnToMenu = () => {
+    resetLocalStore(dispatch, true);
+    dispatch(setWipeTransition(true));
+    navigate("/");
+  };
 
   const isMatchWin =
     matchScore[currentPlayer] >= matchScore.pointsRequiredToWin;

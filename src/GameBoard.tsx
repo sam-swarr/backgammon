@@ -29,7 +29,7 @@ import Home from "./Home";
 import { Animation, createAnimationData } from "./Animations";
 import BeginGameButton from "./BeginGameButton";
 import OpeningDiceRoll from "./OpeningDiceRoll";
-import { isCurrentPlayer } from "./Utils";
+import { isCurrentPlayer, isGameOverState } from "./Utils";
 import { ActionsContext } from "./ActionsContext";
 import {
   dequeueAnimatableMove,
@@ -161,6 +161,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     animatableMoves,
     matchScore,
     doublingCubeData,
+    readyForNextGameData,
   ] = useAppSelector((state) => [
     state.currentPlayer,
     state.settings,
@@ -173,6 +174,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     state.animatableMoves,
     state.matchScore,
     state.doublingCube,
+    state.readyForNextGame,
   ]);
   const actions = useContext(ActionsContext);
 
@@ -288,6 +290,18 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     }, CHECKER_ANIMATION_PULSE_TIMER_MS);
     return () => clearInterval(interval);
   }, [checkerPulse]);
+
+  // Check if game is over and both players are ready for next game
+  useEffect(() => {
+    if (
+      actions.isHostClient() &&
+      isGameOverState(gameState) &&
+      readyForNextGameData[Player.One] &&
+      readyForNextGameData[Player.Two]
+    ) {
+      actions.bothPlayersReadyForNextGame();
+    }
+  }, [actions, gameState, readyForNextGameData]);
 
   const isPlayerActivelyMoving =
     gameState === GameState.PlayerMoving &&

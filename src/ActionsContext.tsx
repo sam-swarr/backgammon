@@ -9,6 +9,7 @@ import {
   writeMatchSettingsToDB,
   writeNewGameStartToDB,
   writeNewGameStateToDB,
+  writePlayerReadyForNextGameToDB,
 } from "./Firebase";
 import { clearProvisionalMoves } from "./store/provisionalMovesSlice";
 import { clearLastPointClicked } from "./store/lastPointClickedSlice";
@@ -32,6 +33,10 @@ import {
   setPointsRequiredToWin,
 } from "./store/matchScoreSlice";
 import { setWipeTransition } from "./store/wipeTransitionSlice";
+import {
+  ReadyForNextGameData,
+  setReadyForNextGameData,
+} from "./store/readyForNextGameSlice";
 
 export class Actions {
   /**
@@ -106,7 +111,13 @@ export class Actions {
     console.error("Unexpected use of default ActionsContext.");
   }
 
-  async nextGameButtonClicked(): Promise<void> {
+  async nextGameButtonClicked(
+    _newReadyForNextGameData: ReadyForNextGameData
+  ): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
+  }
+
+  async bothPlayersReadyForNextGame(): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
 }
@@ -215,10 +226,16 @@ export class LocalGameActions extends Actions {
     this.dispatchFn(setWipeTransition(true));
   }
 
-  async nextGameButtonClicked(): Promise<void> {
+  async nextGameButtonClicked(
+    _newReadyForNextGameData: ReadyForNextGameData
+  ): Promise<void> {
     resetLocalStore(this.dispatchFn, false);
     this.dispatchFn(setShowGameOverDialog(false));
     this.dispatchFn(setWipeTransition(true));
+  }
+
+  async bothPlayersReadyForNextGame(): Promise<void> {
+    console.error("Unexpected use of default ActionsContext.");
   }
 }
 
@@ -384,14 +401,22 @@ export class NetworkedGameActions extends Actions {
     );
   }
 
-  async nextGameButtonClicked(): Promise<void> {
-    // Optimistically write these changes to the local store first so that
-    // local client gets a fast update. The same changes will propagate to the
-    // other client via the DB write after this.
-    resetLocalStore(this.dispatchFn, false);
+  async nextGameButtonClicked(
+    newReadyForNextGameData: ReadyForNextGameData
+  ): Promise<void> {
+    // Close game over dialog and write to DB that player is ready
+    // for the next game.
     this.dispatchFn(setShowGameOverDialog(false));
     this.dispatchFn(setWipeTransition(true));
+    this.dispatchFn(setReadyForNextGameData(newReadyForNextGameData));
 
+    return await writePlayerReadyForNextGameToDB(
+      this.docRef,
+      newReadyForNextGameData
+    );
+  }
+
+  async bothPlayersReadyForNextGame(): Promise<void> {
     return await writeNewGameStartToDB(this.docRef);
   }
 }
