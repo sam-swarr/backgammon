@@ -37,6 +37,9 @@ import {
 import SettingsMenuButton from "./SettingsMenuButton";
 import { setShowGameOverDialog } from "./store/settingsSlice";
 import { setReadyForNextGameData } from "./store/readyForNextGameSlice";
+import RoomConnectionError, {
+  RoomConnectionErrorType,
+} from "./RoomConnectionError";
 
 type LoaderData = {
   roomCode: string;
@@ -56,6 +59,9 @@ const NetworkedGameRoom: FunctionComponent = () => {
 
   const [matchPointsValue, setMatchPointsValue] = useState<MatchPointValue>(5);
   const [enableDoubling, setEnableDoubling] = useState(true);
+  const [roomConnectionError, setRoomConnectionError] = useState(
+    RoomConnectionErrorType.None
+  );
 
   // We wrap the _gameActions state inside a Ref and use the Ref instead.
   // That's because if we just used a normal state variable, the onSnapshot()
@@ -86,7 +92,8 @@ const NetworkedGameRoom: FunctionComponent = () => {
       const docRef = await findLobby(roomCode);
       if (docRef == null) {
         console.error("No lobby found with code: " + roomCode);
-        // TODO: show error screen
+        setRoomConnectionError(RoomConnectionErrorType.NotFound);
+        return;
       } else {
         onSnapshot(docRef, (doc) => {
           // Dispatch all relevant updates to the redux store
@@ -138,7 +145,8 @@ const NetworkedGameRoom: FunctionComponent = () => {
                   getCurrentUser().uid +
                   " but room is full."
               );
-              // TODO: show error screen
+              setRoomConnectionError(RoomConnectionErrorType.TooManyPlayers);
+              return;
             } else {
               joinLobbyAsPlayerTwo(docRef);
             }
@@ -189,8 +197,16 @@ const NetworkedGameRoom: FunctionComponent = () => {
         />
       );
     }
-    // Show a spinner while data loads
-    return <div className={"Networked-gameboard-spinner"} />;
+    let spinnerOrError = null;
+    if (roomConnectionError !== RoomConnectionErrorType.None) {
+      spinnerOrError = (
+        <RoomConnectionError type={roomConnectionError} roomCode={roomCode} />
+      );
+    } else {
+      spinnerOrError = <div className={"Networked-gameboard-spinner"} />;
+    }
+    // Show a spinner while data loads or error message if we cannot connect to lobby
+    return spinnerOrError;
   } else {
     let contents = null;
     if (settings.showMatchSetupScreen) {

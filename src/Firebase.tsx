@@ -5,6 +5,7 @@ import {
   DocumentReference,
   FieldValue,
   Firestore,
+  Timestamp,
   addDoc,
   collection,
   getDocs,
@@ -155,9 +156,13 @@ export async function findLobby(
   initialize();
 
   const lobbiesRef = collection(db, "lobbies");
+  const timestampSixHoursAgo = Timestamp.fromDate(
+    new Date(Date.now() - 6 * 60 * 60 * 1000)
+  );
   const q = query(
     lobbiesRef,
     where("roomCode", "==", roomCode),
+    where("timeCreated", ">=", timestampSixHoursAgo),
     orderBy("timeCreated", "desc"),
     limit(1)
   );
