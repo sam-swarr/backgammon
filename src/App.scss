@@ -73,7 +73,7 @@
   animation-duration: 2000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  background-image: url("loading-spinner.svg");
+  background-image: url("assets/loading-spinner.svg");
   background-position: center;
   background-repeat: no-repeat;
   height: 40%;
@@ -126,7 +126,7 @@
   animation-duration: 2000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  background-image: url("online-multiplayer-button-spinner.svg");
+  background-image: url("assets/online-multiplayer-button-spinner.svg");
   background-position: center;
   background-repeat: no-repeat;
   height: 20%;
@@ -145,7 +145,7 @@
 }
 
 .Title-wrapper {
-  background-image: url("backgammon-title.svg");
+  background-image: url("assets/backgammon-title.svg");
   background-position: center;
   background-repeat: no-repeat;
   container: title-container / inline-size;
@@ -189,11 +189,11 @@
 }
 
 .Local-multiplayer-button {
-  background-image: url(local-multiplayer-button.svg);
+  background-image: url("assets/local-multiplayer-button.svg");
 }
 
 .Online-multiplayer-button {
-  background-image: url(online-multiplayer-button.svg);
+  background-image: url("assets/online-multiplayer-button.svg");
 }
 
 .Local-multiplayer-button:hover,
@@ -208,7 +208,7 @@
   animation-duration: 2000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  background-image: url("online-multiplayer-button-spinner.svg");
+  background-image: url("assets/online-multiplayer-button-spinner.svg");
   background-position: center;
   background-repeat: no-repeat;
   height: 40%;
@@ -234,7 +234,7 @@
 }
 
 .Match-settings-title-wrapper {
-  background-image: url("match-settings-title.svg");
+  background-image: url("assets/match-settings-title.svg");
   background-position: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
@@ -252,7 +252,7 @@
 }
 
 .Play-to-wrapper {
-  background-image: url("play-to.svg");
+  background-image: url("assets/play-to.svg");
   background-position-y: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
@@ -262,7 +262,7 @@
 }
 
 .Doubling-cube-text-wrapper {
-  background-image: url("allow-doubling.svg");
+  background-image: url("assets/allow-doubling.svg");
   background-position-y: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
@@ -272,7 +272,7 @@
 }
 
 .Url-title-wrapper {
-  background-image: url("url-title.svg");
+  background-image: url("assets/url-title.svg");
   background-position-y: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0.5vh 0.3vh rgba(0, 0, 0, 0.35));
@@ -328,7 +328,7 @@
 }
 
 .Url-form-copy {
-  background-image: url("copy-icon.svg");
+  background-image: url("assets/copy-icon.svg");
   background-position-y: center;
   background-repeat: no-repeat;
   cursor: pointer;
@@ -339,7 +339,7 @@
 }
 
 .Url-form-copy.highlight {
-  background-image: url("copy-icon-clicked.svg");
+  background-image: url("assets/copy-icon-clicked.svg");
 }
 
 .Url-form-copy:hover, .Url-form-copy:active {
@@ -391,19 +391,19 @@
 }
 
 .Doubling-cube-toggle-off {
-  background-image: url("off-disabled.svg");
+  background-image: url("assets/off-disabled.svg");
 }
 
 .Doubling-cube-toggle-on {
-  background-image: url("on-disabled.svg");
+  background-image: url("assets/on-disabled.svg");
 }
 
 .Doubling-cube-toggle-off.enabled {
-  background-image: url("off-enabled.svg");
+  background-image: url("assets/off-enabled.svg");
 }
 
 .Doubling-cube-toggle-on.enabled {
-  background-image: url("on-enabled.svg");
+  background-image: url("assets/on-enabled.svg");
 }
 
 .Doubling-cube-toggle.form-switch {
@@ -441,51 +441,51 @@
 }
 
 .Match-points-button.one {
-  background-image: url("match-point-button-1-deselected.svg");
+  background-image: url("assets/match-point-button-1-deselected.svg");
 }
 
 .Match-points-button.one.selected {
-  background-image: url("match-point-button-1-selected.svg");
+  background-image: url("assets/match-point-button-1-selected.svg");
 }
 
 .Match-points-button.three {
-  background-image: url("match-point-button-3-deselected.svg");
+  background-image: url("assets/match-point-button-3-deselected.svg");
 }
 
 .Match-points-button.three.selected {
-  background-image: url("match-point-button-3-selected.svg");
+  background-image: url("assets/match-point-button-3-selected.svg");
 }
 
 .Match-points-button.five {
-  background-image: url("match-point-button-5-deselected.svg");
+  background-image: url("assets/match-point-button-5-deselected.svg");
 }
 
 .Match-points-button.five.selected {
-  background-image: url("match-point-button-5-selected.svg");
+  background-image: url("assets/match-point-button-5-selected.svg");
 }
 
 .Match-points-button.seven {
-  background-image: url("match-point-button-7-deselected.svg");
+  background-image: url("assets/match-point-button-7-deselected.svg");
 }
 
 .Match-points-button.seven.selected {
-  background-image: url("match-point-button-7-selected.svg");
+  background-image: url("assets/match-point-button-7-selected.svg");
 }
 
 .Match-points-button.nine {
-  background-image: url("match-point-button-9-deselected.svg");
+  background-image: url("assets/match-point-button-9-deselected.svg");
 }
 
 .Match-points-button.nine.selected {
-  background-image: url("match-point-button-9-selected.svg");
+  background-image: url("assets/match-point-button-9-selected.svg");
 }
 
 .Match-points-button.eleven {
-  background-image: url("match-point-button-11-deselected.svg");
+  background-image: url("assets/match-point-button-11-deselected.svg");
 }
 
 .Match-points-button.eleven.selected {
-  background-image: url("match-point-button-11-selected.svg");
+  background-image: url("assets/match-point-button-11-selected.svg");
 }
 
 .Player-card-wrapper {
@@ -605,7 +605,7 @@
 }
 
 .Game-board-half {
-  background-image: url(board-background.svg);
+  background-image: url("assets/board-background.svg");
   background-size: cover;
   border-color: #212529;
   border-width: 0.8vh;
@@ -620,7 +620,7 @@
 
 .Game-board-half.left {
   background:
-  url(board-background.svg) padding-box,
+  url("assets/board-background.svg") padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
   border: 5px solid transparent;
   border-right-style: none;
@@ -635,7 +635,7 @@
 
 .Game-board-half.right {
   background:
-  url(board-background.svg) padding-box,
+  url("assets/board-background.svg") padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
   border: 5px solid transparent;
   border-left-style: none;
@@ -659,7 +659,7 @@
 
 .Game-board-bar {
   background:
-  url(dots.svg) center/420% padding-box,
+  url("assets/dots.svg") center/420% padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
   border: 5px solid transparent;
   display: flex;
@@ -672,7 +672,7 @@
 
 .Game-board-home {
   background:
-  url(dots.svg) center/300% padding-box,
+  url("assets/dots.svg") center/300% padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
   border: 5px solid transparent;
   border-left-style: none;
@@ -714,7 +714,7 @@
 }
 
 .Point-wrapper-highlight.to {
-  background: url(stripes.svg);
+  background: url("assets/stripes.svg");
   background-size: cover;
 }
 
@@ -725,12 +725,12 @@
 
 @keyframes nomove {
   from {
-    background: url(stripes-red.svg);
+    background: url("assets/stripes-red.svg");
     background-size: cover;
   }
 
   to {
-    background: url(stripes-red-fade.svg);
+    background: url("assets/stripes-red-fade.svg");
     background-size: cover;
   }
 }
@@ -821,7 +821,7 @@
 }
 
 .Checker.white {
-  background-image: url(checker-light.svg);
+  background-image: url("assets/checker-light.svg");
   background-repeat: no-repeat;
 }
 
@@ -830,12 +830,12 @@
 }
 
 .Checker.white.selected-pulse {
-  background-image: url(checker-light-selected.svg);
+  background-image: url("assets/checker-light-selected.svg");
   background-repeat: no-repeat;
 }
 
 .Checker.black.selected-pulse {
-  background-image: url(checker-dark-selected.svg);
+  background-image: url("assets/checker-dark-selected.svg");
   background-repeat: no-repeat;
 }
 
@@ -844,7 +844,7 @@
 }
 
 .Checker.black {
-  background-image: url(checker-dark.svg);
+  background-image: url("assets/checker-dark.svg");
   background-repeat: no-repeat;
 }
 
@@ -891,19 +891,19 @@
 }
 
 .Player-one-home-checkers .Checker.white {
-  background-image: url(checker-home-light.svg);
+  background-image: url("assets/checker-home-light.svg");
 }
 
 .Player-one-home-checkers .Checker.black {
-  background-image: url(checker-home-dark.svg);
+  background-image: url("assets/checker-home-dark.svg");
 }
 
 .Player-two-home-checkers .Checker.white {
-  background-image: url(checker-home-light.svg);
+  background-image: url("assets/checker-home-light.svg");
 }
 
 .Player-two-home-checkers .Checker.black {
-  background-image: url(checker-home-dark.svg);
+  background-image: url("assets/checker-home-dark.svg");
 }
 
 .Player-one-home-checkers, .Player-two-home-checkers.p2 {
@@ -915,14 +915,14 @@
 }
 
 .Player-one-home-checkers.highlighted {
-  background: url(stripes.svg);
+  background: url("assets/stripes.svg");
   background-size: cover;
   border-top-left-radius: 1vh;
   border-top-right-radius: 1vh;
 }
 
 .Player-two-home-checkers.highlighted {
-  background: url(stripes.svg);
+  background: url("assets/stripes.svg");
   background-size: cover;
   border-bottom-left-radius: 1vh;
   border-bottom-right-radius: 1vh;
@@ -947,7 +947,7 @@
 }
 
 .Submit-button, .Undo-button {
-  background: url(checkmark.svg) center / 60% padding-box, linear-gradient(to right, #3F3217, #564112) border-box;
+  background: url("assets/checkmark.svg") center / 60% padding-box, linear-gradient(to right, #3F3217, #564112) border-box;
   border-color: #816c3d;
   border-radius: 1vh;
   background-repeat: no-repeat;
@@ -961,7 +961,7 @@
 }
 
 .Undo-button-wrapper .Undo-button {
-  background: url(undo-arrow.svg) center / 60% padding-box, linear-gradient(to right, #3F3217, #564112) border-box;
+  background: url("assets/undo-arrow.svg") center / 60% padding-box, linear-gradient(to right, #3F3217, #564112) border-box;
   background-repeat: no-repeat;
 }
 
@@ -1124,7 +1124,7 @@
 }
 
 .Settings-menu-color-swap-arrow {
-  background: url("swap-arrow.svg");
+  background: url("assets/swap-arrow.svg");
   background-repeat: no-repeat;
   height: 20%;
   width: 50%;
@@ -1151,19 +1151,19 @@
 }
 
 .Settings-option-movement-diagram.light {
-  background-image: url("diagram-light-ccw.svg");
+  background-image: url("assets/diagram-light-ccw.svg");
 }
 
 .Settings-option-movement-diagram.light.cw {
-  background-image: url("diagram-light-cw.svg");
+  background-image: url("assets/diagram-light-cw.svg");
 }
 
 .Settings-option-movement-diagram.dark {
-  background-image: url("diagram-dark-ccw.svg");
+  background-image: url("assets/diagram-dark-ccw.svg");
 }
 
 .Settings-option-movement-diagram.dark.cw {
-  background-image: url("diagram-dark-cw.svg");
+  background-image: url("assets/diagram-dark-cw.svg");
 }
 
 .Settings-checker-color-label, .Settings-checker-direction-label {
@@ -1171,15 +1171,15 @@
 }
 
 .Settings-option-arrow.clockwise {
-  background: url(clockwise-arrow.svg) no-repeat top left;
+  background: url("assets/clockwise-arrow.svg") no-repeat top left;
 }
 
 .Settings-option-arrow.counterclockwise {
-  background: url(counterclockwise-arrow.svg) no-repeat top left;
+  background: url("assets/counterclockwise-arrow.svg") no-repeat top left;
 }
 
 .Settings-menu-button {
-  background: url(settings-icon.svg) no-repeat top left;
+  background: url("assets/settings-icon.svg") no-repeat top left;
   background-size: contain;
 }
 
@@ -1378,7 +1378,7 @@
 
 .Doubling-cube {
   align-content: center;
-  background-image: url(doubling-cube.svg);
+  background-image: url("assets/doubling-cube.svg");
   background-repeat: no-repeat;
   filter: drop-shadow(1px 1px 1px rgb(58, 7, 7));
   height: 85%;
