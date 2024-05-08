@@ -91,7 +91,6 @@ const NetworkedGameRoom: FunctionComponent = () => {
       await signIn();
       const docRef = await findLobby(roomCode);
       if (docRef == null) {
-        console.error("No lobby found with code: " + roomCode);
         setRoomConnectionError(RoomConnectionErrorType.NotFound);
         return;
       } else {
@@ -140,11 +139,6 @@ const NetworkedGameRoom: FunctionComponent = () => {
           let isHost = true;
           if (!hasJoinedLobby(data.players)) {
             if (data.players.playerTwo != null) {
-              console.error(
-                "Trying to join lobby as user: " +
-                  getCurrentUser().uid +
-                  " but room is full."
-              );
               setRoomConnectionError(RoomConnectionErrorType.TooManyPlayers);
               return;
             } else {

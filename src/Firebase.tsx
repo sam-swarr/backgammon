@@ -7,10 +7,12 @@ import {
   Firestore,
   Timestamp,
   addDoc,
+  and,
   collection,
   getDocs,
   getFirestore,
   limit,
+  or,
   orderBy,
   query,
   serverTimestamp,
@@ -159,10 +161,18 @@ export async function findLobby(
   const timestampSixHoursAgo = Timestamp.fromDate(
     new Date(Date.now() - 6 * 60 * 60 * 1000)
   );
+  const uid = (await signIn()).uid;
   const q = query(
     lobbiesRef,
-    where("roomCode", "==", roomCode),
-    where("timeCreated", ">=", timestampSixHoursAgo),
+    and(
+      where("roomCode", "==", roomCode),
+      where("timeCreated", ">=", timestampSixHoursAgo),
+      or(
+        where("players.playerOne.uid", "==", uid),
+        where("players.playerTwo", "==", null),
+        where("players.playerTwo.uid", "==", uid)
+      )
+    ),
     orderBy("timeCreated", "desc"),
     limit(1)
   );
