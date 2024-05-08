@@ -5,6 +5,7 @@ import {
   writeAcceptDoubleToDB,
   writeAutomaticDoubleToDB,
   writeEndTurnToDB,
+  writeForfeitToDB,
   writeGameOverToDB,
   writeMatchSettingsToDB,
   writeNewGameStartToDB,
@@ -79,7 +80,10 @@ export class Actions {
     console.error("Unexpected use of default ActionsContext.");
   }
 
-  async forfeitButtonClicked(): Promise<void> {
+  async forfeitButtonClicked(
+    _newGameBoardState: GameBoardState,
+    _newMatchScore: MatchScore
+  ): Promise<void> {
     console.error("Unexpected use of default ActionsContext.");
   }
 
@@ -175,9 +179,16 @@ export class LocalGameActions extends Actions {
     );
   }
 
-  async forfeitButtonClicked(): Promise<void> {
-    // TODO
-    console.log("FORFEIT");
+  async forfeitButtonClicked(
+    newGameBoardState: GameBoardState,
+    newMatchScore: MatchScore
+  ): Promise<void> {
+    this.dispatchFn(clearProvisionalMoves());
+    this.dispatchFn(clearLastPointClicked());
+    this.dispatchFn(setState(GameState.GameOverForfeit));
+    this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setMatchScore(newMatchScore));
+    this.dispatchFn(setShowGameOverDialog(true));
   }
 
   async submitMoves(
@@ -303,9 +314,25 @@ export class NetworkedGameActions extends Actions {
     return await writeAutomaticDoubleToDB(this.docRef);
   }
 
-  async forfeitButtonClicked(): Promise<void> {
-    // TODO
-    console.log("FORFEIT");
+  async forfeitButtonClicked(
+    newGameBoardState: GameBoardState,
+    newMatchScore: MatchScore
+  ): Promise<void> {
+    // Optimistically write these changes to the local store first so that
+    // local client gets a fast update. The same changes will propagate to the
+    // other client via the DB write after this.
+    this.dispatchFn(clearProvisionalMoves());
+    this.dispatchFn(clearLastPointClicked());
+    this.dispatchFn(setState(GameState.GameOverForfeit));
+    this.dispatchFn(setGameBoardState(newGameBoardState));
+    this.dispatchFn(setMatchScore(newMatchScore));
+    this.dispatchFn(setShowGameOverDialog(true));
+
+    return await writeForfeitToDB(
+      this.docRef,
+      newGameBoardState,
+      newMatchScore
+    );
   }
 
   async rollButtonClicked(): Promise<void> {

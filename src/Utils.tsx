@@ -107,6 +107,7 @@ export function isGameOverState(gameState: GameState): boolean {
   return (
     gameState === GameState.GameOver ||
     gameState === GameState.GameOverGammon ||
-    gameState === GameState.GameOverBackgammon
+    gameState === GameState.GameOverBackgammon ||
+    gameState === GameState.GameOverForfeit
   );
 }

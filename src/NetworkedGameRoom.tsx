@@ -48,7 +48,10 @@ export function loader({ params }: any): LoaderData {
 
 const NetworkedGameRoom: FunctionComponent = () => {
   const { roomCode } = useLoaderData() as LoaderData;
-  const [settings] = useAppSelector((state) => [state.settings]);
+  const [settings, gameState] = useAppSelector((state) => [
+    state.settings,
+    state.gameState,
+  ]);
   const dispatch = useAppDispatch();
 
   const [matchPointsValue, setMatchPointsValue] = useState<MatchPointValue>(5);
@@ -63,6 +66,18 @@ const NetworkedGameRoom: FunctionComponent = () => {
   function setGameActions(gameActions: Actions) {
     gameActionsRef.current = gameActions;
     _setGameActions(gameActions);
+  }
+
+  // We wrap the _previousGameState state inside a Ref and use the Ref instead.
+  // That's because if we just used a normal state variable, the onSnapshot()
+  // callback below would just capture the value of previousGameState on the very
+  // first render (which would always be the starting state).
+  const [_previousGameState, _setPreviousGameState] =
+    useState<GameState>(gameState);
+  const previousGameStateRef = useRef(_previousGameState);
+  function setPreviousGameState(gameState: GameState) {
+    previousGameStateRef.current = gameState;
+    _setPreviousGameState(gameState);
   }
 
   useEffect(() => {
@@ -102,6 +117,17 @@ const NetworkedGameRoom: FunctionComponent = () => {
           if (data.gameState === GameState.WaitingToBegin) {
             dispatch(setGameBoardState(data.gameBoard));
           }
+
+          // If we're newly transitioning to the GameOverForfeit state, then display the
+          // GameOverDialog. This is how the remote client will display the dialog after the
+          // other client forfeits.
+          if (
+            previousGameStateRef.current !== GameState.GameOverForfeit &&
+            data.gameState === GameState.GameOverForfeit
+          ) {
+            dispatch(setShowGameOverDialog(true));
+          }
+          setPreviousGameState(data.gameState);
 
           // Handle case where 2nd player is just joining for the first time
           let isHost = true;

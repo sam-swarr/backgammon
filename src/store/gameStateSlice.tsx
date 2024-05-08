@@ -10,6 +10,7 @@ export enum GameState {
   GameOver = "GAME_OVER",
   GameOverGammon = "GAME_OVER_GAMMON",
   GameOverBackgammon = "GAME_OVER_BACKGAMMON",
+  GameOverForfeit = " GAME_OVER_FORFEIT",
 }
 
 export const gameStateSlice = createSlice({

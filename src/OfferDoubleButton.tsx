@@ -4,16 +4,24 @@ import { ActionsContext, LocalGameActions } from "./ActionsContext";
 import { getClientPlayer, isCurrentPlayer } from "./Utils";
 import { GameState } from "./store/gameStateSlice";
 import { Player } from "./Types";
+import { MatchScore } from "./store/matchScoreSlice";
 
 const OfferDoubleButton: FunctionComponent = () => {
-  const [gameState, players, currentPlayer, doublingCubeData] = useAppSelector(
-    (state) => [
-      state.gameState,
-      state.players,
-      state.currentPlayer,
-      state.doublingCube,
-    ]
-  );
+  const [
+    gameState,
+    players,
+    currentPlayer,
+    doublingCubeData,
+    gameBoardState,
+    matchScore,
+  ] = useAppSelector((state) => [
+    state.gameState,
+    state.players,
+    state.currentPlayer,
+    state.doublingCube,
+    state.gameBoard,
+    state.matchScore,
+  ]);
   const actions = useContext(ActionsContext);
 
   // Return early if doubling is disabled for this match.
@@ -85,7 +93,20 @@ const OfferDoubleButton: FunctionComponent = () => {
           <button
             className={"Forfeit-game-button"}
             onClick={async () => {
-              await actions.forfeitButtonClicked();
+              const pointsWon = doublingCubeData.enabled
+                ? doublingCubeData.gameStakes
+                : 1;
+
+              const newMatchScore: MatchScore = {
+                [Player.One]:
+                  matchScore[Player.One] +
+                  (currentPlayer === Player.One ? pointsWon : 0),
+                [Player.Two]:
+                  matchScore[Player.Two] +
+                  (currentPlayer === Player.Two ? pointsWon : 0),
+                pointsRequiredToWin: matchScore.pointsRequiredToWin,
+              };
+              await actions.forfeitButtonClicked(gameBoardState, newMatchScore);
             }}
           >
             Forfeit

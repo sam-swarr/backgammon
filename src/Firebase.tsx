@@ -233,7 +233,8 @@ export async function writeGameOverToDB(
   winningGameState:
     | GameState.GameOver
     | GameState.GameOverGammon
-    | GameState.GameOverBackgammon,
+    | GameState.GameOverBackgammon
+    | GameState.GameOverForfeit,
   newMatchScore: MatchScore,
   networkedMoves: NetworkedMovesPayload
 ) {
@@ -243,6 +244,22 @@ export async function writeGameOverToDB(
       gameBoard: newGameBoardState,
       gameState: winningGameState,
       networkedMoves,
+      matchScore: newMatchScore,
+    },
+    { merge: true }
+  );
+}
+
+export async function writeForfeitToDB(
+  docRef: DocumentReference,
+  newGameBoardState: GameBoardState,
+  newMatchScore: MatchScore
+) {
+  return await setDoc(
+    docRef,
+    {
+      gameBoard: newGameBoardState,
+      gameState: GameState.GameOverForfeit,
       matchScore: newMatchScore,
     },
     { merge: true }

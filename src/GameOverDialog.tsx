@@ -54,12 +54,21 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
     matchScore[currentPlayer] >= matchScore.pointsRequiredToWin;
 
   let winnerText = "";
+  let forfeitText = "";
   if (actions instanceof LocalGameActions) {
     winnerText =
       currentPlayer === Player.One ? "Player One wins" : "Player Two wins";
+    forfeitText =
+      currentPlayer === Player.One
+        ? "Player Two forfeited."
+        : "Player One forfeited.";
   } else {
     winnerText =
       currentPlayer === playerPerspective ? "You win" : "Opponent wins";
+    forfeitText =
+      currentPlayer === playerPerspective
+        ? "Opponent forfeited."
+        : "You forfeited.";
   }
 
   winnerText += isMatchWin ? " the match!" : " the game!";
@@ -79,6 +88,12 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
         <div className={"Game-over-dialog-gammon-text"}>
           It's a backgammon and is worth triple!
         </div>
+      );
+      break;
+
+    case GameState.GameOverForfeit:
+      gammonText = (
+        <div className={"Game-over-dialog-gammon-text"}>{forfeitText}</div>
       );
       break;
 
