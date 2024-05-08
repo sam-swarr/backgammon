@@ -282,6 +282,20 @@ const GameBoard: FunctionComponent<GameBoardProps> = ({
     provisionalMoves
   );
 
+  // Setup listener to display warning dialog if user tries to navigate away.
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // Trigger confirmation dialog before navigating away.
+      event.preventDefault();
+      // Included for legacy support
+      event.returnValue = true;
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   // Setup checker pulse animation timer
   const [checkerPulse, setCheckerPulse] = useState(false);
   useEffect(() => {
