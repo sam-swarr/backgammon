@@ -67,41 +67,53 @@ const MatchSettingsMenu: FunctionComponent<MatchSettingsMenuProps> = ({
         <div className={"Play-to-wrapper"} />
         <div className={"Match-points-buttons-wrapper"}>
           <div
-            className={cx("Match-points-button", "one", {
+            className={cx("Match-points-button", {
               selected: matchPointsValue === 1,
             })}
             onClick={() => onMatchPointsChanged(1)}
-          />
+          >
+            1
+          </div>
           <div
-            className={cx("Match-points-button", "three", {
+            className={cx("Match-points-button", {
               selected: matchPointsValue === 3,
             })}
             onClick={() => onMatchPointsChanged(3)}
-          />
+          >
+            3
+          </div>
           <div
-            className={cx("Match-points-button", "five", {
+            className={cx("Match-points-button", {
               selected: matchPointsValue === 5,
             })}
             onClick={() => onMatchPointsChanged(5)}
-          />
+          >
+            5
+          </div>
           <div
-            className={cx("Match-points-button", "seven", {
+            className={cx("Match-points-button", {
               selected: matchPointsValue === 7,
             })}
             onClick={() => onMatchPointsChanged(7)}
-          />
+          >
+            7
+          </div>
           <div
-            className={cx("Match-points-button", "nine", {
+            className={cx("Match-points-button", {
               selected: matchPointsValue === 9,
             })}
             onClick={() => onMatchPointsChanged(9)}
-          />
+          >
+            9
+          </div>
           <div
-            className={cx("Match-points-button", "eleven", {
+            className={cx("Match-points-button", {
               selected: matchPointsValue === 11,
             })}
             onClick={() => onMatchPointsChanged(11)}
-          />
+          >
+            11
+          </div>
         </div>
       </div>
       <div className={"Doubling-cube-settings-row"}>

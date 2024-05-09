@@ -188,6 +188,16 @@
   width: 100%;
 }
 
+@media screen and (orientation: portrait) {
+  .Title-wrapper {
+    height: 16%;
+  }
+
+  .Menu-button-wrapper {
+    height: 30%;
+  }
+}
+
 .Local-multiplayer-button {
   background-image: url("assets/local-multiplayer-button.svg");
 }
@@ -427,65 +437,30 @@
 }
 
 .Match-points-button {
+  align-content: center;
+  background-color: #CDB288;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100%;
+  background-size: 15%;
+  border-radius: 10%;
+  font-size: max(1.3em, 2vw);
+  font-weight: bold;
+  height: max(5vw, 5vh);
   cursor: pointer;
   margin-left: 2%;
+  opacity: 40%;
+  text-align: center;
   transition: 0.2s;
-  width: 15%;
+  width: max(5vw, 5vh);
+}
+
+.Match-points-button.selected {
+  border: white solid max(3px, 0.3vw);
+  opacity: 100%;
 }
 
 .Match-points-button:hover, .Match-points-button:active {
   transform: scale(105%);
-}
-
-.Match-points-button.one {
-  background-image: url("assets/match-point-button-1-deselected.svg");
-}
-
-.Match-points-button.one.selected {
-  background-image: url("assets/match-point-button-1-selected.svg");
-}
-
-.Match-points-button.three {
-  background-image: url("assets/match-point-button-3-deselected.svg");
-}
-
-.Match-points-button.three.selected {
-  background-image: url("assets/match-point-button-3-selected.svg");
-}
-
-.Match-points-button.five {
-  background-image: url("assets/match-point-button-5-deselected.svg");
-}
-
-.Match-points-button.five.selected {
-  background-image: url("assets/match-point-button-5-selected.svg");
-}
-
-.Match-points-button.seven {
-  background-image: url("assets/match-point-button-7-deselected.svg");
-}
-
-.Match-points-button.seven.selected {
-  background-image: url("assets/match-point-button-7-selected.svg");
-}
-
-.Match-points-button.nine {
-  background-image: url("assets/match-point-button-9-deselected.svg");
-}
-
-.Match-points-button.nine.selected {
-  background-image: url("assets/match-point-button-9-selected.svg");
-}
-
-.Match-points-button.eleven {
-  background-image: url("assets/match-point-button-11-deselected.svg");
-}
-
-.Match-points-button.eleven.selected {
-  background-image: url("assets/match-point-button-11-selected.svg");
 }
 
 .Player-card-wrapper {
