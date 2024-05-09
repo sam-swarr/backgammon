@@ -93,7 +93,7 @@
 .Begin-game-button, .Roll-button, .Offer-double-button, .Forfeit-game-button, .Accept-double-button {
   background: linear-gradient(to right, #3F3217, #564112);
   border-color: #816c3d;
-  border-radius: 1em;
+  border-radius: min(1vw, 1em);
   border-style: double;
   border-width: 0.2em;
   color: #b8b8b8;
@@ -368,7 +368,7 @@
 .Start-game-button {
   background: linear-gradient(to right, #3F3217, #564112);
   border-color: #816c3d;
-  border-radius: 1em;
+  border-radius: min(1vw, 1em);
   border-style: double;
   border-width: 0.2em;
   color: #b8b8b8;
@@ -465,15 +465,15 @@
 
 .Player-card-wrapper {
   background: #0F142F;
-  border: 5px solid #22274a;
-  border-radius: 1em 1em 0 0;
+  border: min(5px, 0.4vw) solid #22274a;
+  border-radius: min(1vw, 1em) min(1vw, 1em) 0 0;
   border-bottom-style: none;
   color: #b8b8b8;
   display: flex;
   height: 9%;
   position: relative;
-  left: 70%;
-  width: 24%;
+  left: 66%;
+  width: 28%;
 }
 
 .Player-card-wrapper.current {
@@ -486,8 +486,8 @@
 
 .Player-card-wrapper.bottom {
   background: #251F13;
-  border: 5px solid #564112;
-  border-radius: 0 0 1em 1em;
+  border: min(5px, 0.4vw) solid #564112;
+  border-radius: 0 0 min(1vw, 1em) min(1vw, 1em);
   border-top-style: none;
 }
 
@@ -597,10 +597,10 @@
   background:
   url("assets/board-background.svg") padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
-  border: 5px solid transparent;
+  border: min(5px, 0.4vw) solid transparent;
   border-right-style: none;
-  border-top-left-radius: 1em;
-  border-bottom-left-radius: 1em;
+  border-top-left-radius: min(1vw, 1em);
+  border-bottom-left-radius: min(1vw, 1em);
 }
 
 .Game-board-half.left.cw {
@@ -612,13 +612,13 @@
   background:
   url("assets/board-background.svg") padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
-  border: 5px solid transparent;
+  border: min(5px, 0.4vw) solid transparent;
   border-left-style: none;
 }
 
 .Game-board-half.right.cw {
-  border-top-right-radius: 1em;
-  border-bottom-right-radius: 1em;
+  border-top-right-radius: min(1vw, 1em);
+  border-bottom-right-radius: min(1vw, 1em);
 }
 
 .Game-board-quadrant {
@@ -636,7 +636,7 @@
   background:
   url("assets/dots.svg") center/420% padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
-  border: 5px solid transparent;
+  border: min(5px, 0.4vw) solid transparent;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -649,10 +649,10 @@
   background:
   url("assets/dots.svg") center/300% padding-box,
   linear-gradient(to bottom, #22274A, #564112) border-box;
-  border: 5px solid transparent;
+  border: min(5px, 0.4vw) solid transparent;
   border-left-style: none;
-  border-top-right-radius: 1em;
-  border-bottom-right-radius: 1em;
+  border-top-right-radius: min(1vw, 1em);
+  border-bottom-right-radius: min(1vw, 1em);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -660,13 +660,15 @@
   width: 5%;
 }
 
+
+
 .Game-board-home.cw {
   border-left-style: solid;
   border-right-style: none;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  border-top-left-radius: 1em;
-  border-bottom-left-radius: 1em;
+  border-top-left-radius: min(1vw, 1em);
+  border-bottom-left-radius: min(1vw, 1em);
 }
 
 .Point-wrapper {
@@ -927,7 +929,6 @@
   border-radius: 1vh;
   background-repeat: no-repeat;
   border-style: double;
-  border-width: 0.2em;
   margin-left: 10%;
   margin-top: 10%;
   height: 80%;
@@ -1216,12 +1217,12 @@
 
 .Die-faces.white .Die-face {
   background-color: rgb(255 243 219);
-  border: 0.3vw solid #b49e70;
+  border: 0.2vw solid #b49e70;
 }
 
 .Die-faces.black .Die-face {
   background-color: rgb(15 16 37);
-  border: 0.3vw solid #767293;
+  border: 0.2vw solid #767293;
 }
 
 .Die-faces.white.spent .Die-face, .Die-faces.black.spent .Die-face {
@@ -1311,22 +1312,22 @@
 }
 
 .Die-face.one {
-  transform: rotate3d(0, 0, 0, 90deg) translateZ(2vw);
+  transform: rotate3d(0, 0, 0, 90deg) translateZ(1.6vw);
 }
 .Die-face.two {
-  transform: rotate3d(-1, 0, 0, 90deg) translateZ(2vw);
+  transform: rotate3d(-1, 0, 0, 90deg) translateZ(1.6vw);
 }
 .Die-face.three {
-  transform: rotate3d(0, 1, 0, 90deg) translateZ(2vw);
+  transform: rotate3d(0, 1, 0, 90deg) translateZ(1.6vw);
 }
 .Die-face.four {
-  transform: rotate3d(0, -1, 0, 90deg) translateZ(2vw);
+  transform: rotate3d(0, -1, 0, 90deg) translateZ(1.6vw);
 }
 .Die-face.five {
-  transform: rotate3d(1, 0, 0, 90deg) translateZ(2vw);
+  transform: rotate3d(1, 0, 0, 90deg) translateZ(1.6vw);
 }
 .Die-face.six {
-  transform: rotate3d(1, 0, 0, 180deg) translateZ(2vw);
+  transform: rotate3d(1, 0, 0, 180deg) translateZ(1.6vw);
 }
 
 .Die-pip.one {
@@ -1364,6 +1365,7 @@
 .Doubling-cube-value-wrapper {
   align-content: center;
   color: #FABBBB;
+  font-size: min(1.3vw, 1.3em);
   height: 100%;
   text-align: center;
   text-shadow: 1px 1px 1px rgb(58, 7, 7);
@@ -1372,25 +1374,26 @@
 
 .Accept-double-menu-wrapper {
   display: flex;
-  height: 12%;
-  top: 44%;
+  height: 14%;
+  top: 43%;
   flex-direction: column;
 }
 
 .Accept-double-menu-text-wrapper {
   color: #b8b8b8;
-  font-size: 0.8em;
+  font-size: max(0.5em, 1.2vw);
 }
 
 .Accept-double-menu-buttons-wrapper {
   align-items: center;
   display: flex;
   justify-content: space-evenly;
+  height: 50%;
   width: 100%;
 }
 
 .Accept-double-button, .Forfeit-game-button {
-  font-size: 0.8em;
+  font-size: min(1em, 1vw);
   height: 100%;
   padding: 0;
   width: 34%;
@@ -1604,7 +1607,7 @@ $floating-circle-count: 50;
 .Room-connection-error-menu-button {
   background: linear-gradient(to right, #3F3217, #564112);
   border-color: #816c3d;
-  border-radius: 1em;
+  border-radius: min(1vw, 1em);
   border-style: double;
   border-width: 0.2em;
   color: #b8b8b8;
