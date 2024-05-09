@@ -13,21 +13,26 @@ import WipeTransition from "./WipeTransition";
 type AppProps = {};
 
 const App: FunctionComponent<AppProps> = () => {
-  const router = createBrowserRouter([
+  const router = createBrowserRouter(
+    [
+      {
+        path: "/",
+        element: <MainMenu />,
+      },
+      {
+        path: "/local",
+        element: <LocalGameRoom />,
+      },
+      {
+        path: "/:roomCode",
+        element: <NetworkedGameRoom />,
+        loader: NetworkedGameRoomLoader,
+      },
+    ],
     {
-      path: "/",
-      element: <MainMenu />,
-    },
-    {
-      path: "/local",
-      element: <LocalGameRoom />,
-    },
-    {
-      path: "/:roomCode",
-      element: <NetworkedGameRoom />,
-      loader: NetworkedGameRoomLoader,
-    },
-  ]);
+      basename: "/backgammon/",
+    }
+  );
 
   const initialFloatingCircles = new Array(50);
   for (let i = 0; i < 50; i++) {
