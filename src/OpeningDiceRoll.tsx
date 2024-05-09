@@ -8,9 +8,10 @@ import { ActionsContext } from "./ActionsContext";
 
 const OpeningDiceRoll: FunctionComponent = () => {
   const actions = useContext(ActionsContext);
-  const [dice, settings] = useAppSelector((state) => [
+  const [dice, settings, doublingCubeData] = useAppSelector((state) => [
     state.dice,
     state.settings,
+    state.doublingCube,
   ]);
 
   const [initialRollCounter, setInitialRollCounter] = useState(0);
@@ -36,7 +37,9 @@ const OpeningDiceRoll: FunctionComponent = () => {
           setForceReroll(true);
           setTimeout(() => {
             if (currOpeningRoll.length === 4) {
-              actions.automaticDouble();
+              if (doublingCubeData.enabled) {
+                actions.automaticDouble();
+              }
               setInitialRollCounter(initialRollCounter + 1);
               setForceReroll(false);
               if (actions.isHostClient()) {
