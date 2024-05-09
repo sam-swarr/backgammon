@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/backgammon/static/css/main.f8b618d4.css",
-    "main.js": "/backgammon/static/js/main.53234476.js",
+    "main.css": "/backgammon/static/css/main.a23c435a.css",
+    "main.js": "/backgammon/static/js/main.0a6b9206.js",
     "static/media/match-settings-title.svg": "/backgammon/static/media/match-settings-title.410d7b07ad339c9a3c12.svg",
     "static/media/backgammon-title.svg": "/backgammon/static/media/backgammon-title.34ee913e01db821eea92.svg",
     "static/media/allow-doubling.svg": "/backgammon/static/media/allow-doubling.46f6b3ad75e29c193106.svg",
@@ -38,9 +38,9 @@
     "static/media/copy-icon.svg": "/backgammon/static/media/copy-icon.65dafb6d3844799c4c65.svg",
     "static/media/match-point-button-11-deselected.svg": "/backgammon/static/media/match-point-button-11-deselected.9af5921cc162fdf72864.svg",
     "static/media/swap-arrow.svg": "/backgammon/static/media/swap-arrow.adc2648dbfeda0f4cdd7.svg",
+    "index.html": "/backgammon/index.html",
     "static/media/undo-arrow.svg": "/backgammon/static/media/undo-arrow.d3b379507e968a3f8245.svg",
     "static/media/match-point-button-7-deselected.svg": "/backgammon/static/media/match-point-button-7-deselected.6a9a28f22862d0234cf5.svg",
-    "index.html": "/backgammon/index.html",
     "static/media/checker-dark-selected.svg": "/backgammon/static/media/checker-dark-selected.9076eecdb1839d51a87b.svg",
     "static/media/checker-light-selected.svg": "/backgammon/static/media/checker-light-selected.0682a00050929616b5fa.svg",
     "static/media/match-point-button-1-deselected.svg": "/backgammon/static/media/match-point-button-1-deselected.8113869f01d237fcb57b.svg",
@@ -52,11 +52,11 @@
     "static/media/checker-home-light.svg": "/backgammon/static/media/checker-home-light.8aa4877b9e0f9f946c24.svg",
     "static/media/online-multiplayer-button-spinner.svg": "/backgammon/static/media/online-multiplayer-button-spinner.7c87ae20b24b79031ab9.svg",
     "static/media/loading-spinner.svg": "/backgammon/static/media/loading-spinner.2e1c3e92b0cc05ad6bdd.svg",
-    "main.f8b618d4.css.map": "/backgammon/static/css/main.f8b618d4.css.map",
-    "main.53234476.js.map": "/backgammon/static/js/main.53234476.js.map"
+    "main.a23c435a.css.map": "/backgammon/static/css/main.a23c435a.css.map",
+    "main.0a6b9206.js.map": "/backgammon/static/js/main.0a6b9206.js.map"
   },
   "entrypoints": [
-    "static/css/main.f8b618d4.css",
-    "static/js/main.53234476.js"
+    "static/css/main.a23c435a.css",
+    "static/js/main.0a6b9206.js"
   ]
 }
