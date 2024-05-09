@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/backgammon/static/css/main.d409741d.css",
-    "main.js": "/backgammon/static/js/main.de308495.js",
+    "main.css": "/backgammon/static/css/main.04a1a27a.css",
+    "main.js": "/backgammon/static/js/main.2a1b5b7c.js",
     "static/media/match-settings-title.svg": "/backgammon/static/media/match-settings-title.410d7b07ad339c9a3c12.svg",
     "static/media/backgammon-title.svg": "/backgammon/static/media/backgammon-title.34ee913e01db821eea92.svg",
     "static/media/allow-doubling.svg": "/backgammon/static/media/allow-doubling.46f6b3ad75e29c193106.svg",
@@ -40,11 +40,11 @@
     "static/media/checker-home-light.svg": "/backgammon/static/media/checker-home-light.8aa4877b9e0f9f946c24.svg",
     "static/media/online-multiplayer-button-spinner.svg": "/backgammon/static/media/online-multiplayer-button-spinner.7c87ae20b24b79031ab9.svg",
     "static/media/loading-spinner.svg": "/backgammon/static/media/loading-spinner.2e1c3e92b0cc05ad6bdd.svg",
-    "main.d409741d.css.map": "/backgammon/static/css/main.d409741d.css.map",
-    "main.de308495.js.map": "/backgammon/static/js/main.de308495.js.map"
+    "main.04a1a27a.css.map": "/backgammon/static/css/main.04a1a27a.css.map",
+    "main.2a1b5b7c.js.map": "/backgammon/static/js/main.2a1b5b7c.js.map"
   },
   "entrypoints": [
-    "static/css/main.d409741d.css",
-    "static/js/main.de308495.js"
+    "static/css/main.04a1a27a.css",
+    "static/js/main.2a1b5b7c.js"
   ]
 }
